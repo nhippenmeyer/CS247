@@ -1,8 +1,0 @@
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\bin\Release\CS247Lab2.exe
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\bin\Release\CS247Lab2.pdb
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\obj\x86\Release\ResolveAssemblyReference.cache
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\obj\x86\Release\CS247Lab2.Properties.Resources.resources
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\obj\x86\Release\GenerateResource.read.1.tlog
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\obj\x86\Release\GenerateResource.write.1.tlog
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\obj\x86\Release\CS247Lab2.exe
-D:\class\cs247\CS247-Lab-2\DelegatesAndEvents\obj\x86\Release\CS247Lab2.pdb

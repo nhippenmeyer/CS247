@@ -1,5 +1,0 @@
-D:\class\cs247\CS247-Lab-2\HelloCS247L\bin\Debug\HelloCS247L.exe
-D:\class\cs247\CS247-Lab-2\HelloCS247L\bin\Debug\HelloCS247L.pdb
-D:\class\cs247\CS247-Lab-2\HelloCS247L\obj\x86\Debug\ResolveAssemblyReference.cache
-D:\class\cs247\CS247-Lab-2\HelloCS247L\obj\x86\Debug\HelloCS247L.exe
-D:\class\cs247\CS247-Lab-2\HelloCS247L\obj\x86\Debug\HelloCS247L.pdb
