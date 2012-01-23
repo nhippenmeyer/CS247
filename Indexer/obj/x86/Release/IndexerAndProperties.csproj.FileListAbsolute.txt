@@ -1,0 +1,5 @@
+D:\class\cs247\CS247-Lab-2\Indexer\bin\Release\Indexer.exe
+D:\class\cs247\CS247-Lab-2\Indexer\bin\Release\Indexer.pdb
+D:\class\cs247\CS247-Lab-2\Indexer\obj\x86\Release\ResolveAssemblyReference.cache
+D:\class\cs247\CS247-Lab-2\Indexer\obj\x86\Release\Indexer.exe
+D:\class\cs247\CS247-Lab-2\Indexer\obj\x86\Release\Indexer.pdb
