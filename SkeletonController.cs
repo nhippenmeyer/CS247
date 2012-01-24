@@ -91,7 +91,7 @@ namespace SkeletalTracking
         private Brush _target_color;
         private TextBlock _canvasEl;
         
-
+ 
         public Target(TextBlock target, int givenID)
         {
             _target_color = new SolidColorBrush(Colors.Red);
@@ -157,6 +157,9 @@ namespace SkeletalTracking
             return circle;
         }
 
-
+        public void Dispatch(Delegate method)
+        {
+            _canvasEl.Dispatcher.Invoke(method);
+        }
     }
 }

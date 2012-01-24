@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls;
+using System.Timers;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 
@@ -13,7 +14,22 @@ namespace SkeletalTracking
 {
     class CustomController1 : SkeletonController
     {
+        Timer rightHandTimer = null;
+        Target rightHandTarget = null;
+        int rightHandTargetID = -1;
+
+        private List<Timer> timers = new List<Timer>();
+
         public CustomController1(MainWindow win) : base(win){}
+
+        public void rightHandTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            rightHandTarget.Dispatch(new Action(
+                delegate()
+                    {
+                        rightHandTarget.setTargetSelected();
+                    }));
+        }
 
         public override void processSkeletonFrame(SkeletonData skeleton, Dictionary<int, Target> targets)
         {
@@ -40,16 +56,30 @@ namespace SkeletalTracking
                     if ((Math.Sign(deltaX_arm) == -1 && cur.getXPosition() < rightHand.Position.X) ||
                          Math.Sign(deltaX_arm) == 1 && cur.getXPosition() > rightHand.Position.X)
                     {
-                        cur.setTargetSelected();
+                        if (rightHandTargetID < 0)
+                        {
+                            rightHandTargetID = targetID;
+                            rightHandTarget = cur;
+                            rightHandTimer = new Timer(2000);
+                            rightHandTimer.Elapsed += new ElapsedEventHandler(rightHandTimer_Elapsed);
+                            rightHandTimer.Enabled = true;
+                            cur.setTargetHighlighted();
+                        }
                     }
                 }
                 else
                 {
-                    cur.setTargetUnselected();
+                    if (rightHandTargetID == targetID)
+                    {
+                        cur.setTargetUnselected();
+                        rightHandTargetID = -1;
+                        rightHandTarget = null;
+                        rightHandTimer.Dispose();
+                    }
                 }
             }
         }
-
+        
         public override void controllerActivated(Dictionary<int, Target> targets)
         {
 
