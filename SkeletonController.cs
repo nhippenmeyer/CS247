@@ -13,7 +13,7 @@ namespace SkeletalTracking
 {
     class SkeletonController
     {
-        private MainWindow window;
+        protected MainWindow window;
 
         public SkeletonController(MainWindow win)
         {
