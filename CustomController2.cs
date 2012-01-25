@@ -8,6 +8,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
+using System.Timers;
 
 namespace SkeletalTracking
 {
@@ -17,16 +18,20 @@ namespace SkeletalTracking
         private double centerX;
         private double rangeX;
 
+
         public CustomController2(MainWindow win) : base(win)
         {
+            rightHandTimer = null;
+            rightHandTarget = null;
+            rightHandTargetID = -1;
             selectMode = false;
-            rangeX = 75.0;
+            rangeX = 100.0;
         }
 
         public override void processSkeletonFrame(SkeletonData skeleton, Dictionary<int, Target> targets)
         {
             Joint leftHand = skeleton.Joints[JointID.HandLeft].ScaleTo(640, 480, window.k_xMaxJointScale, window.k_yMaxJointScale);
-            Joint head = skeleton.Joints[JointID.Head].ScaleTo(640, 480, window.k_xMaxJointScale, window.k_yMaxJointScale);
+            Joint head = skeleton.Joints[JointID.ShoulderCenter].ScaleTo(640, 480, window.k_xMaxJointScale, window.k_yMaxJointScale);
 
             // If we are currently in selection mode
             if (selectMode)
@@ -51,7 +56,15 @@ namespace SkeletalTracking
                     {
                         if (target.Key == targetToSelect)
                         {
-                            target.Value.setTargetSelected();
+                            if (rightHandTargetID < 0)
+                            {
+                                startTimer(target.Value, 1.5);
+                            }
+                            else if (rightHandTargetID != target.Key)
+                            {
+                                stopTimer(rightHandTarget);
+                                startTimer(target.Value, 1.5);
+                            }
                         }
                         else
                         {

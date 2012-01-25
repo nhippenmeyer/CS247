@@ -8,16 +8,47 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
+using System.Timers;
 
 namespace SkeletalTracking
 {
     class SkeletonController
     {
         protected MainWindow window;
-
+        protected Timer rightHandTimer;
+        protected Target rightHandTarget;
+        protected int rightHandTargetID;
         public SkeletonController(MainWindow win)
         {
             window = win; 
+        }
+        
+        protected void rightHandTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            rightHandTarget.Dispatch(new Action(
+                delegate()
+                    {
+                        rightHandTarget.setTargetSelected();
+                    }));
+        }
+
+        protected void startTimer(Target target, double seconds)
+        {
+            rightHandTargetID = target.id;
+            rightHandTarget = target;
+            rightHandTimer = new Timer(seconds * 1000);
+            rightHandTimer.AutoReset = false;
+            rightHandTimer.Elapsed += new ElapsedEventHandler(rightHandTimer_Elapsed);
+            rightHandTimer.Enabled = true;
+            target.setTargetHighlighted();
+        }
+
+        protected void stopTimer(Target target)
+        {
+            target.setTargetUnselected();
+            rightHandTargetID = -1;
+            rightHandTarget = null;
+            rightHandTimer.Dispose();
         }
 
         //This function will be implemented by you in the subclass files provided.

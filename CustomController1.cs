@@ -14,22 +14,15 @@ namespace SkeletalTracking
 {
     class CustomController1 : SkeletonController
     {
-        Timer rightHandTimer = null;
-        Target rightHandTarget = null;
-        int rightHandTargetID = -1;
 
-        private List<Timer> timers = new List<Timer>();
-
-        public CustomController1(MainWindow win) : base(win){}
-
-        public void rightHandTimer_Elapsed(object sender, ElapsedEventArgs e)
+        public CustomController1(MainWindow win) : base(win)
         {
-            rightHandTarget.Dispatch(new Action(
-                delegate()
-                    {
-                        rightHandTarget.setTargetSelected();
-                    }));
+            rightHandTimer = null;
+            rightHandTarget = null;
+            rightHandTargetID = -1;
         }
+
+
 
         public override void processSkeletonFrame(SkeletonData skeleton, Dictionary<int, Target> targets)
         {
@@ -58,12 +51,7 @@ namespace SkeletalTracking
                     {
                         if (rightHandTargetID < 0)
                         {
-                            rightHandTargetID = targetID;
-                            rightHandTarget = cur;
-                            rightHandTimer = new Timer(2000);
-                            rightHandTimer.Elapsed += new ElapsedEventHandler(rightHandTimer_Elapsed);
-                            rightHandTimer.Enabled = true;
-                            cur.setTargetHighlighted();
+                            startTimer(cur, 1.0);
                         }
                     }
                 }
@@ -71,10 +59,7 @@ namespace SkeletalTracking
                 {
                     if (rightHandTargetID == targetID)
                     {
-                        cur.setTargetUnselected();
-                        rightHandTargetID = -1;
-                        rightHandTarget = null;
-                        rightHandTimer.Dispose();
+                        stopTimer(cur);
                     }
                 }
             }
