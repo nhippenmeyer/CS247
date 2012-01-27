@@ -18,8 +18,8 @@ body {
 	font-size: 15px;
 	color: #111;
 
-	border-top: 3px solid #eee;
-	border-bottom: 3px solid #eee;
+	border-top: 3px solid #bbb;
+	border-bottom: 3px solid #ccc;
 	padding: 15px;
 }
 
@@ -120,9 +120,10 @@ img, iframe {
 span.caption {
 	display: block;
 	text-align: center;
-	margin: -10px 10px 20px;
+	margin: -13px 10px 27px;
 	font-family: Futura, "Helvetica Neue", Helvetica, Arial;
-	color: #222;
+	color: #666;
+	line-height: 1.2;
 }
 
 
