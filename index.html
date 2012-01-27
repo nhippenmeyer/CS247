@@ -1,14 +1,14 @@
 <!doctype html>
 <head>
-	<title>CS 247 P3: Gesture Controller | Reno Bowen, Nicholas Hippenmeyer, Ilias Karim, Brad Lawson, & Keegan Poppen</title>
+	<title>CS247 P3: Gesture Controller | Reno Bowen, Nicholas Hippenmeyer, Ilias Karim, Brad Lawson, & Keegan Poppen</title>
 
 	<link rel="stylesheet" href="css/style.css">
 
 	<link href='http://fonts.googleapis.com/css?family=GFS+Didot' rel='stylesheet' type='text/css'>
 
+	<meta name="author" content="Reno Bowen, Nicholas Hippenmeyer, Ilias Karim, Brad Lawson, and Keegan Poppen">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
-	<meta name="author" content="Reno Bowen, Nicholas Hippenmeyer, Ilias Karim, Brad Lawson, & Keegan Poppen">
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,10 +21,10 @@
 <body>
 	<header>
 		<h1>
-CS 247 Project 3: Gesture Controller
+CS247 Project 3: Gesture Controller
 		</h1>
 		<h2>
-Reno Bowen, Nicholas Hippenmeyer, Ilias Karim, Brad Lawson, &amp; Keegan Poppen
+Reno Bowen, Nicholas Hippenmeyer, Ilias Karim, Brad Lawson, and Keegan Poppen
 		</h2>
 		
 		<nav>
@@ -50,10 +50,9 @@ I. Introduction
 			</h1>
 
 			<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam leo neque, laoreet a ornare a, eleifend at eros. Sed orci dolor, blandit non mollis tristique, accumsan vitae risus. Nunc et elit velit, at aliquam erat. Nam magna felis, sodales eget aliquet nec, consequat vitae orci. Suspendisse egestas, tellus in rutrum ultrices, felis turpis tempor lacus, a pharetra arcu risus in lectus. Sed non mi eget risus elementum dignissim. Ut vel diam in est luctus euismod. Etiam dapibus porttitor ipsum ac varius. Donec eget metus ut erat molestie ultricies sed quis nulla. Vivamus sollicitudin convallis purus at suscipit. Aliquam et magna ut ante ornare euismod. Mauris ultricies, lorem quis hendrerit condimentum, velit elit ultrices arcu, sit amet pulvinar metus felis id libero. Ut et tortor arcu. Etiam id rhoncus felis.
+Designing gestures to select virtual targets via the sophisticated technologies embedded in the Kinect controller and its SDK presents unique problems that we would otherwise not encounter designing and developing interfaces for more conventional interface devices like mice, trackpads, or touchscreens. Best practices for designing such interfaces have yet to be established, and the inherent nature of the controller and its limitations demand a novel approach and paradigm for user interaction. Though daunting, we regard this challenge as an incredible opportunity to explore and hopefully influence how humans will one day interact with many of their devices--that is, through natural user interfaces, without the need to handle controllers physically.
 			</p>
 		</a>
-
 
 
 		<a name="design_process">
@@ -63,29 +62,33 @@ II. Design Process
 			</h1>
 
 			<p>
-Maecenas quis velit magna, in facilisis ante. Maecenas pulvinar justo eu lorem faucibus quis sodales lacus bibendum. Etiam arcu nisi, lobortis gravida cursus vel, interdum egestas risus. Fusce mi arcu, sodales quis commodo sed, dictum a leo. Nulla tincidunt libero vel neque dignissim at dapibus sapien ullamcorper. Ut porta odio non mauris consectetur ut vehicula nulla porta. Proin venenatis iaculis ante, iaculis pretium odio pharetra sed.
+Our group of five coalesced around the broad theme of music applications. At first we excitedly brainstormed, discussed, and illustrated use cases, user needs, and crazy solutions that addressed these use cases and user needs, ignoring Kinect's limitations. We asked ambitious, broad questions like: How could we augment the physical space of the room the Kinect and its user are in? How could we simultaneously engage and stimulate the user's attention and body? How can we reimagine the way the user interacts with and relates to his/her music? And we also asked simpler yet equally important questions like: what are unmistakable gestures that are not commonly acted out but are easily detected?
 			</p>
-
-
-			<img src="img/whiteboard.jpg">
-			<span class="caption">
-	caption
-			</span>
 
 			<img src="img/notes1.jpg">
 			<span class="caption">
-	caption
+caption
+			</span>
+
+			<img src="img/whiteboard.jpg">
+			<span class="caption">
+caption
 			</span>
 
 			<img src="img/notes2.jpg">
 			<span class="caption">
-	caption
+caption
 			</span>
 
 			<p>
-Praesent dolor elit, iaculis pulvinar fringilla vel, ultrices pellentesque ligula. Nunc elementum libero eget erat vehicula id venenatis ipsum vehicula. Nam malesuada odio vitae ligula tempus hendrerit. Donec placerat posuere ante ac varius. Ut fermentum, felis id condimentum volutpat, ipsum risus aliquet metus, eget mollis dui nisi non leo. Maecenas massa ligula, congue quis semper at, viverra malesuada nunc. Donec tempus sagittis tellus nec ullamcorper. Pellentesque pellentesque porttitor metus, quis vehicula libero elementum eu. In est leo, cursus quis elementum at, aliquet a lectus. In lorem lectus, pharetra quis pretium a, consequat a nisi. Sed augue felis, vulputate non fringilla a, lacinia et justo. Nulla dapibus porttitor lorem, ac lobortis nisl pellentesque sagittis. In feugiat condimentum molestie. Sed luctus adipiscing est, vel convallis lorem iaculis sit amet.
+To refine our ideas, we reconsidered them in light of some of the Kinect's limitations, including the fact that it can only actively track the joints of two users and that there was a certain sweet spot for tracking users somewhere between 6' and 9' from the device.  One of the greatest challenges we faced in designing gestures was to design them in a manner that made triggering them accidentally unlikely. Humans are constantly gesturing with their bodies, particularly in crowded social settings where a user would especially want to play music and interact with his/her music library. But over the course of a couple of group meetings during which we brainstormed, sketched, and toyed with the device, we settled on some gestures we all agreed would be effective to choose an item from a collection of items, which we would implement in the next phase of the project.			
+			</p>
+
+			<p>
+Both of the interactions we designed involve a timeout to select the target, in order to avoid false positives, and one of them requires the user to first prime the device for his/her gestures by raising his/her other hand. Our decision to use these interactions was in part influenced by the Xbox interfaces, which we consider to be the current, most established "best practices" for the Kinect sensor. 
 			</p>
 		</a>
+
 
 		<a name="implementation">
 			<h1>
@@ -93,27 +96,35 @@ III. Implementation
 			</h1>
 
 			<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum porttitor tellus. Etiam dignissim sagittis risus, ac malesuada lectus sollicitudin a. In consectetur tempor volutpat. In eget mauris neque, et scelerisque leo. Praesent risus ante, posuere nec mollis eget, feugiat sed lectus. Suspendisse bibendum euismod leo, ultrices mollis metus commodo vitae. Vivamus feugiat iaculis consectetur. Proin eu odio sit amet lectus pretium porta eget in turpis. Vivamus sem leo, facilisis quis placerat in, porttitor ac metus. Etiam ornare vestibulum ornare. Maecenas ligula velit, vulputate id consectetur a, semper non risus.
+After the brainstorming and design phase of our project, we set up our development environments and divided the work to be done. Though none of us had experience with C#, the greatest hurdle of the implementation phase of our project was installing Windows 7, Visual Studio 2010, and the Kinect SDK. Many members of our group prefer to use Mac OS X, and these group members had to either partition their drives to install Boot Camp and Windows 7, obtain another computer with Windows 7 on it, or attempt to work from within a VM, which was strongly discouraged both in class and online.
+			</p>
+
+			<p>
+Once we began coding, our project progressed swiftly. C#'s similarities to Java and the helpful class-provided starter code made it simple to learn to program for the Kinect. We were grateful for the Microsoft's Kinect SDK's built-in capability to track about 20 different joints (some more reliably than others). If we had gone another route and tried to use open-source Kinect SDK's for Mac OS X or Unix distributions, we wouldn't have had this luxury.
 			</p>
 		
 			<iframe src="http://player.vimeo.com/video/35677971?title=0&amp;byline=0&amp;portrait=0" width="680" height="383" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 			<span class="caption">
-caption
+Keegan and Brad demonstrate the gestures we designed and implemented to select targets via the Kinect sensor
 			</span>
 
-			<p>Get our source code from <a href="https://github.com/nhippenmeyer/CS247" target="github">https://github.com/nhippenmeyer/CS247</a></p>
+			<p>Get our source code from <a href="https://github.com/nhippenmeyer/CS247" target="github">https://github.com/nhippenmeyer/CS247</a>, or <a href="https://github.com/nhippenmeyer/CS247/zipball/master">download a .zip directly</a>.</p>
 		</a>
 
-		<a name="Discussion">
+
+		<a name="discussion">
 			<h1>
 IV. Discussion
 			</h1>
 
 			<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum porttitor tellus. Etiam dignissim sagittis risus, ac malesuada lectus sollicitudin a. In consectetur tempor volutpat. In eget mauris neque, et scelerisque leo. Praesent risus ante, posuere nec mollis eget, feugiat sed lectus. Suspendisse bibendum euismod leo, ultrices mollis metus commodo vitae. Vivamus feugiat iaculis consectetur. Proin eu odio sit amet lectus pretium porta eget in turpis. Vivamus sem leo, facilisis quis placerat in, porttitor ac metus. Etiam ornare vestibulum ornare. Maecenas ligula velit, vulputate id consectetur a, semper non risus.
+The two gesture controls we designed and implemented each have unqiue advantages and disadvantages, lending each one to a different use case. The first one only involves waving a single arm, which places very little cognitive strain on the user; the connection between pointing and selecting is clear and intuitive. The second gesture control demands using both hands, which is both physically and cognitively more taxing on the user, but is less likely to trigger false positives. Our video (above) shows a simple use case where users might use our gestures to navigate their music library.
+			</p>
+
+			<p>
+Using the gestures we designed and implemented to control the Kinect was an exciting experience that further convinced us of the great potential for natural user interfaes. Now that we've learned the ropes, and gotten our feet wet, we can't wait to get down and dirty with Kinect.
 			</p>
 		</a>
-
 
 	</div>
 
@@ -144,9 +155,7 @@ Computer Science 247: Human-Computer Interaction Design Studio</a>
 Project 3: Gesture Controller</a>
 		</nav>
 
-		<span>
 Last modified January 26th, 2012
-		</span>
 	</footer>
 
 </body>

@@ -18,8 +18,8 @@ body {
 	font-size: 15px;
 	color: #111;
 
-	border-top: 3px solid #aaa;
-	border-bottom: 3px solid #aaa;
+	border-top: 3px solid #eee;
+	border-bottom: 3px solid #eee;
 	padding: 15px;
 }
 
@@ -40,8 +40,9 @@ a:active[href] {
 
 /* Header */
 header {
-	margin: 15px 0 20px 0;
+	margin: 15px 0 15px 0;
 	text-align: center;
+	text-shadow: 1px 1px #fff;
 }
 
 h1 {
@@ -49,8 +50,8 @@ h1 {
 	font-weight: bold;
 	color: #222;
 	margin-bottom: 15px;
-
-	text-shadow: 3px 2px #fff;
+	font-size: 30px;
+	text-shadow: 3px 1px #fff;
 }
 
 h2 { 
@@ -80,9 +81,11 @@ nav a {
 div {
 	background-color: #ededed;
 
+	border-radius: 5px;
+
 	width: 700px;
 	margin: 10px auto 0;
-	padding: 10px 30px 10px; 
+	padding: 10px 30px 20px; 
 	
 	box-shadow:         0px 0px 5px 5px #ccc;
 	-moz-box-shadow:    0px 0px 5px 5px #ccc;
@@ -90,6 +93,7 @@ div {
 }
 
 div h1 {
+	font-size: 23px;
 	display: block;
 	border-bottom: 2px solid #bbb;
 	padding: 15px 0 10px 0;
@@ -97,8 +101,9 @@ div h1 {
 }
 
 p { 
-	line-height: 1.2; 
-	margin-bottom: 10px 
+	line-height: 1.4; 
+	margin-bottom: 10px;
+	margin-top: 10px;
 }
 
 img, iframe {
@@ -106,6 +111,7 @@ img, iframe {
 	-moz-box-shadow:    0px 0px 15px #666;
 	-webkit-box-shadow: 0px 0px 15px #666;
 
+	border: 1px solid #999;
 	display: block;
 	max-width: 680px;
 	margin: 25px auto;
@@ -126,10 +132,9 @@ footer {
 	margin: 15px 10px 5px;
 	font-size: 15px;
 	text-align: center;
-}
-
-footer span {
-
+	border-radius: 15px;
+	
+	text-shadow: 1px 1px #fff;
 }
 
 nav.links {
