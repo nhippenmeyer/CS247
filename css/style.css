@@ -27,6 +27,7 @@ a[href] {
 	color: blue; 
 	font-weight: bold;
 	text-decoration: none;
+	text-shadow: 1px 1px #fff;
 }
 a:hover[href] {
 	text-decoration: underline;
@@ -49,8 +50,7 @@ h1 {
 	color: #222;
 	margin-bottom: 15px;
 
-	
-	text-shadow: 3px 3px  #fff;
+	text-shadow: 3px 2px #fff;
 }
 
 h2 { 
@@ -126,7 +126,6 @@ footer {
 	margin: 15px 10px 5px;
 	font-size: 15px;
 	text-align: center;
-	margin: 15px;
 }
 
 footer span {
