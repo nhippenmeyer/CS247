@@ -102,7 +102,7 @@ div h1 {
 
 p { 
 	line-height: 1.4; 
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 	margin-top: 10px;
 }
 
@@ -120,7 +120,7 @@ img, iframe {
 span.caption {
 	display: block;
 	text-align: center;
-	margin: -13px 10px 27px;
+	margin: -13px 10px 20px;
 	font-family: Futura, "Helvetica Neue", Helvetica, Arial;
 	color: #666;
 	line-height: 1.2;
