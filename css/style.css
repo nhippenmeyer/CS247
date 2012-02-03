@@ -56,6 +56,7 @@ h1 {
 
 h2 { 
 	font-weight: normal;
+	line-height: 1.6;
 	text-align: center; 
 	font-size: 16px;
 	color: #222;
@@ -98,6 +99,18 @@ div h1 {
 	border-bottom: 2px solid #bbb;
 	padding: 15px 0 10px 0;
 	margin-bottom: 10px;
+}
+
+div h2 {
+	font-family: Futura, "Helvetica Neue", Helvetica, Arial;
+	font-weight: bold;
+	color: #222;
+	font-size: 20px;
+	margin-top: 15px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	text-shadow: 3px 1px #fff;
+	
 }
 
 p { 
