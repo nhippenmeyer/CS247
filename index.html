@@ -29,14 +29,16 @@ CS247 Project 4: Gestural Interfaces
 		</h2>
 		
 		<nav>
-			<a href="#1">
-I. Team Formation and Application Area</a>
+						<a href="#1">
+			I. Team Formation and Application Area</a>
+						<a href="#2">
+			II. Initial Prototyping</a>
 		</nav>
 	</header>
 
-	<div>
+	<div class="content">
 
-		<a name="#1">
+		<a name="1">
 			<h1>
 I. Team Formation and Application Area
 			</h1>
@@ -52,7 +54,7 @@ Takes primary responsibility to design user studies, recruit participants, and c
 			</p>
 
 			<p>
-<b>Nicholas Hippenmeye</b>
+<b>Nicholas Hippenmeyer</b>
 <i>Development Lead</i>
 Writes and manages code, oversees GitHub repository, ensures good software engineering practice.
 			</p>
@@ -87,12 +89,194 @@ Amateur musicians have benefited greatly from new, cheap recording software and 
 A Kinect-based interface would allow musicians to more easily record, playback, and loop their audio recordings or practice tracks. Leveraging audio and gestural feedback, musicians would no longer be forced to depart from their instrument to coordinate the recording process by using a mouse to manipulate sliders and knobs. 	
 			</p>
 		</a>
+
+		<a name="2">
+			<h1>II. Initial Prototyping</h1>
+			<h2>Feasibility Study</h2>
+			<iframe width="560" height="315" src="http://www.youtube.com/embed/gpvMaOxjoDo" frameborder="0" allowfullscreen></iframe>
+			<h4>Gesture Feasibility</h4>
+			<p>
+A variety of gestures capable of being performed while playing guitar or drums were demonstrated and evaluated for feasibility.  Given the lack of an assembled drumset, a worse-case scenario is evaluated with the majority of the lower torso occluded.
+			</p>
+			<h4>Guitars</h4>
+			<p>
+With guitars, the right hand can easily be taken advantage of for gestures given its visibility and freedom.  In addition, tilting of the neck of the guitar allows the execution of gestures seamlessly mid-play.  Foot and leg lifts and extensions can be used as a clutch.				
+			</p>
+			<p>
+Gestures which might involve lifting the guitar too high can block too many joints, leading to inaccurate and unreliable measurements.  If the left hand is to be used for gesturing, it is best used above the neck of the guitar to ensure visibility.				
+			</p>
+			<h4>Drums</h4>
+			<p>
+				Drums pose a particular challenge to the Kinect sensor, given that many drumsets will largely if not completely occlude the entire lower half of the performers body.  In addition, playing drums involves movement of the entire body, ruling out mid-performance gestures almost entirely.
+			</p>
+			<p>
+				Fortunately, between-play configuration of the software can be accomplished by using hand-over-the-head as a clutch.  Unless someone was a particularly wild drummer, this could serve as a suitable indication that the remaining free hand is to be recorded for 2D/3D gesture control.
+			</p>
+			<p>
+				A final thought is that the drummer could potentially be recorded from behind.  Unfortunately, the issue still stands that they are making use of all four limbs during play.  However, it opens up the possibility that given a suitably neat drum configuration, the feet could possibly be used to signal gestures once a clutch has been enabled.  However, given the variable amount of space different drummers have behind their drumset, this would be an almost certainly unreliable option.  It’s also worth noting that drumsets are very often set up in rooms against a corner or wall (they’re rather space-consuming), making the positioning of a Kinect sensor behind a user impractical.
+			</p>
+			<h2>Analysis of Use Cases</h2>
+			<h3>1. Performance</h3>
+			<h4>Prototype Sketches</h4>
+			<img src="img/prototyping/performance/IMG_1003.jpg"/>
+			<img src="img/prototyping/performance/IMG_1004.jpg"/>
+			<img src="img/prototyping/performance/IMG_1005.jpg"/>
+			<img src="img/prototyping/performance/IMG_1006.jpg"/>
+			<img src="img/prototyping/performance/IMG_1007.jpg"/>
+			<h4>Virtual Stomp Box Prototype</h4>
+			<p>
+				With music as our high-level application area, a natural use-case to peruse was gesture-based performance interfaces.  After a few initial brainstorming sessions with the entire group, I delved deeper into musical performance as a specific application area and came up with a number of realistic scenarios in which gestural interfaces would either simplify or improve upon existing methods for controlling volume, FX parameters, and even loopback performance.  One idea that I particularly liked--because of its ability to combine a number of promising concepts developed in our initial brainstorms--was a virtual stomp-box.  Using the Kinect for skeletal tracking, I thought it would be both feasible and compelling to create a virtual stomp-box for guitar players that uses the stomping of their foot to select between FX regions and the neck of their guitar to adjust the corresponding effect level.  Three presets (or possibly more) could be stored to zones at the bottom of the screen (by dragging them from a scrolling list on the left side of the screen) and then after they were assigned, a guitar player could select them by stepping on the respective region.  Then while playing, a guitar player could tilt the neck of the guitar in order to control the effect level.  This control mechanism would likely result in some false positives--a problem that would need to be addressed in future iterations of the prototype, perhaps by introducing a clutch gesture such as a foot movement--but I thought a key need the interface should address was the problem of allowing guitar players to control effects without taking their hands off of their instrument.
+			</p>
+			<img src="img/prototyping/performance/img1.jpg"/>
+			<h4>Interview Notes</h4>
+			<p>
+				I presented the idea and general concept of a virtual stomp box to Scooter (a friend who plays ukulele) and set up a rough paper prototype of what I imagined the user interface to be.  For lack of a Kinect, my simple prototype consisted of three stomp box regions with corresponding effects.  I also told him about the capability of being able to assign different effects to these regions from a list of presets.  Here are some of his reactions and comments on the interface and idea:
+			</p>
+			<ul>
+				<li>
+				"I can see this working if you're standing.  But would it work sitting down?"
+				</li>
+				<li>
+				"Do stomp boxes usually have 3 pedals or more?  I feel like they're a lot more complicated than this, with plenty more effects."
+				</li>
+				<li>
+				"Could you use both legs to control the effects?  Or would it just be one leg?"
+				</li>
+				<li>
+				"Perhaps adding a drum beat or backing tracking would be cool if you're trying to perform alone."
+				</li>
+				<li>
+				"It might be weird to not see pedals or the effects regions on stage."
+				</li>
+				<li>
+				"Perhaps you could move the effects regions to surround the body (kind of like Dance Dance Revolution) as opposed to having them all in front of you."
+				</li>
+			</ul>
+			<p>
+				Although I couldn't write down all of the things he said, Scooter also talked quite a bit about the lack of visual or mechanical feedback and how it might be confusing or difficult to control effects on stage without being able to see them.  I agreed, but then realized that the virtual stomp box could follow you wherever you went.  Instead of being stationary and located at one point on stage, the clutch for the stomp box could be moving your foot forward, and then you could stomp down either to the left, middle, or right of your body in order to select from each of the three effects.  That way, no matter where you were on stage, you could change effects by simply moving your foot forward and stepping down.  Cool!
+			</p>
+			<p>
+				Scooter also agreed that using the guitar neck to control effects parameters/levels would lead to some miscues and hiccups, but liked the idea of being able to control things seamlessly with a guitar instead of having complex knobs, etc.
+			</p>
+			<img src="img/prototyping/performance/img2.jpg"/>
+			<h3>2. Recording</h3>
+			<p>The following prototype explores a way of recording audio while requiring minimal input from the musician.
+			</p>
+			<h4>Prototype Sketches and Description</h4>
+			<p>
+				The image below displays the way the app works/looks while you're not recording. The current waveform from whatever is being recorded is displayed at whatever playhead is already set for the track, but passes right through it because nothing is being recorded. You can start recording by hovering over the pause area on the right side, which changes state to record. Note that all of the mode change / settings buttons are across the top right-- the easiest place to reach as a right-handed guitarist-- and could easily be switched to the left side for southpaws. One immediate observation made by the user upon seing this screen was "what is the arrow?" (answer: the "home" button, which is a manual backdoor to conductor mode-- a bit unclear)
+			</p>
+			<img src="img/prototyping/recording/1-home-screen.jpg"/>
+			<p>
+			Once you start recording, the display changes to demonstrate that recording is happening-- the waveform for what is being recorded starts anchored at the left playhead and extends to the right in real time, counting the user in before starting recording.
+			</p>
+			<img src="img/prototyping/recording/2-recording-mode.jpg"/>
+			<p>
+			Once you stop recording it automatically asks you if you want to keep what you just played or not, remembering your preference from last time. This dialog times out after a few seconds, so that if the user just wants to sit and wait to start recording again, he or she can without having to lift a finger.
+			</p>
+			<img src="img/prototyping/recording/3-keep-delete-recording-modal.jpg"/>
+			<p>
+			The "change playhead" modal selector comes up when the user puts both hands up, allowing him or her to use either one hand to set the playhead or two to select a range (to either loop over it while recording or to copy / paste / delete it).
+			</p>
+			<img src="img/prototyping/recording/4-change-playhead-modal.jpg"/>
+			<p>
+			"Conductor Mode" was a first shake at having some sort of main menu that comes up when you hover over the home button at the top of the screen.
+			</p>
+			<img src="img/prototyping/recording/5-conductor-mode.jpg"/>
+			<p>
+			Different modal dialogs that let the user change the tempo and key of the recording by a variety of input methods (guitar neck + clutch, clapping, etc.). The key dialog also features a visual guitar tuner that displays the current note, and whether it is sharp or flat.
+			</p>
+			<img src="img/prototyping/recording/6-change-key-modal.jpg"/>
+			<img src="img/prototyping/recording/7-change-tempo-modal.jpg"/>
+			<h4>User Testing Photos</h4>
+			<img src="img/prototyping/recording/8-user-interview.jpg"/>
+			<img src="img/prototyping/recording/9-user-interview.jpg"/>
+			<img src="img/prototyping/recording/10-user-interview.jpg"/>
+			<img src="img/prototyping/recording/11-user-interview.jpg"/>
+			<h3>3. Practice</h3>
+			<h4>Overview</h4>
+			<p>
+				Having a songbook that could be flipped through with one arm or a simple clutched gesture would be advantageous compared to bending over a small computer and using a mouse and keyboard while trying to hold your instrument, or after stepping away from it altogether. A brief “wizard of oz” test session run through of the paper prototype verified this hypothesis. Our test user was enthusiastic and liked that he never had to move his guitar out of the way while for example, leaning over a keyboard. He found the gestures easy to learn and use, and not too strenuous.
+			</p>
+			<p>
+				The best way to encourage learning notes, chords, and scales is probably to “gamify” the process, instead of using them as an interface, using them to controlling a virtual onscreen avatar, for example in a platforming game, not unlike many typing tutor or mathematics computer games. Though navigating complex menus by playing notes could work quite well for trained guitarists, another issue that arises is that such an interface doesn’t truly leverage the Kinect’s capabilities, since it could mostly be controlled with a simple microphone interface. The gesture interface almost feels tacked on, like all interactions should be done be playing the guitar. Perhaps the Kinect could be useful in such a context as a clutch, but it would never be the main means of interacting with the software in such an applcation.
+			</p>
+			<p>
+				Thus, it is not clear that the Kinect is the ideal interface for music learning or practicing applications. To begin with, it probably can’t teach you how to hold your instrument and move your fingers properly, since the SDK doesn’t provide data on such small joints.  It could also be argued that using Kinect gestures to operate such an interface would actually detract from the learning or practice application, since any gesture that would rely on the Kinect’s unique detection capabilities would require the user to gestate in a manner not inherent or necessarily applicable to playing the instrument they are learning to play, for example with their legs or by removing at least one hand from their instrument.
+			</p>
+			<p>
+				Some of the ideas for a learning or practice application utilizing a kinect interface that we brainstormed, sketched, and prototyped show promise. The tuner could be useful implemented with a natural user interface, but it is difficult to justify a standalone Kinect tuning application. If anything, the tuner should be a feature of some more full-featured signal processing or mixing application, which could be useful in other contexts like recording and performing.
+			</p>
+			<h4>Prototype Sketches</h4>
+			<img src="img/prototyping/practice/kinect_platform_game.jpg"/>
+			<div class="caption">
+				A platform game to learn guitar scales would be a great way to learn music, but doesn’t properly harness the Kinect. Any Kinect gestures would detract from the learning experience, here.
+			</div>
+			<img src="img/prototyping/practice/kinect_songbook_0.jpg"/>
+			<div class="caption">
+			This tutorial screen instructs the user how to scroll, select, and ask for help on an interface that makes users play a chord to select an item from a list.	
+			</div>
+			<img src="img/prototyping/practice/kinect_songbook_1.jpg"/>
+			<div class="caption">
+			Browsing artists on the Kinect songbook application. Play the chord next to the artist name to drill down, or clutch by muting the strings on the neck and scrolling with your right.	
+			</div>
+			<img src="img/prototyping/practice/kinect_songbook_2.jpg"/>
+			<div class="caption">
+			All available song titles for Nirvana. The interface here is the same as on the previous screen. A back gesture or guitar signal would also be necessary.	
+			</div>
+			<img src="img/prototyping/practice/kinect_songbook_3.jpg"/>
+			<div class="caption">
+			If you don’t know the chord, because you are just learning, bring up help by raising your left hand by itself.	
+			</div>
+			<img src="img/prototyping/practice/kinect_songbook_4.jpg"/>
+			<div class="caption">
+			The songbook plays and scrolls through song chords and lyrics for you, until you mess up!	
+			</div>
+			<img src="img/prototyping/practice/kinect_songbook_5.jpg"/>
+			<div class="caption">
+			If you mess up, the songbook gives you another chance. Here the user can influence its action for a few seconds before it automatically returns to the beginning of the part you work working on. You can also raise or lower the tempo from here.	
+			</div>
+			<img src="img/prototyping/practice/kinect_tuner.jpg"/>
+			<div class="caption">
+			A tuner could up for a specific gesture, such as the one pictured here.	
+			</div>
+			<h4>User Testing Photos</h4>
+			<img src="img/prototyping/practice/tester_0.jpg"/>
+			<div class="caption">
+			Our tester clutches the neck of the guitar with his left hand while raising his right hand to scroll up.	
+			</div>
+			<img src="img/prototyping/practice/tester_1.jpg"/>
+			<div class="caption">
+			Our tester scrolls down with his right hand while still clutching the neck of the guitar with his left.	
+			</div>
+			<img src="img/prototyping/practice/tester_2.jpg"/>
+			<div class="caption">
+			After playing a chord to select the song he wants, our tester learns to play a song by Nirvana.	
+			</div>
+			<img src="img/prototyping/practice/tester_3.jpg"/>
+			<div class="caption">
+			The tempo isn’t fast enough! Our tester turns it up after stopping playing in the middle of a phrase.	
+			</div>
+			<img src="img/prototyping/practice/tester_4.jpg"/>
+			<div class="caption">
+			The tempo isn’t fast enough! Our tester turns it up after stopping playing in the middle of a phrase.	
+			</div>
+			<h3>Conclusion</h3>
+			<p>
+			Through a series of feasibility tests, we determined that the Kinect could reliably be used to detect many gestures a guitar player might use to control a gestural interface.  A drummer however posed problems for the sensor since most of the body is obscured by the drum set.  As a result, we decided to focus on potential use-cases for a guitarist, and prototyped various applications within the following the three areas: performance, recording and practice.
+			</p>
+			<p>
+			The virtual stomp box proved to be a promising idea for a guitarist performing on stage, since it would allow the performer to move around freely and still provide the flexibility of changing effects mid-performance.  However, the lack of visual feedback could be an important limitation for this idea.  The gestural interface explored for recording audio also yielded positive feedback.  This type of application could potentially provide a lot of utility for a musician, since recording audio tends to be an interactive process where many takes and frequent editing may be needed.  Finally, it was determined that a Kinect-based interface would not be ideal for learning applications.  A tuning feature could however be very useful as a component in some other music-based application.
+			</p>
+		</a>
 	</div>
 
 	<footer>
 		<nav>
-			<a href="#1">
-I. Team Formation and Application Area</a>
+						<a href="#1">
+			I. Team Formation and Application Area</a>
+						<a href="#2">
+			II. Initial Prototyping</a>
 		</nav>
 
 		<nav class="links">

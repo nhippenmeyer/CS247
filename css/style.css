@@ -4,8 +4,11 @@
 * { margin: 0; padding: 0; border: none; line-height: 1 }
 :focus { outline: 0; }
 div.clear { clear: both; }
-ul { list-style-type: none }
-
+ul { 
+	list-style-type: disc;
+	margin-left: 20px; 
+}
+ul li {margin: 10px 0;}
 
 /* HTML5 tags */
 header, section, footer, aside, nav, article, figure { display: block; }
@@ -64,6 +67,10 @@ h2 {
 	margin-bottom: 10px;
 }
 
+h4 {
+	margin-top: 20px;
+}
+
 
 /* Navigation (in header & footer) */
 nav { 
@@ -79,7 +86,7 @@ nav a {
 
 
 /* Content */
-div {
+.content {
 	background-color: #ededed;
 
 	border-radius: 5px;
@@ -91,6 +98,12 @@ div {
 	box-shadow:         0px 0px 5px 5px #ccc;
 	-moz-box-shadow:    0px 0px 5px 5px #ccc;
 	-webkit-box-shadow: 0px 0px 5px 5px #ccc;
+}
+
+.caption {
+	text-align: center;
+	font-style: italic;
+	margin: -10px 20px 20px 20px;
 }
 
 div h1 {
