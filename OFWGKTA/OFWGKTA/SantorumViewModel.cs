@@ -45,6 +45,11 @@ namespace OFWGKTA
             this.connectedKinects.Add("Ass");
         }
 
+        public ObservableCollection<string> ConnectedKinects 
+        {
+            get { return connectedKinects; }
+        }
+
         public int PriorIndex
         {
             get
@@ -61,11 +66,6 @@ namespace OFWGKTA
             }
         }
             
-        public ObservableCollection<string> ConnectedKinects 
-        {
-            get { return connectedKinects; }
-        }
-
         public int SelectedIndex
         {
             get
