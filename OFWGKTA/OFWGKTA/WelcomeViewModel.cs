@@ -16,15 +16,15 @@ namespace OFWGKTA
         public const string ViewName = "WelcomeView";
 
         // Instance variables
-        private ObservableCollection<string> recordingDevices;
-        private int selectedRecordingDeviceIndex;
+        private ObservableCollection<string> applicationModes;
+        private int selectedApplicationModeIndex;
 
         // Commands
         private ICommand continueCommand;
 
         public WelcomeViewModel()
         {
-            this.recordingDevices = new ObservableCollection<string>();
+            this.applicationModes = new ObservableCollection<string>();
             this.continueCommand = new RelayCommand(() => MoveToSantorum());
         }
 
@@ -32,40 +32,33 @@ namespace OFWGKTA
 
         public void Activated(object state)
         {
-            this.recordingDevices.Clear();
-            for (int n = 0; n < 10; n++)
-            {
-                this.recordingDevices.Add("FUCKSHIT" + n);
-            }
-                    /*
-            for (int n = 0; n < WaveIn.DeviceCount; n++)
-            {
-                this.recordingDevices.Add(WaveIn.GetCapabilities(n).ProductName);
-            }
-                    */
+            this.applicationModes.Clear();
+            this.applicationModes.Add("Record");
+            this.applicationModes.Add("Replay");
+            this.applicationModes.Add("Free Use");
         }
 
         private void MoveToSantorum()
         {
             Messenger.Default.Send(new NavigateMessage(SantorumViewModel.ViewName, SelectedIndex));
         }
-
-        public ObservableCollection<string> RecordingDevices 
+        
+        public ObservableCollection<string> ApplicationModes 
         {
-            get { return recordingDevices; }
+            get { return applicationModes; }
         }
 
         public int SelectedIndex
         {
             get
             {
-                return selectedRecordingDeviceIndex;
+                return selectedApplicationModeIndex;
             }
             set
             {
-                if (selectedRecordingDeviceIndex != value)
+                if (selectedApplicationModeIndex != value)
                 {
-                    selectedRecordingDeviceIndex = value;
+                    selectedApplicationModeIndex = value;
                     RaisePropertyChanged("SelectedIndex");
                 }
             }
