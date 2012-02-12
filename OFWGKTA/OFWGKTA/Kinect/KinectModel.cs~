@@ -1,0 +1,252 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Kinect.Toolbox.Record;
+using Microsoft.Research.Kinect.Nui;
+using GalaSoft.MvvmLight;
+
+namespace OFWGKTA
+{
+    class KinectModel : ViewModelBase
+    {
+        protected bool kinectIsConnected = false;
+        protected Runtime kinectRuntime;
+        Vector head;
+        Vector handLeft;
+        Vector handRight;
+        Vector shoulderCenter;
+        Vector shoulderRight;
+        Vector shoulderLeft;
+        Vector ankleRight;
+        Vector ankleLeft;
+        Vector footLeft; 
+        Vector footRight;
+        Vector wristLeft;
+        Vector wristRight;
+        Vector elbowLeft;
+        Vector elbowRight;
+        Vector kneeLeft;
+        Vector kneeRight;
+        Vector hipCenter;
+        public Dictionary<JointID, Joint> JointDict;
+
+        public KinectModel()
+        {
+            JointDict = new Dictionary<JointID, Joint>();            
+        }
+
+        void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
+        void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
+
+        public Vector head 
+        {
+            get { return head; }
+            set
+            {
+                if (this.head != value)
+                {
+                    head = value;
+                    RaisePropertyChanged("Head");
+                }
+            }
+        }
+
+        public Vector HandLeft 
+        {
+            get { return handLeft; }
+            set
+            {
+                if (this.handLeft != value)
+                {
+                    handLeft = value;
+                    RaisePropertyChanged("HandLeft");
+                }
+            }
+        }
+
+        public Vector HandRight 
+        {
+            get { return handRight; }
+            set
+            {
+                if (this.handRight != value)
+                {
+                    handRight = value;
+                    RaisePropertyChanged("HandRight");
+                }
+            }
+        }
+
+        public Vector ShoulderCenter 
+        {
+            get { return shoulderCenter; }
+            set
+            {
+                if (this.shoulderCenter != value)
+                {
+                    shoulderCenter = value;
+                    RaisePropertyChanged("ShoulderCenter");
+                }
+            }
+        }
+
+        public Vector ShoulderCenter 
+        {
+            get { return shoulderCenter; }
+            set
+            {
+                if (this.shoulderCenter != value)
+                {
+                    shoulderCenter = value;
+                    RaisePropertyChanged("ShoulderCenter");
+                }
+            }
+        }
+
+        public Vector shoulderRight
+{
+ get { return shoulderRight; }
+set
+{if(this.shoulderRight != value)
+{
+shoulderRight = value;
+RaisePropertyChanged("shoulderRight");
+}
+}
+
+        public Vector shoulderLeft
+{
+ get { return shoulderLeft; }
+set
+{if(this.shoulderLeft != value)
+{
+shoulderLeft = value;
+RaisePropertyChanged("shoulderLeft");
+}
+}
+
+        public Vector ankleRight
+{
+ get { return ankleRight; }
+set
+{if(this.ankleRight != value)
+{
+ankleRight = value;
+RaisePropertyChanged("ankleRight");
+}
+}
+
+        public Vector ankleLeft
+{
+ get { return ankleLeft; }
+set
+{if(this.ankleLeft != value)
+{
+ankleLeft = value;
+RaisePropertyChanged("ankleLeft");
+}
+}
+
+        public Vector footLeft
+{
+ get { return footLeft; }
+set
+{if(this.footLeft != value)
+{
+footLeft = value;
+RaisePropertyChanged("footLeft");
+}
+}
+ 
+        public Vector footRight
+{
+ get { return footRight; }
+set
+{if(this.footRight != value)
+{
+footRight = value;
+RaisePropertyChanged("footRight");
+}
+}
+
+        public Vector wristLeft
+{
+ get { return wristLeft; }
+set
+{if(this.wristLeft != value)
+{
+wristLeft = value;
+RaisePropertyChanged("wristLeft");
+}
+}
+
+        public Vector wristRight
+{
+ get { return wristRight; }
+set
+{if(this.wristRight != value)
+{
+wristRight = value;
+RaisePropertyChanged("wristRight");
+}
+}
+
+        public Vector elbowLeft
+{
+ get { return elbowLeft; }
+set
+{if(this.elbowLeft != value)
+{
+elbowLeft = value;
+RaisePropertyChanged("elbowLeft");
+}
+}
+
+        public Vector elbowRight
+{
+ get { return elbowRight; }
+set
+{if(this.elbowRight != value)
+{
+elbowRight = value;
+RaisePropertyChanged("elbowRight");
+}
+}
+
+        public Vector kneeLeft
+{
+ get { return kneeLeft; }
+set
+{if(this.kneeLeft != value)
+{
+kneeLeft = value;
+RaisePropertyChanged("kneeLeft");
+}
+}
+
+        public Vector kneeRight
+{
+ get { return kneeRight; }
+set
+{if(this.kneeRight != value)
+{
+kneeRight = value;
+RaisePropertyChanged("kneeRight");
+}
+}
+
+        public Vector hipCenter
+{
+ get { return hipCenter; }
+set
+{if(this.hipCenter != value)
+{
+hipCenter = value;
+RaisePropertyChanged("hipCenter");
+}
+}
+
+    }
+
+}

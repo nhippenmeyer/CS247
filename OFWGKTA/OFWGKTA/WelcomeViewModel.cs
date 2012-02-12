@@ -38,16 +38,13 @@ namespace OFWGKTA
             this.applicationModes.Add("Free Use");
         }
 
+        public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
+
         private void MoveToSantorum()
         {
-            Messenger.Default.Send(new NavigateMessage(SantorumViewModel.ViewName, SelectedIndex));
+            Messenger.Default.Send(new NavigateMessage(HomeScreenViewModel.ViewName, this.applicationModes[SelectedIndex]));
         }
         
-        public ObservableCollection<string> ApplicationModes 
-        {
-            get { return applicationModes; }
-        }
-
         public int SelectedIndex
         {
             get

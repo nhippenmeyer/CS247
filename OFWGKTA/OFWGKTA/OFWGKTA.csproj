@@ -36,11 +36,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Kinect.Wpf">
+      <HintPath>..\Packages\Coding4Fun.Kinect.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\Packages\35\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras">
       <HintPath>..\Packages\35\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="Kinect.Toolbox">
+      <HintPath>..\Packages\Kinect.Toolbox.dll</HintPath>
+    </Reference>
+    <Reference Include="Kinect.Toolbox.Voice">
+      <HintPath>..\Packages\Kinect.Toolbox.Voice.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Research.Kinect, Version=1.0.0.45, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\v1.0 Beta2\Assemblies\Microsoft.Research.Kinect.dll</HintPath>
     </Reference>
     <Reference Include="NAudio">
       <HintPath>..\Packages\NAudio.dll</HintPath>
@@ -67,14 +80,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SantorumViewModel.cs" />
+    <Compile Include="Kinect\FreePlayKinectModel.cs" />
+    <Compile Include="Kinect\ReplayKinectModel.cs" />
+    <Compile Include="Kinect\KinectModel.cs" />
+    <Compile Include="HomeScreenViewModel.cs" />
     <Compile Include="Messaging\Messages.cs" />
     <Compile Include="WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WelcomeViewModel.cs" />
-    <Compile Include="SantorumView.xaml.cs">
-      <DependentUpon>SantorumView.xaml</DependentUpon>
+    <Compile Include="HomeScreenView.xaml.cs">
+      <DependentUpon>HomeScreenView.xaml</DependentUpon>
     </Compile>
     <Page Include="WelcomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -93,7 +109,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SantorumView.xaml">
+    <Page Include="HomeScreenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

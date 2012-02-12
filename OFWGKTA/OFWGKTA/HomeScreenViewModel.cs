@@ -11,12 +11,13 @@ using GalaSoft.MvvmLight;
 
 namespace OFWGKTA 
 {
-    class SantorumViewModel : ViewModelBase, IView
+    class HomeScreenViewModel : ViewModelBase, IView
     {
-        public const string ViewName = "SantorumView";
+        public const string ViewName = "HomeScreenViewModel";
 
         // Instance variables
-        private int priorIndex; 
+        public KinectModel kinectModel;
+        private string applicationMode; 
         private ObservableCollection<string> connectedKinects;
         private int selectedKinectIndex;
 
@@ -24,7 +25,7 @@ namespace OFWGKTA
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
 
-        public SantorumViewModel()
+        public HomeScreenViewModel()
         {
             this.connectedKinects = new ObservableCollection<string>();
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
@@ -37,7 +38,9 @@ namespace OFWGKTA
 
         public void Activated(object state)
         {
-            PriorIndex = (int)state;
+            ApplicationMode = (string)state;
+            kinectModel = new FreePlayKinectModel(null);
+            RaisePropertyChanged("Kinect");
             this.connectedKinects.Clear();
             this.connectedKinects.Add("Shit");
             this.connectedKinects.Add("Balls");
@@ -50,18 +53,22 @@ namespace OFWGKTA
             get { return connectedKinects; }
         }
 
-        public int PriorIndex
+        public KinectModel Kinect { 
+            get { return kinectModel; }
+            set { kinectModel = value; RaisePropertyChanged("Kinect"); }
+        }
+        public string ApplicationMode 
         {
             get
             {
-                return priorIndex;
+                return applicationMode;
             }
             set
             {
-                if (priorIndex != value)
+                if (applicationMode != value)
                 {
-                    priorIndex = value;
-                    RaisePropertyChanged("PriorIndex");
+                    applicationMode = value;
+                    RaisePropertyChanged("ApplicationMode");
                 }
             }
         }
@@ -77,7 +84,7 @@ namespace OFWGKTA
                 if (selectedKinectIndex != value)
                 {
                     selectedKinectIndex = value;
-                    RaisePropertyChanged("SelectedIndex");
+                    //RaisePropertyChanged("SelectedIndex");
                 }
             }
         }
