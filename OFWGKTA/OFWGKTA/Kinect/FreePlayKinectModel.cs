@@ -12,7 +12,7 @@ namespace OFWGKTA
     class FreePlayKinectModel : KinectModel
     {
         bool isRecording = false;
-        SkeletonRecorder skeletonRecorder = new SkeletonRecorder();
+        public SkeletonRecorder skeletonRecorder = new SkeletonRecorder();
 
         public FreePlayKinectModel(Stream fileStream) : base()
         {

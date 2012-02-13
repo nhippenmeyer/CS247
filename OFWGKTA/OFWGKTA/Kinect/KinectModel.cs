@@ -14,7 +14,7 @@ namespace OFWGKTA
     class KinectModel : ViewModelBase, INotifyPropertyChanged
     {
         protected bool kinectIsConnected = false;
-        protected Runtime kinectRuntime;
+        public Runtime kinectRuntime;
         Vector head;
         Vector handLeft;
         Vector handRight;

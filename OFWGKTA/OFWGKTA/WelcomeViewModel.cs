@@ -25,7 +25,7 @@ namespace OFWGKTA
         public WelcomeViewModel()
         {
             this.applicationModes = new ObservableCollection<string>();
-            this.continueCommand = new RelayCommand(() => MoveToSantorum());
+            this.continueCommand = new RelayCommand(() => MoveToHomeScreen());
         }
 
         public ICommand ContinueCommand { get { return continueCommand; } }
@@ -40,7 +40,7 @@ namespace OFWGKTA
 
         public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
 
-        private void MoveToSantorum()
+        private void MoveToHomeScreen()
         {
             Messenger.Default.Send(new NavigateMessage(HomeScreenViewModel.ViewName, this.applicationModes[SelectedIndex]));
         }

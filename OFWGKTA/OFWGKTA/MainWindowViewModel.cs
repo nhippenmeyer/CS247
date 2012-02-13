@@ -24,7 +24,7 @@ namespace OFWGKTA
             
             // Set up the view for each viewmodel
             SetupView(WelcomeViewModel.ViewName, new WelcomeView(), new WelcomeViewModel());
-            SetupView(HomeScreenViewModel.ViewName, new SantorumView(), new HomeScreenViewModel());
+            SetupView(HomeScreenViewModel.ViewName, new HomeScreenView(), new HomeScreenViewModel());
 
             // Send message that welcome view is ready to be displayed
             Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));
@@ -45,7 +45,7 @@ namespace OFWGKTA
 
         private void OnShuttingDown(ShuttingDownMessage message)
         {
-           // Nothing for now 
+            
         }
 
         public FrameworkElement CurrentView

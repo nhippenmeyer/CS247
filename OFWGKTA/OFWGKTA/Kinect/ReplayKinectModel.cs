@@ -20,6 +20,22 @@ namespace OFWGKTA
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e)
         {
             ReplaySkeletonData skeleton = e.SkeletonFrame.Skeletons[0];
+
+            foreach (var s in e.SkeletonFrame.Skeletons)
+            {
+                if (s.TrackingState != SkeletonTrackingState.Tracked)
+                {
+                    continue;
+                }
+                else
+                {
+                    skeleton = s;
+                    break;
+                }
+                //actually replay the skeleton or whatever you want
+            }
+
+
             for (int i = 0; i < skeleton.Joints.Count; i++)
             {
                 switch (skeleton.Joints.ElementAt(i).ID)

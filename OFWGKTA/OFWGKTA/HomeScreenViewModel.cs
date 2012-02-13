@@ -8,6 +8,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
+using Microsoft.Win32;
+using System.IO;
 
 namespace OFWGKTA 
 {
@@ -33,30 +35,43 @@ namespace OFWGKTA
 
         private void ReturnToWelcome()
         {
+            kinectModel.kinectRuntime.Uninitialize();
+            kinectModel.Cleanup();
+            FreePlayKinectModel km = (FreePlayKinectModel) kinectModel;
+            km.skeletonRecorder.Stop();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, SelectedIndex));
         }
 
         public void Activated(object state)
         {
+            Stream fileStream;
             ApplicationMode = (string)state;
-            kinectModel = new FreePlayKinectModel(null);
+            switch (ApplicationMode)
+            {
+                case ("Replay"):
+                    OpenFileDialog openFileDialog = new OpenFileDialog { };
+                    openFileDialog.ShowDialog();
+                    fileStream = File.OpenRead(openFileDialog.FileName);
+                    kinectModel = new ReplayKinectModel(fileStream);
+                    break;
+                case ("Record"):
+                    SaveFileDialog saveFileDialog = new SaveFileDialog { };
+                    saveFileDialog.ShowDialog();
+                    fileStream = File.OpenWrite(saveFileDialog.FileName);
+                    kinectModel = new FreePlayKinectModel(fileStream);
+                    break;
+                case ("Free Use"):
+                    kinectModel = new FreePlayKinectModel(null);
+                    break;
+            }
             RaisePropertyChanged("Kinect");
-            this.connectedKinects.Clear();
-            this.connectedKinects.Add("Shit");
-            this.connectedKinects.Add("Balls");
-            this.connectedKinects.Add("Fuck");
-            this.connectedKinects.Add("Ass");
-        }
-
-        public ObservableCollection<string> ConnectedKinects 
-        {
-            get { return connectedKinects; }
         }
 
         public KinectModel Kinect { 
             get { return kinectModel; }
             set { kinectModel = value; RaisePropertyChanged("Kinect"); }
         }
+
         public string ApplicationMode 
         {
             get

@@ -16,9 +16,9 @@ namespace OFWGKTA
     /// <summary>
     /// Interaction logic for SantorumView.xaml
     /// </summary>
-    public partial class SantorumView : UserControl
+    public partial class HomeScreenView : UserControl
     {
-        public SantorumView()
+        public HomeScreenView()
         {
             InitializeComponent();
         }
