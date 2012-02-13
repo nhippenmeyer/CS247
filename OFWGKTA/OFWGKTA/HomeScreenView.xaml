@@ -6,7 +6,7 @@
         <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="142,413,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="9,413,0,0" Name="textBlock1" Text="{Binding ApplicationMode}" VerticalAlignment="Top" Width="127" />
 
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.Head.X}" Y1="{Binding Path=Kinect.Head.Y}" X2="{Binding Path=Kinect.ShoulderCenter.X}" Y2="{Binding Path=Kinect.ShoulderCenter.Y}" />
+        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.Head.X}" Y1="{Binding Path=Kinect.Head.Y}" X2="{Binding Path=Kinect.ShoulderCenter.X}" Y2="{Binding Path=Kinect.ShoulderCenter.Y}" OpacityMask="Black"></Line>
         <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderCenter.X}" Y1="{Binding Path=Kinect.ShoulderCenter.Y}" X2="{Binding Path=Kinect.HipCenter.X}" Y2="{Binding Path=Kinect.HipCenter.Y}" />
 
         <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderCenter.X}" Y1="{Binding Path=Kinect.ShoulderCenter.Y}" X2="{Binding Path=Kinect.ShoulderLeft.X}" Y2="{Binding Path=Kinect.ShoulderLeft.Y}" />

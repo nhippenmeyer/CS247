@@ -20,7 +20,6 @@ namespace OFWGKTA
         // Instance variables
         private string applicationMode; 
         private KinectModel kinectModel;
-        private int selectedKinectIndex;
 
         // Commands
         private ICommand goBackCommand;
@@ -74,7 +73,7 @@ namespace OFWGKTA
         {
             kinectModel.Destroy();
             kinectModel.Dispose();
-            Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, SelectedIndex));
+            Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 
         public KinectModel Kinect { 
@@ -94,22 +93,6 @@ namespace OFWGKTA
                 {
                     applicationMode = value;
                     RaisePropertyChanged("ApplicationMode");
-                }
-            }
-        }
-            
-        public int SelectedIndex
-        {
-            get
-            {
-                return selectedKinectIndex;
-            }
-            set
-            {
-                if (selectedKinectIndex != value)
-                {
-                    selectedKinectIndex = value;
-                    //RaisePropertyChanged("SelectedIndex");
                 }
             }
         }
