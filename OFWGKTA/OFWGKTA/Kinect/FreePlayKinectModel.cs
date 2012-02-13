@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Microsoft.Research.Kinect.Nui;
 using Kinect.Toolbox.Record;
+using Coding4Fun.Kinect.Wpf;
 
 namespace OFWGKTA
 {
@@ -52,23 +53,24 @@ namespace OFWGKTA
             if (skeleton != null)
             {
                 // Set positions on our joints of interest
-                Head = skeleton.Joints[JointID.Head].Position;
-                HandLeft = skeleton.Joints[JointID.HandLeft].Position;
-                HandRight = skeleton.Joints[JointID.HandRight].Position;
-                ShoulderCenter = skeleton.Joints[JointID.ShoulderCenter].Position;
-                ShoulderRight = skeleton.Joints[JointID.ShoulderRight].Position;
-                ShoulderLeft = skeleton.Joints[JointID.ShoulderLeft].Position;
-                AnkleRight = skeleton.Joints[JointID.AnkleRight].Position;
-                AnkleLeft = skeleton.Joints[JointID.AnkleLeft].Position;
-                FootLeft = skeleton.Joints[JointID.FootLeft].Position;
-                FootRight = skeleton.Joints[JointID.FootRight].Position;
-                WristLeft = skeleton.Joints[JointID.WristLeft].Position;
-                WristRight = skeleton.Joints[JointID.WristRight].Position;
-                ElbowLeft = skeleton.Joints[JointID.ElbowLeft].Position;
-                ElbowRight = skeleton.Joints[JointID.ElbowRight].Position;
-                KneeLeft = skeleton.Joints[JointID.KneeLeft].Position;
-                KneeRight = skeleton.Joints[JointID.KneeRight].Position;
-                HipCenter = skeleton.Joints[JointID.HipCenter].Position;
+                
+                Head = GetScaledPosition(skeleton.Joints[JointID.Head]);
+                HandLeft = GetScaledPosition(skeleton.Joints[JointID.HandLeft]);
+                HandRight = GetScaledPosition(skeleton.Joints[JointID.HandRight]);
+                ShoulderCenter = GetScaledPosition(skeleton.Joints[JointID.ShoulderCenter]);
+                ShoulderRight = GetScaledPosition(skeleton.Joints[JointID.ShoulderRight]);
+                ShoulderLeft = GetScaledPosition(skeleton.Joints[JointID.ShoulderLeft]);
+                AnkleRight = GetScaledPosition(skeleton.Joints[JointID.AnkleRight]);
+                AnkleLeft = GetScaledPosition(skeleton.Joints[JointID.AnkleLeft]);
+                FootLeft = GetScaledPosition(skeleton.Joints[JointID.FootLeft]);
+                FootRight = GetScaledPosition(skeleton.Joints[JointID.FootRight]);
+                WristLeft = GetScaledPosition(skeleton.Joints[JointID.WristLeft]);
+                WristRight = GetScaledPosition(skeleton.Joints[JointID.WristRight]);
+                ElbowLeft = GetScaledPosition(skeleton.Joints[JointID.ElbowLeft]);
+                ElbowRight = GetScaledPosition(skeleton.Joints[JointID.ElbowRight]);
+                KneeLeft = GetScaledPosition(skeleton.Joints[JointID.KneeLeft]);
+                KneeRight = GetScaledPosition(skeleton.Joints[JointID.KneeRight]);
+                HipCenter = GetScaledPosition(skeleton.Joints[JointID.HipCenter]);
             }
         }
     }

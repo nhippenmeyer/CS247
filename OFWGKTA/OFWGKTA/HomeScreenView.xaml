@@ -3,19 +3,93 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="480" Width="640">
     <Grid>
+        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="142,413,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="9,413,0,0" Name="textBlock1" Text="{Binding ApplicationMode}" VerticalAlignment="Top" Width="127" />
 
-        <ListBox Height="164" ItemsSource="{Binding ConnectedKinects}" SelectedIndex="{Binding SelectedIndex}" HorizontalAlignment="Left" Margin="100,80,0,0" Name="listBox1" VerticalAlignment="Top" Width="139" />
-        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="400,230,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
-        <TextBlock Height="37" HorizontalAlignment="Left" Margin="372,136,0,0" Name="textBlock1" Text="{Binding ApplicationMode}" VerticalAlignment="Top" Width="127" />
-
-        <Ellipse Width="50" Height="50" Fill="Red" >
+        <Ellipse Fill="Red" Margin="0,0,620,460">
             <Ellipse.RenderTransform>
-                <TranslateTransform 
-                        X="{Binding Path=Kinect.HandRight.X}" 
-                        Y="{Binding Path=Kinect.HandRight.Y}"
-                        />
+                <TranslateTransform X="{Binding Path=Kinect.HandLeft.X}" Y="{Binding Path=Kinect.HandLeft.Y}" />
             </Ellipse.RenderTransform>
         </Ellipse>
-        <TextBlock Height="23" Text="{Binding Path=Kinect.HandLeft.X}" HorizontalAlignment="Left" Margin="285,62,0,0" Name="textBlock2" VerticalAlignment="Top" />
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.HandRight.X}" Y="{Binding Path=Kinect.HandRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.Head.X}" Y="{Binding Path=Kinect.Head.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.ShoulderCenter.X}" Y="{Binding Path=Kinect.ShoulderCenter.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.ShoulderLeft.X}" Y="{Binding Path=Kinect.ShoulderLeft.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.ShoulderRight.X}" Y="{Binding Path=Kinect.ShoulderRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.AnkleLeft.X}" Y="{Binding Path=Kinect.AnkleLeft.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.AnkleRight.X}" Y="{Binding Path=Kinect.AnkleRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.FootLeft.X}" Y="{Binding Path=Kinect.FootLeft.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.FootRight.X}" Y="{Binding Path=Kinect.FootRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.WristLeft.X}" Y="{Binding Path=Kinect.WristLeft.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.WristRight.X}" Y="{Binding Path=Kinect.WristRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.ElbowLeft.X}" Y="{Binding Path=Kinect.ElbowLeft.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.ElbowRight.X}" Y="{Binding Path=Kinect.ElbowRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.KneeLeft.X}" Y="{Binding Path=Kinect.KneeLeft.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.KneeRight.X}" Y="{Binding Path=Kinect.KneeRight.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="{Binding Path=Kinect.HipCenter.X}" Y="{Binding Path=Kinect.HipCenter.Y}" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
     </Grid>
 </UserControl>

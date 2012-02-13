@@ -25,55 +25,55 @@ namespace OFWGKTA
                 switch (skeleton.Joints.ElementAt(i).ID)
                 {
                     case (JointID.Head):
-                        Head = skeleton.Joints.ElementAt(i).Position;;
+                        Head = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.HandLeft):
-                        HandLeft = skeleton.Joints.ElementAt(i).Position;;
+                        HandLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.HandRight):
-                        //HandRight = skeleton.Joints.ElementAt(i).Position;;
+                        HandRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.ShoulderCenter):
-                        ShoulderCenter = skeleton.Joints.ElementAt(i).Position;;
+                        ShoulderCenter = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.ShoulderRight):
-                        ShoulderRight = skeleton.Joints.ElementAt(i).Position;;
+                        ShoulderRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.ShoulderLeft):
-                        ShoulderLeft = skeleton.Joints.ElementAt(i).Position;;
+                        ShoulderLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.AnkleLeft):
-                        AnkleLeft = skeleton.Joints.ElementAt(i).Position;;
+                        AnkleLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.AnkleRight):
-                        AnkleRight = skeleton.Joints.ElementAt(i).Position;;
+                        AnkleRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.FootRight):
-                        FootRight = skeleton.Joints.ElementAt(i).Position;;
+                        FootRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.FootLeft):
-                        FootLeft = skeleton.Joints.ElementAt(i).Position;;
+                        FootLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.WristLeft):
-                        WristLeft = skeleton.Joints.ElementAt(i).Position;;
+                        WristLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.WristRight):
-                        WristRight = skeleton.Joints.ElementAt(i).Position;;
+                        WristRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.KneeRight):
-                        KneeRight = skeleton.Joints.ElementAt(i).Position;;
+                        KneeRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.KneeLeft):
-                        KneeLeft = skeleton.Joints.ElementAt(i).Position;;
+                        KneeLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.ElbowLeft):
-                        ElbowLeft = skeleton.Joints.ElementAt(i).Position;;
+                        ElbowLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.ElbowRight):
-                        ElbowRight = skeleton.Joints.ElementAt(i).Position;;
+                        ElbowRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                     case (JointID.HipCenter):
-                        HipCenter = skeleton.Joints.ElementAt(i).Position;;
+                        HipCenter = GetScaledPosition(skeleton.Joints.ElementAt(i));
                         break;
                 }
             }

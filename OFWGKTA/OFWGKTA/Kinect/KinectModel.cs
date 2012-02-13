@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using Kinect.Toolbox.Record;
 using Microsoft.Research.Kinect.Nui;
 using GalaSoft.MvvmLight;
 using System.ComponentModel;
+using Coding4Fun.Kinect.Wpf;
 
 namespace OFWGKTA
 {
@@ -31,15 +33,20 @@ namespace OFWGKTA
         Vector kneeRight;
         Vector hipCenter;
 
-//        public event PropertyChangedEventHandler PropertyChanged;
-
         public KinectModel()
         {
 
         }
-
+        
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
+
+        public Vector GetScaledPosition(Joint joint)
+        {
+            Joint temp;
+            temp = joint.ScaleTo(640, 480, 1.5f, 1.5f);
+            return temp.Position;
+        }
 
         public Vector Head
         {
@@ -73,8 +80,6 @@ namespace OFWGKTA
             set
             {
                 handRight = value;
-                handRight.X = handRight.X * 500;
-                handRight.Y = handRight.Y * 500;
                 RaisePropertyChanged("HandRight");
             }
         }
