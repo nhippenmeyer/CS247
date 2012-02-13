@@ -1,8 +1,9 @@
 ﻿<Application x:Class="OFWGKTA.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ofwgkta="clr-namespace:OFWGKTA"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ofwgkta:CoordinateConverter x:Key="center" />
     </Application.Resources>
 </Application>

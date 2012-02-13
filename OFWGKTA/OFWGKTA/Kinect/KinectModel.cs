@@ -7,6 +7,7 @@ using Kinect.Toolbox.Record;
 using Microsoft.Research.Kinect.Nui;
 using GalaSoft.MvvmLight;
 using Coding4Fun.Kinect.Wpf;
+using System.Globalization;
 
 namespace OFWGKTA
 {

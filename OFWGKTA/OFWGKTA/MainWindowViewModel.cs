@@ -5,8 +5,10 @@ using System.Text;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Data;
+using System.Globalization;
 
-namespace OFWGKTA 
+namespace OFWGKTA
 {
     class MainWindowViewModel : ViewModelBase
     {
