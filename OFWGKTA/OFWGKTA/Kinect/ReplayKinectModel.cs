@@ -10,31 +10,43 @@ namespace OFWGKTA
 {
     class ReplayKinectModel : KinectModel
     {
-        public ReplayKinectModel(Stream replayFileStream) : base()
+        private SkeletonReplay replay;
+        private Stream fileStream;
+        private bool isReplaying = false;
+
+        public bool IsReplaying { get { return isReplaying; } }
+
+        public ReplayKinectModel(Stream fileStream) : base()
         {
-            SkeletonReplay skeletonReplay = new SkeletonReplay(replayFileStream);
-            skeletonReplay.SkeletonFrameReady += new EventHandler<ReplaySkeletonFrameReadyEventArgs>(SkeletonFrameReady);
-            skeletonReplay.Start();
+            this.fileStream = fileStream;
+            replay = new SkeletonReplay(fileStream);
+            replay.SkeletonFrameReady += new EventHandler<ReplaySkeletonFrameReadyEventArgs>(SkeletonFrameReady);
+            replay.Start();
+        }
+
+        public override void Destroy()
+        {
+            replay.SkeletonFrameReady -= SkeletonFrameReady;
+            replay.Stop();
+            if (this.fileStream != null)
+            {
+                this.fileStream.Close();
+            }
         }
 
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e)
         {
             ReplaySkeletonData skeleton = e.SkeletonFrame.Skeletons[0];
 
+            // Retrieve the tracked skeleton
             foreach (var s in e.SkeletonFrame.Skeletons)
             {
-                if (s.TrackingState != SkeletonTrackingState.Tracked)
-                {
-                    continue;
-                }
-                else
+                if (s.TrackingState == SkeletonTrackingState.Tracked)
                 {
                     skeleton = s;
                     break;
                 }
-                //actually replay the skeleton or whatever you want
             }
-
 
             for (int i = 0; i < skeleton.Joints.Count; i++)
             {

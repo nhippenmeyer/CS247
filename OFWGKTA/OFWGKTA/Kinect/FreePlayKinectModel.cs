@@ -6,50 +6,73 @@ using System.IO;
 using Microsoft.Research.Kinect.Nui;
 using Kinect.Toolbox.Record;
 using Coding4Fun.Kinect.Wpf;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace OFWGKTA
 {
     class FreePlayKinectModel : KinectModel
     {
-        bool isRecording = false;
-        public SkeletonRecorder skeletonRecorder = new SkeletonRecorder();
+        protected bool isRecorder = false;
+        protected bool isConnected = false;
+        protected Stream fileStream;
+        protected Runtime kinectRuntime;
+        protected SkeletonRecorder recorder = new SkeletonRecorder();
 
         public FreePlayKinectModel(Stream fileStream) : base()
         {
+            Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
             if (fileStream != null)
             {
-                isRecording = true;
-                skeletonRecorder.Start(fileStream);
+                this.fileStream = fileStream;
+                isRecorder = true;
+                recorder.Start(fileStream);
             }
 
-            if (Runtime.Kinects.Count == 0)
+            if (Runtime.Kinects.Count > 0)
             {
-                // No Kinect connected
-            }
-            else
-            {
-                kinectIsConnected = true;
+                isConnected = true;
                 kinectRuntime = Runtime.Kinects[0];
-                // Initialize to do skeletal tracking
-                // Add event to receive skeleton data, commented out for playback
                 kinectRuntime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
                 kinectRuntime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);
             }
+        }
 
+        public override void Destroy()
+        {
+            if (kinectRuntime != null)
+            {
+                kinectRuntime.SkeletonFrameReady -= SkeletonFrameReady;
+                kinectRuntime.Uninitialize();
+            }
+
+            if (isRecorder)
+            {
+                recorder.Stop();
+                if (this.fileStream != null)
+                {
+                    this.fileStream.Close();
+                }
+            }
+        }
+
+        private void OnShuttingDown(ShuttingDownMessage message)
+        {
+            Destroy();
         }
 
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             SkeletonFrame allSkeletons = e.SkeletonFrame;
-            if (isRecording)
+            if (isRecorder)
             {
-                skeletonRecorder.Record(allSkeletons);
+                recorder.Record(allSkeletons);
             }
 
             // Get the first tracked skeleton
             SkeletonData skeleton = (from s in allSkeletons.Skeletons
                                      where s.TrackingState == SkeletonTrackingState.Tracked
                                      select s).FirstOrDefault();
+
             if (skeleton != null)
             {
                 // Set positions on our joints of interest

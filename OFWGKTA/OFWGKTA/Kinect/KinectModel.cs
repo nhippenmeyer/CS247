@@ -6,42 +6,35 @@ using System.Text;
 using Kinect.Toolbox.Record;
 using Microsoft.Research.Kinect.Nui;
 using GalaSoft.MvvmLight;
-using System.ComponentModel;
 using Coding4Fun.Kinect.Wpf;
 
 namespace OFWGKTA
 {
-    class KinectModel : ViewModelBase, INotifyPropertyChanged
+    class KinectModel : ViewModelBase
     {
-        protected bool kinectIsConnected = false;
-        public Runtime kinectRuntime;
-        Vector head;
-        Vector handLeft;
-        Vector handRight;
-        Vector shoulderCenter;
-        Vector shoulderRight;
-        Vector shoulderLeft;
-        Vector ankleRight;
-        Vector ankleLeft;
-        Vector footLeft;
-        Vector footRight;
-        Vector wristLeft;
-        Vector wristRight;
-        Vector elbowLeft;
-        Vector elbowRight;
-        Vector kneeLeft;
-        Vector kneeRight;
-        Vector hipCenter;
+        private Vector head;
+        private Vector handLeft;
+        private Vector handRight;
+        private Vector shoulderCenter;
+        private Vector shoulderRight;
+        private Vector shoulderLeft;
+        private Vector ankleRight;
+        private Vector ankleLeft;
+        private Vector footLeft;
+        private Vector footRight;
+        private Vector wristLeft;
+        private Vector wristRight;
+        private Vector elbowLeft;
+        private Vector elbowRight;
+        private Vector kneeLeft;
+        private Vector kneeRight;
+        private Vector hipCenter;
 
-        public KinectModel()
-        {
-
-        }
-        
+        public virtual void Destroy() { }
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
 
-        public Vector GetScaledPosition(Joint joint)
+        protected Vector GetScaledPosition(Joint joint)
         {
             Joint temp;
             temp = joint.ScaleTo(640, 480, 1.5f, 1.5f);
@@ -53,7 +46,7 @@ namespace OFWGKTA
             get { return head; }
             set
             {
-                if (!this.head.Equals(value))
+                if (!head.Equals(value))
                 {
                     head = value;
                     RaisePropertyChanged("Head");
@@ -66,11 +59,11 @@ namespace OFWGKTA
             get { return handLeft; }
             set
             {
-                //if (!this.handLeft.Equals(value))
-                //{
+                if (!handLeft.Equals(value))
+                {
                     handLeft = value;
                     RaisePropertyChanged("HandLeft");
-                //}
+                }
             }
         }
 
@@ -89,7 +82,7 @@ namespace OFWGKTA
             get { return shoulderCenter; }
             set
             {
-                if (!this.shoulderCenter.Equals(value))
+                if (!shoulderCenter.Equals(value))
                 {
                     shoulderCenter = value;
                     RaisePropertyChanged("ShoulderCenter");
@@ -102,7 +95,7 @@ namespace OFWGKTA
             get { return shoulderRight; }
             set
             {
-                if (!this.shoulderRight.Equals(value))
+                if (!shoulderRight.Equals(value))
                 {
                     shoulderRight = value;
                     RaisePropertyChanged("ShoulderRight");
@@ -115,7 +108,7 @@ namespace OFWGKTA
             get { return shoulderLeft; }
             set
             {
-                if (!this.shoulderLeft.Equals(value))
+                if (!shoulderLeft.Equals(value))
                 {
                     shoulderLeft = value;
                     RaisePropertyChanged("ShoulderLeft");
@@ -128,7 +121,7 @@ namespace OFWGKTA
             get { return ankleRight; }
             set
             {
-                if (!this.ankleRight.Equals(value))
+                if (!ankleRight.Equals(value))
                 {
                     ankleRight = value;
                     RaisePropertyChanged("AnkleRight");
@@ -141,7 +134,7 @@ namespace OFWGKTA
             get { return ankleLeft; }
             set
             {
-                if (!this.ankleLeft.Equals(value))
+                if (!ankleLeft.Equals(value))
                 {
                     ankleLeft = value;
                     RaisePropertyChanged("AnkleLeft");
@@ -154,7 +147,7 @@ namespace OFWGKTA
             get { return footLeft; }
             set
             {
-                if (!this.footLeft.Equals(value))
+                if (!footLeft.Equals(value))
                 {
                     footLeft = value;
                     RaisePropertyChanged("FootLeft");
@@ -167,7 +160,7 @@ namespace OFWGKTA
             get { return footRight; }
             set
             {
-                if (!this.footRight.Equals(value))
+                if (!footRight.Equals(value))
                 {
                     footRight = value;
                     RaisePropertyChanged("FootRight");
@@ -180,7 +173,7 @@ namespace OFWGKTA
             get { return wristLeft; }
             set
             {
-                if (!this.wristLeft.Equals(value))
+                if (!wristLeft.Equals(value))
                 {
                     wristLeft = value;
                     RaisePropertyChanged("WristLeft");
@@ -193,7 +186,7 @@ namespace OFWGKTA
             get { return wristRight; }
             set
             {
-                if (!this.wristRight.Equals(value))
+                if (!wristRight.Equals(value))
                 {
                     wristRight = value;
                     RaisePropertyChanged("WristRight");
@@ -206,7 +199,7 @@ namespace OFWGKTA
             get { return elbowLeft; }
             set
             {
-                if (!this.elbowLeft.Equals(value))
+                if (!elbowLeft.Equals(value))
                 {
                     elbowLeft = value;
                     RaisePropertyChanged("ElbowLeft");
@@ -219,7 +212,7 @@ namespace OFWGKTA
             get { return elbowRight; }
             set
             {
-                if (!this.elbowRight.Equals(value))
+                if (!elbowRight.Equals(value))
                 {
                     elbowRight = value;
                     RaisePropertyChanged("ElbowRight");
@@ -232,7 +225,7 @@ namespace OFWGKTA
             get { return kneeLeft; }
             set
             {
-                if (!this.kneeLeft.Equals(value))
+                if (!kneeLeft.Equals(value))
                 {
                     kneeLeft = value;
                     RaisePropertyChanged("KneeLeft");
@@ -245,7 +238,7 @@ namespace OFWGKTA
             get { return kneeRight; }
             set
             {
-                if (!this.kneeRight.Equals(value))
+                if (!kneeRight.Equals(value))
                 {
                     kneeRight = value;
                     RaisePropertyChanged("KneeRight");
@@ -258,7 +251,7 @@ namespace OFWGKTA
             get { return hipCenter; }
             set
             {
-                if (!this.hipCenter.Equals(value))
+                if (!hipCenter.Equals(value))
                 {
                     hipCenter = value;
                     RaisePropertyChanged("HipCenter");

@@ -18,9 +18,8 @@ namespace OFWGKTA
         public const string ViewName = "HomeScreenViewModel";
 
         // Instance variables
-        public KinectModel kinectModel;
         private string applicationMode; 
-        private ObservableCollection<string> connectedKinects;
+        private KinectModel kinectModel;
         private int selectedKinectIndex;
 
         // Commands
@@ -29,17 +28,7 @@ namespace OFWGKTA
 
         public HomeScreenViewModel()
         {
-            this.connectedKinects = new ObservableCollection<string>();
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
-        }
-
-        private void ReturnToWelcome()
-        {
-            kinectModel.kinectRuntime.Uninitialize();
-            kinectModel.Cleanup();
-            FreePlayKinectModel km = (FreePlayKinectModel) kinectModel;
-            km.skeletonRecorder.Stop();
-            Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, SelectedIndex));
         }
 
         public void Activated(object state)
@@ -51,20 +40,41 @@ namespace OFWGKTA
                 case ("Replay"):
                     OpenFileDialog openFileDialog = new OpenFileDialog { };
                     openFileDialog.ShowDialog();
-                    fileStream = File.OpenRead(openFileDialog.FileName);
-                    kinectModel = new ReplayKinectModel(fileStream);
+                    try
+                    {
+                        fileStream = File.OpenRead(openFileDialog.FileName);
+                        kinectModel = new ReplayKinectModel(fileStream);
+                    }
+                    catch
+                    {
+                        Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));
+                    }
                     break;
                 case ("Record"):
                     SaveFileDialog saveFileDialog = new SaveFileDialog { };
                     saveFileDialog.ShowDialog();
-                    fileStream = File.OpenWrite(saveFileDialog.FileName);
-                    kinectModel = new FreePlayKinectModel(fileStream);
+                    try
+                    {
+                        fileStream = File.OpenWrite(saveFileDialog.FileName);
+                        kinectModel = new FreePlayKinectModel(fileStream);
+                    }
+                    catch
+                    {
+                        Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));
+                    }
                     break;
                 case ("Free Use"):
                     kinectModel = new FreePlayKinectModel(null);
                     break;
             }
             RaisePropertyChanged("Kinect");
+        }
+
+        private void ReturnToWelcome()
+        {
+            kinectModel.Destroy();
+            kinectModel.Dispose();
+            Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, SelectedIndex));
         }
 
         public KinectModel Kinect { 
