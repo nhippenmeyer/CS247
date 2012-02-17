@@ -33,6 +33,8 @@ CS247 Project 4: Gestural Interfaces
 			I. Team Formation and Application Area</a>
 						<a href="#2">
 			II. Initial Prototyping</a>
+						<a href="#3">
+			III. Wizard-of-Oz Testing</a>
 		</nav>
 	</header>
 
@@ -269,6 +271,38 @@ Gestures which might involve lifting the guitar too high can block too many join
 			The virtual stomp box proved to be a promising idea for a guitarist performing on stage, since it would allow the performer to move around freely and still provide the flexibility of changing effects mid-performance.  However, the lack of visual feedback could be an important limitation for this idea.  The gestural interface explored for recording audio also yielded positive feedback.  This type of application could potentially provide a lot of utility for a musician, since recording audio tends to be an interactive process where many takes and frequent editing may be needed.  Finally, it was determined that a Kinect-based interface would not be ideal for learning applications.  A tuning feature could however be very useful as a component in some other music-based application.
 			</p>
 		</a>
+				<a name="3">
+					<h1>
+		III. Wizard-of-Oz Testing
+					</h1>
+			<p>
+				For our Wizard-of-Oz testing, the two tasks we focused on were learning and audio recording, specifically as they apply to guitar players.  We chose these two tasks because we felt they were the most promising in terms of feasibility, the potential to address user needs, and their suitability to gestural-based interface control.  The first task, learning, was based on a song-book interface that allowed users to learn how to play songs by scrolling through a list of available tracks and selecting their desired track by strumming a corresponding chord.  The second task, recording, enabled users to create simple audio recordings, set tempo, save and export files, and make basic edits on clips.
+			</p>
+			<p>
+				Navigation of the song-book interface was fairly straightforward when it came to scrolling and moving between pages.  Scrolling required users to slide their left hand down the neck of the guitar as a clutch and then scroll up and down using their right hand.  After they had found the song they wanted, they could select it by playing the corresponding chord that was displayed next to the song title.  This seemed like a reasonable way to select songs at first, but our wizard-of-oz testing revealed that requiring users to strum a specific chord in order to select a song (such as A minor to start learning a song by Nirvana) made it difficult for beginners to navigate our interface because they had no prior knowledge of guitar chords.  Luckily, users could gesture for help by raising their left hand above their heads, which brought up a diagram that showed them how to play the specific chord they needed.  In this way, our application helped users learn new chords even as they selected songs.  However, as testers also pointed out, we would have to achieve a balance between teaching users new chords and allowing them to select the songs they wanted without getting bogged down too much.
+			</p>
+			<p>
+				It was difficult to record reliable Kinect data because there were so many people in the room during lab, but we managed to record a few realistic performance scenarios in which guitarists navigated through our song-book, selected a song, asked for help by raising their left hand, and adjusted the playback tempo in order to make it easier to play along (by moving both hands up or down).  We did this using an app skeleton that we built for our project that allowed us to record the various input performances for later playback.  Even though our testers were working from paper prototypes, our launch screen/diagram explained all of the necessary gestures in such a way that our users were able to execute them fairly easily each time.
+			</p>
+			<p>
+				One of the big things we learned during our initial wizard-of-oz tests for the learning task was the fact that the Kinect often mistakes the neck of the guitar for the musician's arm.  This could certainly cause problems, especially with gestures that involve moving one's arm in close proximity of the guitar neck.  With that in mind, we determined that the strumming hand is far more effective when it comes to gesturing because it rarely gets occluded by the guitar.
+			</p>
+			<p>
+				In addition, one tester pointed out that on-screen diagrams should match the orientation of the guitar player to avoid confusion.  For example, if someone is playing guitar right-handed, any diagrams or images featuring a guitar player should be oriented the same way on screen.
+
+				Our second task, recording, also allowed us to capture a few realistic usage scenarios in which users were prompted to start recordings, edit tracks they had laid down, and delete or keep recordings they had just completed.  We were again working from paper prototypes, but we still managed to record some input performances that will hopefully be useful in future iterations of our prototype.
+			</p>
+			<p>
+				One thing that we learned about recording and playback is that controlling playheads and cropping clips is a fairly intuitive process in a gestural-based interface. For example, to adjust the playback/recording head, we hardly had to instruct users to grab it with their hand and move it back and forth in order to adjust its positioning.  For the most part, they did this instinctively.  Editing tracks was very similar, as users simply had to grab each end of the clip and move their hands back and forth in order to trim it down.
+			</p>
+			<p>
+				Another thing that we learned about recording during our wizard-of-oz testing is that holding a guitar makes it fairly difficult to gesture with two hands (because it can get in the way and/or get tracked by the Kinect as we found out during our first tests).  This requires most two-handed gestures to be done predominately above the shoulder line in order to assure the user's arms are being tracked properly, which can cause fatigue if done for a long period of time.  In future iterations of our prototype, we will have to keep these limitations in mind, and revise any gestures accordingly.
+			</p>
+			<p>
+				We learned quite a bit about each interface idea during our wizard-of-oz testing, but from the results we recorded and observed, we feel like the recording task has more potential in terms of a gestural-based music app.  Although the song book would likely make for an interesting application, we feel that an audio recording app could more effectively leverage the Kinect's gesture sensing capabilities while allowing users to intuitively start/stop, edit, and save recordings. Many of the questions raised during our wizard-of-oz testing will likely drive future iterations of our prototype, and we look forward to exploring them in milestone four.
+			</p>
+			<img src="img/WizardofOz.jpg"/>
+				</a>
 	</div>
 
 	<footer>
