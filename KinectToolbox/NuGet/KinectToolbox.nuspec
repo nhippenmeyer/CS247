@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>KinectToolbox</id>
+    <version>1.1.0.2</version>
+    <authors>David Catuhe</authors>
+    <owners>David Catuhe</owners>
+    <licenseUrl>http://kinecttoolbox.codeplex.com/license</licenseUrl>
+    <projectUrl>http://kinecttoolbox.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+	Kinect Toolbox is a set of useful tools for developing with Kinect for Windows SDK.
+
+	It includes helpers for gestures, postures, voice command, replay and drawing.
+    </description>
+    <tags>.NET4.0 Kinect</tags>
+  </metadata>
+</package>
