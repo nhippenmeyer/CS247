@@ -8,5 +8,36 @@
         <ofwgkta:DoubleConverter x:Key="translateDouble" />
         <ofwgkta:NormalizeConverter x:Key="Normalizer" />
         <ofwgkta:StageConverter x:Key="StageHighlight" />
+
+        <DataTemplate x:Key="VectorTemplate">
+            <Ellipse Fill="Red" Margin="0,0,620,460">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform X="{Binding Path=X, Converter={StaticResource center}}" Y="{Binding Path=Y, Converter={StaticResource center}}" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </DataTemplate>  
+
+        <DataTemplate x:Key="SkeletonTemplate">
+            <Grid>
+                <ContentControl Content="{Binding HandLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding HandRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding Head}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding ShoulderCenter}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding ShoulderLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding ShoulderRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding AnkleLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding AnkleRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding FootLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding FootRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding WristLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding WristRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding ElbowLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding ElbowRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding KneeLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding KneeRight}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <ContentControl Content="{Binding HipCenter}" ContentTemplate="{StaticResource VectorTemplate}" />
+            </Grid>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>
