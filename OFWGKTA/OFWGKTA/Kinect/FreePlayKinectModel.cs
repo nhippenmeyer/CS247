@@ -13,7 +13,6 @@ namespace OFWGKTA
     class FreePlayKinectModel : KinectModel
     {
         protected bool isRecorder = false;
-        protected bool isConnected = false;
         protected Stream fileStream;
         protected Runtime kinectRuntime;
         protected SkeletonRecorder recorder = new SkeletonRecorder();
@@ -30,7 +29,6 @@ namespace OFWGKTA
 
             if (Runtime.Kinects.Count > 0)
             {
-                isConnected = true;
                 kinectRuntime = Runtime.Kinects[0];
                 kinectRuntime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
                 kinectRuntime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);

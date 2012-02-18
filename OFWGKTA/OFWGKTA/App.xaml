@@ -17,7 +17,7 @@
             </Ellipse>
         </DataTemplate>  
 
-        <DataTemplate x:Key="SkeletonTemplate">
+        <HierarchicalDataTemplate x:Key="SkeletonTemplate">
             <Grid>
                 <ContentControl Content="{Binding HandLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
                 <ContentControl Content="{Binding HandRight}" ContentTemplate="{StaticResource VectorTemplate}" />
@@ -36,8 +36,30 @@
                 <ContentControl Content="{Binding KneeLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
                 <ContentControl Content="{Binding KneeRight}" ContentTemplate="{StaticResource VectorTemplate}" />
                 <ContentControl Content="{Binding HipCenter}" ContentTemplate="{StaticResource VectorTemplate}" />
+                
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Head.X}" Y1="{Binding Path=Head.Y}" X2="{Binding Path=ShoulderCenter.X}" Y2="{Binding Path=ShoulderCenter.Y}" OpacityMask="Black"></Line>
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=HipCenter.X}" Y2="{Binding Path=HipCenter.Y}" />
+        
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=ShoulderLeft.X}" Y2="{Binding Path=ShoulderLeft.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderLeft.X}" Y1="{Binding Path=ShoulderLeft.Y}" X2="{Binding Path=ElbowLeft.X}" Y2="{Binding Path=ElbowLeft.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ElbowLeft.X}" Y1="{Binding Path=ElbowLeft.Y}" X2="{Binding Path=WristLeft.X}" Y2="{Binding Path=WristLeft.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=WristLeft.X}" Y1="{Binding Path=WristLeft.Y}" X2="{Binding Path=HandLeft.X}" Y2="{Binding Path=HandLeft.Y}" />
+        
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=ShoulderRight.X}" Y2="{Binding Path=ShoulderRight.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderRight.X}" Y1="{Binding Path=ShoulderRight.Y}" X2="{Binding Path=ElbowRight.X}" Y2="{Binding Path=ElbowRight.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ElbowRight.X}" Y1="{Binding Path=ElbowRight.Y}" X2="{Binding Path=WristRight.X}" Y2="{Binding Path=WristRight.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=WristRight.X}" Y1="{Binding Path=WristRight.Y}" X2="{Binding Path=HandRight.X}" Y2="{Binding Path=HandRight.Y}" />
+        
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=HipCenter.X}" Y1="{Binding Path=HipCenter.Y}" X2="{Binding Path=KneeLeft.X}" Y2="{Binding Path=KneeLeft.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=KneeLeft.X}" Y1="{Binding Path=KneeLeft.Y}" X2="{Binding Path=AnkleLeft.X}" Y2="{Binding Path=AnkleLeft.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=AnkleLeft.X}" Y1="{Binding Path=AnkleLeft.Y}" X2="{Binding Path=FootLeft.X}" Y2="{Binding Path=FootLeft.Y}" />
+
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=HipCenter.X}" Y1="{Binding Path=HipCenter.Y}" X2="{Binding Path=KneeRight.X}" Y2="{Binding Path=KneeRight.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=KneeRight.X}" Y1="{Binding Path=KneeRight.Y}" X2="{Binding Path=AnkleRight.X}" Y2="{Binding Path=AnkleRight.Y}" />
+                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=AnkleRight.X}" Y1="{Binding Path=AnkleRight.Y}" X2="{Binding Path=FootRight.X}" Y2="{Binding Path=FootRight.Y}" />
+
             </Grid>
-        </DataTemplate>
+        </HierarchicalDataTemplate>
 
     </Application.Resources>
 </Application>

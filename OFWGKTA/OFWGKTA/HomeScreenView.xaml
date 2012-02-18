@@ -11,27 +11,6 @@
         <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="142,413,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="9,413,0,0" Name="textBlock1" Text="{Binding ApplicationMode}" VerticalAlignment="Top" Width="127" />
 
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.Head.X}" Y1="{Binding Path=Kinect.Head.Y}" X2="{Binding Path=Kinect.ShoulderCenter.X}" Y2="{Binding Path=Kinect.ShoulderCenter.Y}" OpacityMask="Black"></Line>
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderCenter.X}" Y1="{Binding Path=Kinect.ShoulderCenter.Y}" X2="{Binding Path=Kinect.HipCenter.X}" Y2="{Binding Path=Kinect.HipCenter.Y}" />
-
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderCenter.X}" Y1="{Binding Path=Kinect.ShoulderCenter.Y}" X2="{Binding Path=Kinect.ShoulderLeft.X}" Y2="{Binding Path=Kinect.ShoulderLeft.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderLeft.X}" Y1="{Binding Path=Kinect.ShoulderLeft.Y}" X2="{Binding Path=Kinect.ElbowLeft.X}" Y2="{Binding Path=Kinect.ElbowLeft.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ElbowLeft.X}" Y1="{Binding Path=Kinect.ElbowLeft.Y}" X2="{Binding Path=Kinect.WristLeft.X}" Y2="{Binding Path=Kinect.WristLeft.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.WristLeft.X}" Y1="{Binding Path=Kinect.WristLeft.Y}" X2="{Binding Path=Kinect.HandLeft.X}" Y2="{Binding Path=Kinect.HandLeft.Y}" />
-
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderCenter.X}" Y1="{Binding Path=Kinect.ShoulderCenter.Y}" X2="{Binding Path=Kinect.ShoulderRight.X}" Y2="{Binding Path=Kinect.ShoulderRight.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ShoulderRight.X}" Y1="{Binding Path=Kinect.ShoulderRight.Y}" X2="{Binding Path=Kinect.ElbowRight.X}" Y2="{Binding Path=Kinect.ElbowRight.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.ElbowRight.X}" Y1="{Binding Path=Kinect.ElbowRight.Y}" X2="{Binding Path=Kinect.WristRight.X}" Y2="{Binding Path=Kinect.WristRight.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.WristRight.X}" Y1="{Binding Path=Kinect.WristRight.Y}" X2="{Binding Path=Kinect.HandRight.X}" Y2="{Binding Path=Kinect.HandRight.Y}" />
-
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.HipCenter.X}" Y1="{Binding Path=Kinect.HipCenter.Y}" X2="{Binding Path=Kinect.KneeLeft.X}" Y2="{Binding Path=Kinect.KneeLeft.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.KneeLeft.X}" Y1="{Binding Path=Kinect.KneeLeft.Y}" X2="{Binding Path=Kinect.AnkleLeft.X}" Y2="{Binding Path=Kinect.AnkleLeft.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.AnkleLeft.X}" Y1="{Binding Path=Kinect.AnkleLeft.Y}" X2="{Binding Path=Kinect.FootLeft.X}" Y2="{Binding Path=Kinect.FootLeft.Y}" />
-
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.HipCenter.X}" Y1="{Binding Path=Kinect.HipCenter.Y}" X2="{Binding Path=Kinect.KneeRight.X}" Y2="{Binding Path=Kinect.KneeRight.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.KneeRight.X}" Y1="{Binding Path=Kinect.KneeRight.Y}" X2="{Binding Path=Kinect.AnkleRight.X}" Y2="{Binding Path=Kinect.AnkleRight.Y}" />
-        <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Kinect.AnkleRight.X}" Y1="{Binding Path=Kinect.AnkleRight.Y}" X2="{Binding Path=Kinect.FootRight.X}" Y2="{Binding Path=Kinect.FootRight.Y}" />
-
 
         <Rectangle Height="21" HorizontalAlignment="Left" Margin="1,0,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="639">
             <Rectangle.Fill>

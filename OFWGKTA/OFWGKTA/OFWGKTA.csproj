@@ -80,6 +80,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppState.cs" />
+    <Compile Include="KinectViewModelBase.cs" />
     <Compile Include="ValueConverters.cs" />
     <Compile Include="Kinect\FreePlayKinectModel.cs" />
     <Compile Include="Kinect\ReplayKinectModel.cs" />

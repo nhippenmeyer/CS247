@@ -8,6 +8,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
+using Microsoft.Win32;
+using System.IO;
 
 namespace OFWGKTA 
 {
@@ -42,7 +44,45 @@ namespace OFWGKTA
 
         private void MoveToHomeScreen()
         {
-            Messenger.Default.Send(new NavigateMessage(HomeScreenViewModel.ViewName, this.applicationModes[SelectedIndex]));
+            AppState curState = null;
+            Stream fileStream;
+            bool success = true;
+            switch (this.applicationModes[SelectedIndex])
+            {
+                case ("Replay"):
+                    OpenFileDialog openFileDialog = new OpenFileDialog { };
+                    openFileDialog.ShowDialog();
+                    try
+                    {
+                        fileStream = File.OpenRead(openFileDialog.FileName);
+                        curState = new AppState(this.applicationModes[SelectedIndex], new ReplayKinectModel(fileStream));
+                    }
+                    catch
+                    {
+                        success = false;
+                    }
+                    break;
+                case ("Record"):
+                    SaveFileDialog saveFileDialog = new SaveFileDialog { };
+                    saveFileDialog.ShowDialog();
+                    try
+                    {
+                        fileStream = File.OpenWrite(saveFileDialog.FileName);
+                        curState = new AppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
+                    }
+                    catch
+                    {
+                        success = false;
+                    }
+                    break;
+                case ("Free Use"):
+                    curState = new AppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(null)); 
+                    break;
+            }
+            if (success)
+            {
+                Messenger.Default.Send(new NavigateMessage(HomeScreenViewModel.ViewName, curState));
+            }
         }
         
         public int SelectedIndex

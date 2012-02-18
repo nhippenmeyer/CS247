@@ -13,13 +13,12 @@ using System.IO;
 
 namespace OFWGKTA 
 {
-    class HomeScreenViewModel : ViewModelBase, IView
+    class HomeScreenViewModel : KinectViewModelBase, IView
     {
         public const string ViewName = "HomeScreenViewModel";
 
         // Instance variables
         private string applicationMode; 
-        private KinectModel kinectModel;
 
         // Commands
         private ICommand goBackCommand;
@@ -32,61 +31,21 @@ namespace OFWGKTA
 
         public void Activated(object state)
         {
-            Stream fileStream;
-            ApplicationMode = (string)state;
-            switch (ApplicationMode)
-            {
-                case ("Replay"):
-                    OpenFileDialog openFileDialog = new OpenFileDialog { };
-                    openFileDialog.ShowDialog();
-                    try
-                    {
-                        fileStream = File.OpenRead(openFileDialog.FileName);
-                        kinectModel = new ReplayKinectModel(fileStream);
-                    }
-                    catch
-                    {
-                        Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));
-                    }
-                    break;
-                case ("Record"):
-                    SaveFileDialog saveFileDialog = new SaveFileDialog { };
-                    saveFileDialog.ShowDialog();
-                    try
-                    {
-                        fileStream = File.OpenWrite(saveFileDialog.FileName);
-                        kinectModel = new FreePlayKinectModel(fileStream);
-                    }
-                    catch
-                    {
-                        Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));
-                    }
-                    break;
-                case ("Free Use"):
-                    kinectModel = new FreePlayKinectModel(null);
-                    break;
-            }
-            RaisePropertyChanged("Kinect");
+            AppState curState = (AppState)state;
+            this.Kinect = curState.Kinect;
+            this.ApplicationMode = curState.ApplicationMode;
         }
 
         private void ReturnToWelcome()
         {
-            kinectModel.Destroy();
-            kinectModel.Dispose();
+            kinect.Destroy();
+            kinect.Dispose();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
-        }
-
-        public KinectModel Kinect { 
-            get { return kinectModel; }
-            set { kinectModel = value; RaisePropertyChanged("Kinect"); }
         }
 
         public string ApplicationMode 
         {
-            get
-            {
-                return applicationMode;
-            }
+            get { return applicationMode; }
             set
             {
                 if (applicationMode != value)
