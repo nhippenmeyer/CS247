@@ -111,5 +111,14 @@
                 <TranslateTransform X="{Binding Path=Kinect.HipCenter.X, Converter={StaticResource center}}" Y="{Binding Path=Kinect.HipCenter.Y, Converter={StaticResource center}}" />
             </Ellipse.RenderTransform>
         </Ellipse>
+        <Rectangle Height="21" HorizontalAlignment="Left" Margin="1,0,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="639">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Color="{Binding Path=Kinect.Head.X, Converter={StaticResource StageHighlight}}" Offset="{Binding Kinect.Head.X, Converter={StaticResource Normalizer}}" x:Name="boo"/>
+                    <GradientStop Color="Black" Offset="{Binding Offset, ElementName=boo, Converter={StaticResource translateDouble}, ConverterParameter='0.1'}" />
+                    <GradientStop Color="Black" Offset="{Binding Offset, ElementName=boo, Converter={StaticResource translateDouble}, ConverterParameter='-0.1'}" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
     </Grid>
 </UserControl>

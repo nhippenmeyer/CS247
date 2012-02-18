@@ -5,5 +5,8 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ofwgkta:CoordinateConverter x:Key="center" />
+        <ofwgkta:DoubleConverter x:Key="translateDouble" />
+        <ofwgkta:NormalizeConverter x:Key="Normalizer" />
+        <ofwgkta:StageConverter x:Key="StageHighlight" />
     </Application.Resources>
 </Application>
