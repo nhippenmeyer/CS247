@@ -93,6 +93,10 @@
     <Compile Include="HomeScreenView.xaml.cs">
       <DependentUpon>HomeScreenView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Kinect\Dictionary1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WelcomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
