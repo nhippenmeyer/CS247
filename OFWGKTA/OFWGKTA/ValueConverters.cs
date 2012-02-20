@@ -8,14 +8,13 @@ using System.Windows.Media;
 
 namespace OFWGKTA
 {
-    [ValueConversion(typeof(float), typeof(Color))]
+    [ValueConversion(typeof(bool), typeof(Color))]
     public class StageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            float param = 640;
-            float coord = (float)value;
-            if (coord < param*.55 && coord > param*.45)
+            bool onStage = (bool)value;
+            if (onStage)
             {
                 return Colors.Green;
             }
@@ -27,8 +26,7 @@ namespace OFWGKTA
     
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            float translatedCoord = (float)value;
-            return translatedCoord + 10;
+            return false;
         }
     }
     [ValueConversion(typeof(float), typeof(float))]

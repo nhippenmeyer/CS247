@@ -265,5 +265,10 @@ namespace OFWGKTA
         }
 
     }
+
+    public class SkeletonEventArgs : EventArgs
+    {
+        // just using this to fire an event when i'm done processing the skeleton
+    }
 }
     

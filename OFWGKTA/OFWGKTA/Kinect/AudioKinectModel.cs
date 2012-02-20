@@ -29,6 +29,7 @@ namespace OFWGKTA
 
         public AudioKinectModel(List<string> wordsToRecognize, EventHandler<SpeechRecognizedEventArgs> speechCallback) : base(null)
         {
+            SkeletonUpdated += new EventHandler<SkeletonEventArgs>(ParseSkeletonUpdate);
             if (wordsToRecognize != null && wordsToRecognize.Count > 0)
             {
                 string RecognizerId = "SR_MS_en-US_Kinect_10.0";
@@ -58,6 +59,13 @@ namespace OFWGKTA
 
                 speechEngine.RecognizeAsync(RecognizeMode.Multiple);
             }
+        }
+
+        public void ParseSkeletonUpdate(object sender, SkeletonEventArgs e)
+        {
+            // set all properties i'd like to be constantly updated on skeleton update
+            // i'll know we updated the skeleton, so i should compute whether or not it's on stage
+            IsOnStage = !(Head.X < stageLeft || Head.X > stageRight);
         }
 
         // Sets words to be recognized by kinect, so they can be checked for in speechCallback
@@ -107,6 +115,7 @@ namespace OFWGKTA
             {
                 if (isOnStage != value)
                 {
+                    isOnStage = value;
                     RaisePropertyChanged("IsOnStage");
                 }
             }
