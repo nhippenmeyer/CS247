@@ -10,28 +10,30 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
 using Microsoft.Win32;
 using System.IO;
+using Microsoft.Speech.Recognition;
 
 namespace OFWGKTA 
 {
-    class HomeScreenViewModel : KinectViewModelBase, IView
+    class DemoViewModel : ViewModelBase, IView
     {
-        public const string ViewName = "HomeScreenViewModel";
+        public const string ViewName = "DemoViewModel";
 
         // Instance variables
         private string applicationMode; 
+        KinectModel kinect;
 
         // Commands
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
 
-        public HomeScreenViewModel()
+        public DemoViewModel()
         {
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
 
         public void Activated(object state)
         {
-            AppState curState = (AppState)state;
+            DemoAppState curState = (DemoAppState)state;
             this.Kinect = curState.Kinect;
             this.ApplicationMode = curState.ApplicationMode;
         }
@@ -41,6 +43,15 @@ namespace OFWGKTA
             kinect.Destroy();
             kinect.Dispose();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
+        }
+
+        public KinectModel Kinect { 
+            get { return kinect; }
+            set
+            {
+                kinect = value;
+                RaisePropertyChanged("Kinect");
+            }
         }
 
         public string ApplicationMode 

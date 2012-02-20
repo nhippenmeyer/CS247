@@ -1,0 +1,1609 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Speech.VoiceXml</name>
+    </assembly>
+    <members>
+        <member name="T:LocalizedStrings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.BrowserNeedsToBeBoundToCall">
+            <summary>
+              Looks up a localized string similar to The browser instance cannot be invoked without being bound to a call..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.InputChangesNotAllowed">
+            <summary>
+              Looks up a localized string similar to Changes to the input are not allowed..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.InputFileCannotBeEmptyString">
+            <summary>
+              Looks up a localized string similar to The input file cannot be an empty string..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.InputNotSpecified">
+            <summary>
+              Looks up a localized string similar to Input has not been specified for the browser session..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.MultipleCallsToRunAreInvalidWhileActive">
+            <summary>
+              Looks up a localized string similar to The browser instance cannot be invoked multiple times while active..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.OutputFileCannotBeEmptyString">
+            <summary>
+              Looks up a localized string similar to The output file cannot be an empty string..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.OutputNotSpecified">
+            <summary>
+              Looks up a localized string similar to Output has not been specified for the browser session..
+            </summary>
+        </member>
+        <member name="P:LocalizedStrings.UnsupportedLanguage">
+            <summary>
+              Looks up a localized string similar to The platform does not support the language for either speech synthesis or speech recognition..
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.TransferType">
+            <summary>
+            Represents the type of call transfer to be performed during an asynchronous 
+            session.
+            </summary>
+            <remarks>
+            When the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event is raised, 
+            the <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.Type"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs"/> instance indicates the transfer type.
+            When the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/> event is raised, the 
+            <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.Type"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs"/> instance indicates the transfer type.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferType.Blind">
+            <summary>
+            The application redirects the caller to the recipient without remaining in 
+            the connection, and does not monitor the outcome. The <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> 
+            exits the page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferType.Bridge">
+            <summary>
+            The application redirects the caller to the recipient and remains in the 
+            connection. Document interpretation suspends until the transferred call 
+            terminates.
+            </summary>
+            <remarks>The Bridge transfer type is not supported in this version.</remarks>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferType.Consultation">
+            <summary>
+            The application redirects the caller to the recipient and monitors the 
+            progress of the transfer until the connection is established between 
+            caller and recipient. If the connection is established, the <b>Browser</b> 
+            disconnects from the session.
+            </summary>
+            <remarks>The Consultation transfer type is not supported in this version.</remarks>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.SessionState">
+            <summary>
+            Represents possible states for an asynchronous VoiceXML <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            <para>When the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnecting"/> event is raised, 
+            the <see cref="P:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs.SessionState"/> property 
+            on the <see cref="T:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs"/> instance indicates 
+            the session state.</para>
+            <para><b>Note:</b> Although the <b>TransferType</b> enumeration contains all three types 
+            of transfer defined in the VoiceXML 2.1 standard, the current version of 
+            the VoiceXML runtime supports only the Blind transfer type.</para>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.SessionState.Idle">
+            <summary>
+            The <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> is not running.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.SessionState.Active">
+            <summary>
+            The <b>Browser</b> is processing a <see cref="M:Microsoft.Speech.VoiceXml.Browser.Run(System.Uri,System.Net.CookieContainer)"/>
+            or a  <see cref="M:Microsoft.Speech.VoiceXml.Browser.RunAsync(System.Uri,System.Net.CookieContainer)"/> method.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.ExitReason">
+            <summary>
+            Contains a list of reasons that indicate why a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance exited 
+            from a VoiceXML page. 
+            </summary>
+            <remarks>
+            The <see cref="P:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult.Reason"/> property of the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult"/> class gets the <b>ExitReason</b> when 
+            the <b>Browser</b> exits a VoiceXML page. For synchronous <b>Browser</b> instances, the <b>VoiceXmlResult</b> is
+            returned by the <see cref="M:Microsoft.Speech.VoiceXml.Browser.Run(System.Uri,System.Net.CookieContainer)"/>   
+            method. For asynchronous <b>Browser</b> instances, initiated with the
+            <see cref="M:Microsoft.Speech.VoiceXml.Browser.RunAsync(System.Uri,System.Net.CookieContainer)"/> method,
+            the <see cref="T:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs"/> class contains the <b>VoiceXmlResult</b>.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.None">
+            <summary>
+            No exit reason is given.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.HostExitRequested">
+            <summary>
+            The application called the <see cref="M:Microsoft.Speech.VoiceXml.Browser.StopAsync"/> method. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.ExitElementEncountered">
+            <summary>
+            The VoiceXML interpreter encountered and processed an &lt;exit&gt; 
+            element on a VoiceXML page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.DialogEndEncountered">
+            <summary>
+            The VoiceXML interpreter arrived at the end of a dialog and 
+            there was no successor element.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.UnhandledPageException">
+            <summary>
+            An exception is thrown in processing the VoiceXML page that 
+            is not handled by the VoiceXML &lt;error&gt; element.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.MalFormedXml">
+            <summary>
+            The <b>Browser</b> encountered errors in the syntax or structure of the VoiceXML page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.ServerNotAvailable">
+            <summary>
+            The server that contains the VoiceXML start page could not be contacted.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.AudioTerminated">
+            <summary>
+            The audio that was present at the input connection can no longer 
+            be detected.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.PageNotFound">
+            <summary>
+            The page specified by the URI parameter in a 
+            <see cref="M:Microsoft.Speech.VoiceXml.Browser.Run(System.Uri,System.Net.CookieContainer)"/> or 
+            <see cref="M:Microsoft.Speech.VoiceXml.Browser.RunAsync(System.Uri,System.Net.CookieContainer)"/>  
+            method could not be retrieved.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.ExitReason.UnknownExit">
+            <summary>
+            The reason for the exit could not be determined. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.TransferState">
+            <summary>
+            Represents the state of a VoiceXML phone call transfer request during an asynchronous 
+            session.
+            </summary>
+            <remarks>
+            When the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event is raised, 
+            the <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.State"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs"/> instance indicates the transfer state.
+            
+            When the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/> event is raised, the 
+            <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.State"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs"/> instance indicates the transfer state.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferState.None">
+            <summary>
+            The state for the transfer was not given.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferState.Transferring">
+            <summary>
+            A call transfer is in progress.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferState.Transferred">
+            <summary>
+            The call transfer to the recipient was successful. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferState.Failed">
+            <summary>
+            The call transfer to the recipient was not successful, 
+            for example there was no answer or the line was busy. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.TransferState.UnknownError">
+            <summary>
+            There was an error during transfer, but its cause could 
+            not be determined. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.DisconnectState">
+            <summary>
+            Represents the possible states of a VoiceXML disconnect request during
+            an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.DisconnectState.None">
+            <summary>
+            There was no reason for the disconnection.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.DisconnectState.UserDisconnected">
+            <summary>
+            The caller discontinued the call, for example by hanging up. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.DisconnectState.HostDisconnected">
+            <summary>
+            The application disconnected from the VoiceXML session.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.DisconnectState.PageDisconnected">
+            <summary>
+            The <b>Browser</b> is no longer connected to the VoiceXML page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.DisconnectState.ConnectionError">
+            <summary>
+            There was an error in the connection to a call or an 
+            audio input that caused the <b>Browser</b> session to end.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.DisconnectState.UnknownError">
+            <summary>
+            There was a disconnect error but its cause could not be determined.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.RecognitionType">
+            <summary>
+            Represents the type of input that was detected during an asynchronous <b>Browser</b> session.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.RecognitionType.Speech">
+            <summary>
+            The input collected matched one or more grammars that were referenced by, 
+            or included in, the VoiceXML document. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.RecognitionType.Dtmf">
+            <summary>
+            The input collected was of the type dual tone multi-frequency (DTMF); 
+            tones produced by pressing the buttons on a phone.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Common.RecognitionType.Recorder">
+            <summary>
+            The input was captured and stored in an audio file format.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs">
+            <summary>
+            Contains information that can be used in the event handler of the application when 
+            the  event is raised.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.TargetSip">
+            <summary>
+            Gets the SIP URI of the transfer destination. 
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.Type">
+            <summary>
+            Gets the TransferType being used to transfer the phone call when the 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/> event is raised.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.State">
+            <summary>
+            Gets the <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferState"/> when the 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/> event is raised.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs">
+            <summary>
+            Contains information that can be used in the event handler of the application when 
+            the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event is raised during 
+            an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            The <b>Transferred</b> event is raised when the VoiceXML application has completed 
+            a phone call transfer to a recipient during an asynchronous <b>Browser</b> session.</remarks>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.TargetSip">
+            <summary>
+            Gets the SIP URI of the transfer destination.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.Type">
+            <summary>
+            Gets the <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferType"/> that was used to 
+            transfer a phone call when the 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event is raised.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.State">
+            <summary>
+            Gets the <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferState"/> when the 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event is raised.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs">
+            <summary>
+            Contains information that can be used in the event handler of the application when 
+            the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnecting"/> event is raised.
+            </summary>
+            <remarks>
+            The <b>Disconnecting</b> event is raised just before  a call
+            is disconnected during an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session. 
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs.#ctor(Microsoft.Speech.VoiceXml.Common.SessionState)">
+            <summary>
+            Associates a <see cref="T:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs"/> 
+            instance with the current <see cref="T:Microsoft.Speech.VoiceXml.Common.SessionState"/>.
+            </summary>
+            <param name="sessionState"> 
+            The <b>SessionState</b> when the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnecting"/> event is raised.
+            </param>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs.SessionState">
+            <summary>
+            Gets the <b>SessionState</b> when the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnecting"/> event is raised.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs">
+            <summary>
+            Contains information that can be used in the event handler of the application 
+            when the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnected"/> event is raised 
+            during an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            The <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnected"/> event is raised when 
+            a call has disconnected from an asynchronous <b>Browser</b> session.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},Microsoft.Speech.VoiceXml.Common.DisconnectState)">
+            <summary>
+            Sets the Namelist and State properties.
+            </summary>
+            <param name="namelist">
+            A Namelist object.
+            </param>
+            <param name="state">
+            The DisconnectState when the Disconnected event is raised.
+            </param>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs.Namelist">
+            <summary>
+            Gets a Namelist object when the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnected"/>
+            event is raised.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs.State">
+            <summary>
+            Gets the DisconnectState when the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnected"/>
+            event is raised.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs">
+            <summary>
+            Contains information that can be used in the event handler of the application when the 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted"/> event is raised during 
+            an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            The <b>SessionCompleted</b> event is raised at the end of an asynchronous <b>Browser</b> session. 
+            <b>SessionCompletedEventArgs</b> derives from <see cref="T:System.ComponentModel.AsyncCompletedEventArgs"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs.Result">
+            <summary>
+            Gets the result of a completed <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session, represented by a 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult"/> object.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.PageEvent">
+            <summary>
+            Contains information about an event that was thrown from within a VoiceXML page.
+            </summary>
+            <remarks>If the session completes without errors, that is if the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.ExitReason"/> value 
+            is <b>HostExitRequested</b>, <b>ExitElementEncountered</b>, or <b>DialogEndEncountered</b>,  
+            then the <b>PageEvent</b> will be null. 
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.PageEvent.Event">
+            <summary>
+            Gets the name of the event that was thrown from within the VoiceXML page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.PageEvent.Message">
+            <summary>
+            Gets a message that is associated with an event that was thrown 
+            from within the VoiceXML page.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult">
+            <summary>
+            Contains information about the result of a synchronous or an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            For synchronous <b>Browser</b> instances, the <b>VoiceXmlResult</b> is returned by the 
+            <see cref="M:Microsoft.Speech.VoiceXml.Browser.Run(System.Uri,System.Net.CookieContainer)"/> method. 
+            For asynchronous <b>Browser</b> instances, initiated with 
+            <see cref="M:Microsoft.Speech.VoiceXml.Browser.RunAsync(System.Uri,System.Net.CookieContainer)"/>, 
+            the <see cref="P:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs.Result"/> property of the
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs"/> class gets the <b>VoiceXmlResult</b>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult.Namelist">
+            <summary>
+            Gets a list of key/value pairs defined in the &lt;exit&gt; element of a VoiceXML document.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult.Reason">
+            <summary>
+            Gets the reason that the <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> exited a VoiceXML page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult.UnhandledThrowElement">
+            <summary>
+            Gets a <see cref="T:Microsoft.Speech.VoiceXml.Common.PageEvent"/> object
+            for a VoiceXML page event that was not handled in the page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult.Cookies">
+            <summary>
+            Gets a <see cref="T:System.Net.CookieContainer"/> object.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser">
+            <summary>
+            The <b>Browser</b> class in the Microsoft.Speech.VoiceXml namespace provides 
+            platform-independent access to the VoiceXML runtime. 
+            </summary>
+            <remarks>
+            <para><b>Browser</b> is an abstract class that provides a base from which to derive 
+            platform-specific classes. The <b>Browser</b> class cannot 
+            be used directly. Most developers will use a platform-specific VoiceXML <b>Browser</b> 
+            class that derives from the base <b>Browser</b> class.</para>
+            
+            <para>An active <b>Browser</b> instance contains a VoiceXML interpreter and the system resources that are  
+            required to process an automated interaction with a caller including speech engines, a Dual-Tone Multi-Frequency (DTMF) 
+            tone controller, a recorder, and connections to audio inputs and outputs.</para>
+            
+            <para>You can launch a <b>Browser</b> instance in either synchronous or asynchronous mode.</para> 
+            
+            <para><b>NOTE:</b> Only use the synchronous <see cref="M:Microsoft.Speech.VoiceXml.Browser.Run(System.Uri,System.Net.CookieContainer)"/>
+            method for prototyping and experimentation. Do not use it in a production application.</para>
+            
+            <para>During an asynchronous <b>Browser</b> session, events are raised that report the state 
+            of the session to the application. At the end of an asynchronous <b>Browser</b> session, the handler
+             for the <see cref="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted"/> event 
+             contains information about the result of the session.</para>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.speechRecoAudioInputInfo">
+            <summary>
+            retains information about the call to SetInputXXX
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.synthesisAudioOutputInfo">
+            <summary>
+            retains information about the call to SetOutputXXX
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.#ctor">
+            <summary>
+            Creates a new instance of the <b>Browser</b> class.
+            </summary>
+            <remarks>The default constructor returns an empty object.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetCallProxy(Microsoft.Speech.VoiceXml.Browser.CallProxy)">
+            <summary>
+            Associates a VoiceXML <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session with a 
+            <see cref="T:Microsoft.Speech.VoiceXml.Browser.CallProxy"/> object.
+            </summary>
+            <param name="proxy">Represents a <b>CallProxy</b> object.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetInputToAudioStream(System.IO.Stream,Microsoft.Speech.AudioFormat.SpeechAudioFormatInfo)">
+            <summary>
+            Assigns a specific audio stream as the input for the speech recognition engine.
+            </summary>
+            <param name="audioSource">The specific stream that will be the input 
+            for the speech recognition engine.</param>
+            <param name="audioSourceFormat">The format of the audio in the input stream.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetInputToAudioStream(Stream audioSource, SpeechAudioFormatInfo audioSourceFormat)
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetInputToDefaultAudioDevice">
+            <summary>
+            Assigns the system default audio input device as the input to the speech recognition engine.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the SetInputToDefaultAudioDevice()
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetInputToNull">
+            <summary>
+            Assigns a null device as the input to the speech recognition engine.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the SetInputToNull()
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+            <remarks>This detaches the audio input without disconnecting from the speech 
+            recognition engine.</remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetInputToWaveFile(System.String)">
+            <summary>
+            Assigns a specific .WAV format audio file as input to the speech recognition engine.
+            </summary>
+            <param name="audioInputPath">The path to the .WAV file to be used as input.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetInputToWaveFile(string audioInputPath)
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetInputToWaveStream(System.IO.Stream)">
+            <summary>
+            Assigns an audio stream in .WAV format as input to the speech recognition engine.
+            </summary>
+            <param name="audioSource">A stream instance connected to an audio source in .WAV format</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetInputToWaveStream(Stream audioSource)
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetOutputToAudioStream(System.IO.Stream,Microsoft.Speech.AudioFormat.SpeechAudioFormatInfo)">
+            <summary>
+            Assigns a specific audio stream as the output of the speech synthesizer.
+            </summary>
+            <param name="audioOutput">The specific stream that will receive the output 
+            of the speech synthesizer.</param>
+            <param name="audioOutputFormat">The format of the audio in the output stream.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetOutputToAudioStream(Stream audioOutput, SpeechAudioFormatInfo audioOutputFormat)
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetOutputToDefaultAudioDevice">
+            <summary>
+            Assigns the system default audio output device as the output of the speech synthesizer.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetOutputToDefaultAudioDevice()
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetOutputToNull">
+            <summary>
+            Assigns a null device as the output of the speech synthesizer.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetOutputToNull()
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetOutputToWaveFile(System.String)">
+            <summary>
+            Assigns a specific .WAV format audio file as the output of the speech synthesizer.
+            </summary>
+            <param name="audioOutputPath">The path to the .WAV file to be used as output.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetOutputToWaveFile(string audioOutputPath)
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetOutputToWaveStream(System.IO.Stream)">
+            <summary>
+            Assigns an audio stream in .WAV format as output of the speech synthesizer.
+            </summary>
+            <param name="audioOutput">A stream instance connected to an audio target in .WAV format</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when the 
+            SetOutputToWaveStream(Stream audioOutput)
+            method is called on a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> instance that is running.</exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.InitEnginesWithLanguage(System.Uri)">
+            <summary>
+            Initialize the engines; 
+            For SR engine, it's based on the start page language
+            </summary>
+            <param name="vxmlPage">start page</param>
+            <returns>true if success</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.InitSREngine(System.Uri)">
+            <summary>
+            Initialize the SR engine, based on information in the start page.
+            </summary>
+            <param name="vxmlPage">start page</param>
+            <returns>true if successful</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.ValidateUriContents(System.Uri)">
+            <summary>
+            Do basic validation of the Uri and its contents
+            </summary>
+            <param name="page">Uri of the page to validate</param>
+            <returns>ExitReason corresponding to the problem; otherwise, ExitReason.None</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.IsDifferentCulture(System.Globalization.CultureInfo)">
+            <summary>
+            is our current culture different than the given one?
+            </summary>
+            <param name="ci">CultureInfo</param>
+            <returns>true if same</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.GetCultureInfo(System.Uri,System.String@)">
+            <summary>
+            Get the CultureInfo representing the xml:lang of the page
+            </summary>
+            <param name="page">Uri of the page</param>
+            <param name="cultureName">the value of xml:lang specified in vxml page</param>
+            <returns>CultureInfo or null</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.GenCultureInfo(System.String)">
+            <summary>
+            The following is lifted from dev\speech\speechfx\src\Internal\SrgsParser\XmlParser.cs, 
+              ParseGrammar (XmlReader reader, IGrammar grammar)
+            </summary>
+            <param name="cultureName">culture name</param>
+            <returns>CultureInfo or null</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.ReadLanguageFrom(System.Uri)">
+            <summary>
+            Given the XML document represented by the Uri, read the xml:lang attribute
+            </summary>
+            <param name="xmldoc">XML document</param>
+            <returns>value of xml:lang or null</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.Run(System.Uri,System.Net.CookieContainer)">
+            <summary>
+            Launches a synchronous instance of the VoiceXML <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> 
+            and specifies the URI of the VoiceXML start page to load, and a CookieContainer parameter. 
+            </summary>
+            <param name="container">
+            Contains state information associated with a request for a VoiceXML page.
+            The value can be null.
+            </param>
+            <param name="vxmlPage">
+            The URI of the VoiceXML start page to load.
+            </param>
+            <returns>
+            A VoiceXMLResult object that references the synchronous operation.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown when the <b>Run</b> method is called and
+            the URI of the VoiceXML start page to load contains a null argument value.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the <b>Run</b> method is called on a
+            <b>Browser</b> instance that is running.
+            </exception>
+            <remarks>
+            
+            <para>When initiated, the <b>Run</b> method checks the value of the <b>Browser</b>'s 
+            <see cref="P:Microsoft.Speech.VoiceXml.Browser.State"/> property 
+            to determine if the <b>Browser</b> is already running. If <b>Browser.State</b> 
+            equals Active, then the <b>Browser</b> is running and the <b>Run</b> 
+            method throws an InvalidOperationException. If <b>Browser.State</b> 
+            equals Idle, then the <b>Run</b> method sets <b>Browser.State</b> 
+            to Active and launches the <b>Browser</b> instance.</para>
+            
+            <para>You can instantiate and run multiple <b>Browser</b> objects simultaneously, for example 
+            Browser1, Browser2, Browser3. You cannot run the same <b>Browser</b> instance concurrently 
+            on multiple sessions, for example Browser1(a), Browser1(b), Browser1(c).</para>
+            
+            <para>Upon successful completion of a VoiceXML page, the <b>Run</b> 
+            method returns a <see cref="T:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult"/> object, 
+            which may include a <b>CookieContainer</b> object with state information
+            about the session for use by the Web server serving the VoiceXML documents.</para>
+            
+            <para>If the session completes without errors, that is if the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.ExitReason"/> value is <b>HostExitRequested</b>, 
+            <b>ExitElementEncountered</b>, or <b>DialogEndEncountered</b>, then the  
+            <see cref="P:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult.UnhandledThrowElement"/>
+            will be null.</para>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.RunAsync(System.Uri,System.Net.CookieContainer)">
+            <summary>
+            Launches an asynchronous instance of the VoiceXML <see cref="T:Microsoft.Speech.VoiceXml.Browser"/>, specifying the URI 
+            of the VoiceXML start page to load, and a <b>CookieContainer</b> parameter.
+            </summary>
+            /// <param name="container">
+            Contains state information associated with a request for a VoiceXML page.
+            The value can be null.
+            </param>
+            <param name="vxmlPage">
+            The URI of the VoiceXML start page to load.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown when the <b>RunAsync</b> method is called and
+            the URI of the VoiceXML start page to load contains a null argument value.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the <b>RunAsync</b> method is called
+            on a <b>Browser</b> instance that is running.
+            </exception>
+            <remarks>
+            <para>When initiated, the <b>RunAsync</b> method checks the value of the <b>Browser</b>'s 
+            <see cref="P:Microsoft.Speech.VoiceXml.Browser.State"/> property 
+            to determine if the <b>Browser</b> is already running. If <b>Browser.State</b> 
+            equals Active, then the <b>Browser</b> is running and the <b>RunAsync</b> 
+            method throws an <b>InvalidOperationException</b>. If <b>Browser.State</b> 
+            equals Idle, then the <b>RunAsync</b> method sets <b>Browser.State</b>
+            to Active and launches the <b>Browser</b> instance.</para>
+            
+            <para>You can instantiate and run multiple <b>Browser</b> objects simultaneously, for example 
+            Browser1, Browser2, Browser3. You cannot run the same <b>Browser</b> instance concurrently 
+            on multiple sessions, for example Browser1(a), Browser1(b), Browser1(c).</para> 
+            
+            <para>The <b>Browser</b> may raise any of the following events during an asynchronous session:  
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnecting"/>, 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Disconnected"/>, 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/>, 
+            <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/>, 
+            or <see cref="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted"/>. The <b>SessionCompleted</b> 
+            event is raised at the end of an asynchronous <b>Browser</b> session, and represents 
+            the result of the <b>Browser</b> session with a <see cref="T:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult"/> 
+            object. </para> 
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.Dispose">
+            <summary>
+            Disposes the <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> object and releases native resources.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.Dispose(System.Boolean)">
+            <summary>
+            Disposes the <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> object and releases resources used during the session.
+            </summary>
+            <param name="disposing">Indicates whether the <b>Browser</b> is directly disposing.</param>
+            <remarks>
+            This method can be overridden by derived Browser classes.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.ValidateStringParameter(System.String,System.String,System.String)">
+            <summary>
+            Validate the given string parameter
+            </summary>
+            <param name="param">the parameter value to validate</param>
+            <param name="paramName">parameter name</param>
+            <param name="message">localized message if parameter value is empty string</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.RunWorker">
+            <summary>
+            Start the interpreter thread
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetSynthesizerOutput">
+            <summary>
+            Set the output of the speech synthesizer
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.SetSREngineInput">
+            <summary>
+            Set the input to the speech recognition engine
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.VxmlMarkupInterpreter_RunCompleted(System.Exception,System.Boolean)">
+            <summary>
+            Called when interpreter has finished
+            </summary>
+            <param name="e">Exception propagated from interpreter</param>
+            <param name="cancelled">true if cancelled</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.FinishBrowser">
+            <summary>
+            Reset browser state
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.FireSessionCompleted(Microsoft.Speech.VoiceXml.Common.VoiceXmlResult,System.Exception,System.Boolean)">
+            <summary>
+            Fire the OnSessionCompleted event
+            </summary>
+            <param name="result">VoiceXmlResult</param>
+            <param name="e">Exception</param>
+            <param name="cancelled">true if cancelled</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CreateVoiceXmlResult(Microsoft.Speech.VoiceXml.Common.ExitReason,Microsoft.Speech.VoiceXml.Common.PageEvent)">
+            <summary>
+            Return a VoiceXmlResult object
+            </summary>
+            <param name="exitReason">ExitReason</param>
+            <param name="pageEvent">PageEvent</param>
+            <returns>VoiceXmlResult</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.TelephonySession_Closing(System.Object,Microsoft.SpeechServer.ClosingEventArgs)">
+            <summary>
+            Handle when the telephony session is closing
+            </summary>
+            <param name="sender">sender</param>
+            <param name="e">ClosingEventArgs</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.StopAsync">
+            <summary>
+            Terminates the processing of a VoiceXML page, but allows the <see cref="T:Microsoft.Speech.VoiceXml.Browser"/>  
+            to finish processing the current VoiceXML element. 
+            </summary>
+            <remarks>
+            The <b>StopAsync</b> method resets the <b>Browser</b> state, freeing the <b>Browser</b> for a new session.  
+            If the <b>Browser</b> has already stopped, calling <b>StopAsync</b> has no effect.
+            
+            You can override the <b>StopAsync</b> method to customize its functionality.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnDisconnecting(System.Object,Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs)">
+            <summary>
+            Raises a <b>Disconnecting</b> event during an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session. 
+            </summary>
+            <param name="e">An instance of <see cref="T:Microsoft.Speech.VoiceXml.Common.DisconnectingEventArgs"/> 
+            that contains information from the Disconnecting event.</param>
+            <param name="sender">The object that initiated the <b>Disconnecting</b> event.</param>
+            <remarks>You can override the <b>OnDisconnecting</b> method to customize its functionality.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnDisconnected(System.Object,Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs)">
+            <summary>
+            Raises a <b>Disconnected</b> event during an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session. 
+            </summary>
+            <param name="e">An instance of <see cref="T:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs"/>
+            that contains information from the Disconnected event.</param>
+            <param name="sender">The object that initiated the <b>Disconnected</b> event.</param>
+            <remarks>You can override the <b>OnDisconnected</b> method to customize its functionality.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnTransferring(System.Object,Microsoft.Speech.VoiceXml.Common.TransferringEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/> event during an asynchronous 
+            <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.  
+            </summary>
+            <param name="e">An instance of <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs"/> 
+            that contains information from the <b>Transferring</b> event.</param>
+            <param name="sender">The object that initiated the <b>Transferring</b> event.</param>
+            <remarks>You can override the <b>OnTransferring</b> method to customize its functionality.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnTransferring(System.Object,System.String,Microsoft.Speech.VoiceXml.Common.TransferType,Microsoft.Speech.VoiceXml.Common.TransferState)">
+            <summary>
+            Provides information about the <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.TargetSip"/>, 
+            the <see cref="F:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.type"/>, and the 
+            <see cref="F:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.state"/> for 
+            a <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/> event during an asynchronous 
+            <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <param name="sender">The object that initiated the <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferring"/>
+            event.</param>
+            <param name="targetSip">The SIP URI of the transfer destination.</param>
+            <param name="transferState">The state of a VoiceXML phone call transfer request.</param>
+            <param name="transferType">The type of phone call transfer to be performed.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnTransferred(System.Object,Microsoft.Speech.VoiceXml.Common.TransferredEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event during an asynchronous 
+            <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.  
+            </summary>
+            <param name="e">An instance of <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs"/> 
+            that contains information from the <b>Transferred</b> event.</param>
+            <param name="sender">The object that initiated the <b>Transferred</b> event.</param>
+            <remarks>You can override the <b>OnTransferred</b> method to customize its 
+            functionality.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnTransferred(System.Object,System.String,Microsoft.Speech.VoiceXml.Common.TransferType,Microsoft.Speech.VoiceXml.Common.TransferState)">
+            <summary>
+            Provides information about the <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.TargetSip"/>, 
+            the <see cref="F:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.type"/>, and the 
+            <see cref="F:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.state"/> for 
+            a <see cref="E:Microsoft.Speech.VoiceXml.Browser.Transferred"/> event during an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <param name="sender">The object that initiated the Transferred event.</param>
+            <param name="targetSip">The SIP URI of the transfer destination.</param>
+            <param name="transferState">The state of a VoiceXML phone call transfer request.</param>
+            <param name="transferType">The type of phone call transfer to be performed.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.OnSessionCompleted(System.Object,Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted"/> event during an asynchronous 
+            <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <param name="e">An instance of <see cref="T:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs"/>
+            that contains information from the <see cref="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted"/> event.</param>
+            <param name="sender">The object that initiated the <b>SessionCompleted</b> event.</param>
+            <remarks>You can override the <b>OnSessionCompleted</b> method to customize its 
+            functionality.</remarks>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.State">
+            <summary>
+            Gets the SessionState to determine whether a <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> 
+            instance is running.
+            </summary>
+            <remarks>The value of the <b>State</b> property is <i>Active</i> if the <b>Browser</b> is running,  
+            or <i>Idle</i> if the <b>Browser</b> is not running.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.Speech.VoiceXml.Browser.Disconnecting">
+            <summary>
+            Raised just before a call is disconnected from an asynchronous 
+            <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            When the Disconnecting event is raised, the SessionState property 
+            on the DisconnectingEventArgs instance indicates the session state.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.Speech.VoiceXml.Browser.Disconnected">
+            <summary>
+            Raised after a call is disconnected from an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>
+            When the <b>Disconnected</b> event is raised, the 
+            <see cref="P:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs.State"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.DisconnectedEventArgs"/> 
+            instance indicates the DisconnectState. </remarks>
+        </member>
+        <member name="E:Microsoft.Speech.VoiceXml.Browser.Transferring">
+            <summary>
+            Raised when the VoiceXML page is about to process a &lt;transfer&gt; element during
+            an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session. 
+            </summary>
+            <remarks>When the <b>Transferring</b> event is raised, the 
+            <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.State"/> property on the
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs"/> instance indicates the 
+            transfer state, and the <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs.Type"/>
+            property on the <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferringEventArgs"/> instance indicates 
+            the transfer type.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.Speech.VoiceXml.Browser.Transferred">
+            <summary>
+            Raised when the VoiceXML runtime has completed a phone call transfer 
+            to a recipient during an asynchronous <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> session.
+            </summary>
+            <remarks>When the <b>Transferred</b> event is raised, the 
+            <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.State"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs"/> instance indicates the  
+            transfer state, and the <see cref="P:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs.Type"/> 
+            property on the <see cref="T:Microsoft.Speech.VoiceXml.Common.TransferredEventArgs"/> instance 
+            indicates the transfer type.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted">
+            <summary>
+            Raised when the <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> exits a VoiceXML page during an 
+            asynchronous <b>Browser</b> session.
+            </summary>
+            <remarks>When the <see cref="E:Microsoft.Speech.VoiceXml.Browser.SessionCompleted"/> event is raised, 
+            the <see cref="P:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs.Result"/> property on the 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.SessionCompletedEventArgs"/> instance contains a 
+            <see cref="T:Microsoft.Speech.VoiceXml.Common.VoiceXmlResult"/> object, which has information about the 
+            result of the session.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo">
+             <summary>
+             This class encapsulates audio input information for speech 
+             recognition and audio output information for speech synthesis.
+            </summary>
+             <remarks>
+             The AudioIOInfo class caches information regarding a call to any of 
+             the methods that set the input for the speech reconition engine or the output for   
+             the speech synthesis engine, so that the information can be applied when the 
+             Browser is invoked using the Run() or RunAsync() methods.
+             </remarks>
+             
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.audioIOtype">
+            <summary>
+            Retains the audio input and output type.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.audioStream">
+            <summary>
+            The input and output audio stream specified, if any.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.audioFormat">
+            <summary>
+            The format specified for the audio in the input or output stream, if any.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.path">
+            <summary>
+            The source input file path or the target output file path specified, if any.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.#ctor(Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType)">
+            <summary>
+            Initializes a new instance of the AudioIOInfo class.
+            </summary>
+            <param name="type">AudioIOType</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.MakeAudioIOInfoForAudioStream(System.IO.Stream,Microsoft.Speech.AudioFormat.SpeechAudioFormatInfo)">
+            <summary>
+            Acquires information about calls made to the SetInputToAudioStream and
+            SetOutputToAudioStream methods.
+            </summary>
+            <param name="audioStream">The stream connected to the audio input and the stream 
+            connected to the audio output.</param>
+            <param name="audioFormat">The format of the audio in the input and output streams.</param>
+            <returns>An AudioIOInfo object that contains information for calls 
+            made to the SetInputToAudioStream and SetOutputToAudioStream methods.</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.MakeAudioIOInfoForDefaultAudioDevice">
+            <summary>
+            Acquires information about calls made to the 
+            SetInputToDefaultAudioDevice and SetOutputToDefaultAudioDevice methods.
+            </summary>
+            <returns>An AudioIOInfo object that contains information for calls
+            made to the SetInputToDefaultAudioDevice and SetOutputToDefaultAudioDevice methods.</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.MakeAudioIOInfoForNull">
+            <summary>
+            Acquires information about calls made to the
+            SetInputToNull and SetOutputToNull methods.
+            </summary>
+            <returns>An AudioIOInfo object that contains information for calls
+            made to the SetInputToNull and SetOutputToNull methods.</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.MakeAudioIOInfoForWaveFile(System.String)">
+            <summary>
+            Acquires information about calls
+            made to the SetInputToWaveFile and SetOutputToWaveFile methods.
+            </summary>
+            <param name="path">The path to the .WAV file to be used as intput and 
+            the path to the .WAV file to be used as output.</param>
+            <returns>An AudioIOInfo object that contains information for calls
+            made to the SetInputToWaveFile and SetOutputToWaveFile methods.</returns>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.MakeAudioIOInfoForWaveStream(System.IO.Stream)">
+            <summary>
+            Acquires information about calls
+            made to the SetInputToWaveStream and SetOutputToWaveStream methods.
+            </summary>
+            <param name="stream">Stream</param>
+            <returns>An AudioIOInfo object that contains information for calls
+            made to the SetInputToWaveStream and SetOutputToWaveStream methods.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType">
+            <summary>
+            Represents the type of audio input and audio output that the Browser client 
+            has specified for speech recognition and speech synthesis, respectively.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType.Unspecified">
+            <summary>
+            The type of the audio input and the audio output is Unspecified after a Browser run completes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType.Null">
+            <summary>
+            The type of the audio input and the audio output is Null.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType.DefaultDevice">
+            <summary>
+            The type of the audio input is the system default audio input device and the 
+            type of audio output is the system default audio output device.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType.AudioStream">
+            <summary>
+            The type of the audio input and the audio output is audio stream.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType.WaveFile">
+            <summary>
+            The type of the audio input and the audio output is .WAV format.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.AudioIOInfo.AudioIOType.WaveStream">
+            <summary>
+            The type of the audio input and the audio output is .WAV stream.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy">
+            <summary>
+            The CallProxy class is used by classes that derive from  <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> 
+            to pass information about calls to the VoiceXML interpreter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.#ctor">
+            <summary>
+            Creates a new instance of the CallProxy object.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.NotifyStateChanged(System.Object,Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState,Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason)">
+            <summary>
+            Raises a StateChanged event.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.NotifyToneReceived(System.Object,Microsoft.Speech.Recognition.DtmfTone)">
+            <summary>
+            Raises a ToneReceived event.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.NotifyTransferStateChanged(System.Object,Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState)">
+            <summary>
+            Raises a TransferStateChanged event.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.NotifyOpenCompleted(System.Object,System.Boolean)">
+            <summary>
+            Raises an OpenCompleted event.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.NotifyRecorderStopped(System.Object,System.Boolean,System.Exception)">
+            <summary>
+            Raises a RecorderStopped event.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.BeginTerminate(System.AsyncCallback,System.Object)">
+            <summary>
+            Terminates the call. A terminated call is no longer usable.
+            </summary>
+            <param name="state">A user-provided object that distinguishes this particular asynchronous operation 
+            from other asynchronous operations.</param>
+            <param name="userCallback">The method to be called when the asynchronous operation is completed.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.EndTerminate(System.IAsyncResult)">
+            <summary>
+            This method is used to determine whether the corresponding operation completed successfully. 
+            This method will wait if the operation has not yet completed.
+            </summary>
+            <param name="result">The reference to the pending asynchronous operation.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.BeginAccept(System.AsyncCallback,System.Object)">
+            <summary>
+            Accepts an incoming call. 
+            </summary>
+            <param name="state">A user-provided object that distinguishes this particular asynchronous operation 
+            from other asynchronous operations.</param>
+            <param name="userCallback">The method to be called when the asynchronous operation is completed.</param>
+            <remarks>The state of the call can change if the remote party decides to cancel the call.</remarks>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.EndAccept(System.IAsyncResult)">
+            <summary>
+            This method is used to determine whether the corresponding operation completed successfully. 
+            This method will wait if the operation has not yet completed. 
+            </summary>
+            <param name="result">The reference to the pending asynchronous operation.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when this method is invoked multiple times 
+            using the same asyncResult. </exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when the result parameter is null. </exception>
+            <exception cref="T:System.ArgumentException">Thrown when the result parameter is invalid. </exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.BeginTransfer(System.String,System.Boolean,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates a transfer request to the remote participant.
+            </summary>
+            <param name="attended">Boolean value that is true if the transfer is attended.</param>
+            <param name="state">A user-provided object that distinguishes this particular asynchronous operation from 
+            other asynchronous operations.</param>
+            <param name="targetUri">The transfer target URI.</param>
+            <param name="userCallback">The method to be called when the asynchronous operation is completed.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.BeginTransfer(System.String,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates a transfer request to the remote participant.
+            </summary>
+            <param name="state">A user-provided object that distinguishes this particular asynchronous operation from 
+            other asynchronous operations.</param>
+            <param name="targetUri">The URI of the transfer target.</param>
+            <param name="userCallback">The method to be called when the asynchronous operation is completed.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.BeginTransferSupervised">
+            <summary>
+            Initiates a supervised transfer request to the remote participant.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.EndTransfer(System.IAsyncResult)">
+            <summary>
+            The EndTransfer method is used to determine whether the corresponding operation completed successfully. 
+            This method will wait if the operation has not yet completed.
+            </summary>
+            <param name="result">The reference to the pending asynchronous operation.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when this method is invoked multiple times 
+            using the same asyncResult. </exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when the result parameter is null. </exception>
+            <exception cref="T:System.ArgumentException">Thrown when the result parameter is invalid. </exception>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.OpenAsync(System.String,System.String)">
+            <summary>
+            Accepts an incoming telephony session invite and sends a response.
+            </summary>
+            <param name="fromAddress">The SipUri of the calling party.</param>
+            <param name="toAddress">The SipUri of the final destination.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.StartRecording(System.String,Microsoft.Speech.AudioFormat.EncodingFormat)">
+            <summary>
+            Begins recording audio input from the call.
+            </summary>
+            <param name="audioEncoding">The Codec to use for recording. </param>
+            <param name="recordedFilePath">The name and path of the file to which audio will be recorded.</param>
+        </member>
+        <member name="M:Microsoft.Speech.VoiceXml.Browser.CallProxy.StopRecording">
+            <summary>
+            Stops recording audio.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.TransferTypeRequested">
+            <summary>
+            Gets the transfer type of the requested transfer.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.TargetSip">
+            <summary>
+            Gets and sets the SIP for call transfers.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.LocalParticipantUri">
+            <summary>
+            Gets the URI of the local call.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.RemoteParticipantUri">
+            <summary>
+            Gets the URI of the remote call.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.State">
+            <summary>
+            Gets the current call state.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.CallId">
+            <summary>
+            Gets the CallID of the current call.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Speech.VoiceXml.Browser.CallProxy.RecorderState">
+            <summary>
+            Gets the state of the Recorder.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState">
+            <summary>
+            The ProxyCallState enumeration is used to relay information about the current call state.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Idle">
+            <summary>
+            The call is idle. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Incoming">
+            <summary>
+            The call has just been received. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Establishing">
+            <summary>
+            The call establishment is in progress after initiating or accepting the call. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Established">
+            <summary>
+            The call is established.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Transferring">
+            <summary>
+            The call has initiated a transfer. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Terminating">
+            <summary>
+            The call is terminating. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Terminated">
+            <summary>
+            The call has terminated. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallState.Parking">
+            <summary>
+            The call is to be put on hold.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyTransferType">
+            <summary>
+            Indicates the type of transfer requested in the VoiceXML document.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyTransferType.None">
+            <summary>
+            No transfer type is given.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyTransferType.Bridge">
+            <summary>
+            The application redirects the caller to the recipient and remains in the connection. 
+            Document interpretation suspends until the transferred call terminates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyTransferType.Blind">
+            <summary>
+            The application redirects the caller to the recipient without remaining in the connection, 
+            and does not monitor the outcome. The <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> exits the page. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyTransferType.Consultation">
+            <summary>
+            The application redirects the caller to the recipient and monitors the progress of the 
+            transfer until the connection is established between caller and recipient. If the connection 
+            is established, the <b>Browser</b> disconnects from the session.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason">
+            <summary>
+            Represents the reasons for call state transitions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.None">
+            <summary>
+            Unspecified or unknown reason. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Ringing">
+            <summary>
+            One of the remote endpoints is ringing. This reason is only raised once. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.CallDelayed">
+            <summary>
+            The call is delayed.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Establishing">
+            <summary>
+            The call is being initiated.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Accepted">
+            <summary>
+            The call is being accepted. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Established">
+            <summary>
+            Call establishment is completed. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.EstablishFailed">
+            <summary>
+            Call establishment failed.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TerminatedLocally">
+            <summary>
+            The local participant has terminated the call. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TerminatedRemotely">
+            <summary>
+            The remote participant has terminated the call. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Canceled">
+            <summary>
+            The call has been canceled. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TransferredLocally">
+            <summary>
+            The call has been transferred by the local participant. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TransferredRemotely">
+            <summary>
+            The call has been transferred by the remote participant. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TransferSent">
+            <summary>
+            The transfer message was sent. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TransferAccepted">
+            <summary>
+            The incoming transfer request was accepted.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.TransferFailed">
+            <summary>
+            The transfer operation failed. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.CallTransferred">
+            <summary>
+            The call was transferred successfully. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Terminated">
+            <summary>
+            The call was terminated. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.Deflected">
+            <summary>
+            No reason was specified. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.DeflectedWithUnknownReason">
+            <summary>
+            The reason specified is unknown. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.DeflectedToAnotherDestination">
+            <summary>
+            The call is being forwarded to another target. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.DeflectedToTeam">
+            <summary>
+            The call is being forwarded as a team call. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.DeflectedToDelegate">
+            <summary>
+            The call is being forwarded to a delegate. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.DeflectedByAutomaticCallDistributor">
+            <summary>
+            The call is being forwarded to an automatic call distributor. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.CallParked">
+            <summary>
+            The call has been put on hold.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.ParkFailed">
+            <summary>
+            The attempt to put the call on hold failed.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyCallStateTransitionReason.CallReplaced">
+            <summary>
+            The call was replaced with another call.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyRecorderState">
+            <summary>
+            Represents the state of the recorder.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyRecorderState.Started">
+            <summary>
+            The recorder is recording. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyRecorderState.Stopped">
+            <summary>
+            The recorder is stopped. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyRecorderState.Paused">
+            <summary>
+            The recorder is paused. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState">
+            <summary>
+            Indicates possible states for the signaling session. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.Idle">
+            <summary>
+            The refer has not been sent yet. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.ReferRequested">
+            <summary>
+            The refer message has been sent. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.ReferAccepted">
+            <summary>
+            The refer has been accepted. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.ReferRejected">
+            <summary>
+            The refer has been rejected.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.ReferFailed">
+            <summary>
+            The refer operation was not sent successfully or did not receive a response. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.Trying">
+            <summary>
+            The refer target is being connected by the remote participant. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.Alerted">
+            <summary>
+            The refer target has been alerted.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.Succeeded">
+            <summary>
+            The refer operation was completed successfully by the remote participant. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.Failed">
+            <summary>
+            The refer operation was not completed successfully by the remote participant. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyReferState.Redirected">
+            <summary>
+            The refer target has redirected but the redirect was not acted upon. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState">
+            <summary>
+            Represents the state of an attempt to load a VoiceXML document.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.Success">
+            <summary>
+            The page is loaded.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.StartPageInInvalidUri">
+            <summary>
+            The URI given for the start page is not valid.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.VoiceXmlBrowserFailedToLoadPage">
+            <summary>
+            The <see cref="T:Microsoft.Speech.VoiceXml.Browser"/> could not load the start page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.VoiceXmlGeneralError">
+            <summary>
+            An error occurred in processing the page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.VoiceXmlGeneralWarning">
+            <summary>
+            A non-fatal error occurred in processing the page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.PageNotFound">
+            <summary>
+            The page specified by the URI could not be retrieved.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.ServerNotAvailable">
+            <summary>
+            The server that contains the VoiceXML start page could not be contacted.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Speech.VoiceXml.Browser.CallProxy.ProxyPageState.MalFormedXml">
+            <summary>
+            There is an error in the syntax or structure of the VoiceXML page.
+            </summary>
+        </member>
+    </members>
+</doc>

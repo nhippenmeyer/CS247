@@ -5,12 +5,24 @@ using System.Text;
 
 namespace OFWGKTA
 {
-    public class AppState 
+    public class AppState
+    {
+        private AudioKinectModel kinect;
+
+        public AppState(AudioKinectModel kinect)
+        {
+            this.kinect = kinect;
+        }
+
+        public AudioKinectModel Kinect { get { return kinect; } }
+    }
+
+    public class DemoAppState 
     {
         private string applicationMode;
         private KinectModel kinect;
 
-        public AppState(string applicationMode, KinectModel kinect)
+        public DemoAppState(string applicationMode, KinectModel kinect)
         {
             this.applicationMode = applicationMode;
             this.kinect = kinect;

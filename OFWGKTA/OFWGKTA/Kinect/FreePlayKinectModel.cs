@@ -7,11 +7,15 @@ using Microsoft.Research.Kinect.Nui;
 using Kinect.Toolbox.Record;
 using Coding4Fun.Kinect.Wpf;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Research.Kinect.Audio;
+using Microsoft.Speech.Recognition;
+using Microsoft.Speech.AudioFormat;
 
 namespace OFWGKTA
 {
-    class FreePlayKinectModel : KinectModel
+    public class FreePlayKinectModel : KinectModel
     {
+        // Normal kinect related parameters
         protected bool isRecorder = false;
         protected Stream fileStream;
         protected Runtime kinectRuntime;
@@ -32,6 +36,7 @@ namespace OFWGKTA
                 kinectRuntime = Runtime.Kinects[0];
                 kinectRuntime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
                 kinectRuntime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);
+
             }
         }
 

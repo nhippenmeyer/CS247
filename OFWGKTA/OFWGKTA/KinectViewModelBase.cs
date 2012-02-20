@@ -8,17 +8,15 @@ namespace OFWGKTA
 {
     class KinectViewModelBase : ViewModelBase 
     {
-        protected KinectModel kinect;
+        protected AudioKinectModel kinect;
 
-        public KinectModel Kinect { 
+        public AudioKinectModel Kinect { 
             get { return kinect; }
             set
-            { 
+            {
                 kinect = value;
                 RaisePropertyChanged("Kinect");
             }
         }
-
-
     }
 }
