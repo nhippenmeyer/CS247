@@ -40,12 +40,18 @@ namespace OFWGKTA
             this.applicationModes.Add("Replay");
             this.applicationModes.Add("Free Use");
             this.applicationModes.Add("Audio App");
+            this.applicationModes.Add("Mic Record");
         }
 
         public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
 
         private void MoveToHomeScreen()
         {
+            // Selected index must be valid
+            // TODO: either default the selected index when the user returns to the home screen, or prompt them to select an option if SelectedIndex is invalid
+            if (SelectedIndex < 0 || SelectedIndex > this.applicationModes.Count)
+                return;
+
             Stream fileStream;
             switch (this.applicationModes[SelectedIndex])
             {
@@ -82,6 +88,12 @@ namespace OFWGKTA
                         List<string> list = new List<string> { "color", "wireframe", "shape", "exit" };
                         var curState = new AppState(new AudioKinectModel(list, null));
                         Messenger.Default.Send(new NavigateMessage(HomeViewModel.ViewName, curState));
+                        break;
+                    }
+                case ("Mic Record"):
+                    {
+                        // mic index is currently hard-coded to 0
+                        Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, 0));
                         break;
                     }
             }
