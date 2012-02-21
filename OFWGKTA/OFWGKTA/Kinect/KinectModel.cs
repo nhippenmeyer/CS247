@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight;
 using Coding4Fun.Kinect.Wpf;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -32,7 +33,23 @@ namespace OFWGKTA
         private Vector kneeRight;
         private Vector hipCenter;
 
+        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
+        protected string gesture;
+
+        public KinectModel() : base()
+        {
+            this.gesture = "none";
+            swipeGestureRecognizer = new SwipeGestureDetector();
+            swipeGestureRecognizer.OnGestureDetected += OnGestureDetected;
+        }
+
         public virtual void Destroy() { }
+
+        public void OnGestureDetected(string gesture)
+        {
+            Gesture = gesture;
+        }
+
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
 
@@ -264,6 +281,18 @@ namespace OFWGKTA
             }
         }
 
+        public string Gesture
+        {
+            get { return gesture; }
+            set
+            {
+                if (!gesture.Equals(value))
+                {
+                    gesture = value;
+                    RaisePropertyChanged("Gesture");
+                }
+            }
+        }
     }
 
     public class SkeletonEventArgs : EventArgs

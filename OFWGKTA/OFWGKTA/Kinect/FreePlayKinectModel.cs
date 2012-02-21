@@ -103,6 +103,8 @@ namespace OFWGKTA
                 {
                     SkeletonUpdated(this, new SkeletonEventArgs());
                 }
+
+                swipeGestureRecognizer.Add((skeleton.Joints[JointID.HandLeft]).Position, kinectRuntime.SkeletonEngine);
             }
         }
     }
