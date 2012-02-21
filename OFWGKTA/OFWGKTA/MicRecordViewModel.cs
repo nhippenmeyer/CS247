@@ -11,6 +11,7 @@ using GalaSoft.MvvmLight;
 using Microsoft.Win32;
 using System.IO;
 using Microsoft.Speech.Recognition;
+using System.ComponentModel;
 
 
 namespace OFWGKTA 
@@ -65,10 +66,42 @@ namespace OFWGKTA
 
         public void Activated(object state)
         {
+            this.Kinect = ((AppState)state).Kinect;
+            this.Kinect.SetSpeechCallback(speechCallback);
+            this.Kinect.PropertyChanged += KinectListener;
+
+            this.recorder.SampleAggregator.RaiseRestart();
             this.micIndex = ((AppState)state).MicIndex;
 
             if (this.recorder.RecordingState != RecordingState.Monitoring)
                 BeginMonitoring();
+        }
+
+        void KinectListener(object sender, PropertyChangedEventArgs e)
+        {
+
+            if (e.PropertyName == "IsOnStage")
+            {
+                if (!Kinect.IsOnStage)
+                {
+                    this.Stop();
+                }
+            }
+        }
+
+        void speechCallback(object sender, SpeechRecognizedEventArgs e)
+        {
+            if (this.Kinect.IsOnStage)
+            {
+                if (e.Result.Text == "record")
+                {
+                    this.BeginRecording();
+                }
+                else if (e.Result.Text == "play" && recorder.RecordingState != RecordingState.Recording)
+                {
+                    this.Playback();
+                }
+            }
         }
 
         private void BeginMonitoring()
