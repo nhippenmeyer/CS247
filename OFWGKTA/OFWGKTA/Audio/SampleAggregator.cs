@@ -11,6 +11,8 @@ namespace OFWGKTA
         // volume
         public event EventHandler<MaxSampleEventArgs> MaximumCalculated;
         public event EventHandler Restart = delegate { };
+        public event EventHandler Start = delegate { };
+        public event EventHandler Stop = delegate { };
         public float maxValue;
         public float minValue;
         public int NotificationCount { get; set; }
@@ -18,6 +20,16 @@ namespace OFWGKTA
 
         public SampleAggregator()
         {
+        }
+
+        public void RaiseStart()
+        {
+            Start(this, EventArgs.Empty);
+        }
+
+        public void RaiseStop()
+        {
+            Stop(this, EventArgs.Empty);
         }
 
         public void RaiseRestart()

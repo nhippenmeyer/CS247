@@ -7,28 +7,6 @@
         <UserControl.Resources>
     </UserControl.Resources>
     <Grid>
-        <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}" />
-
-        <my:WaveFileTrimmerControl Margin="5,27,5,230" 
-                SampleAggregator="{Binding SampleAggregator}"                                    
-                TotalWaveFormSamples="{Binding TotalWaveFormSamples}"
-                LeftSelection="{Binding LeftPosition, Mode=TwoWay}"
-                RightSelection="{Binding RightPosition, Mode=TwoWay}"/>
-        
-        <ProgressBar Margin="5,256,5,204" Orientation="Horizontal" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="20" />
-
-        <Slider Margin="100,317,100,141" Orientation="Horizontal" Value="{Binding MicrophoneLevel, Mode=TwoWay}" Maximum="100" />
-
-        <TextBlock Margin="223,381,217,71" Text="{Binding RecordedTime}" FontWeight="Bold" FontSize="16" Width="200" />
-        <Button Content="Start Recording" Command="{Binding BeginRecordingCommand}" ToolTip="Start Recording" Margin="376,445,141,12" />
-        <Button Content="Stop Recording" Command="{Binding StopCommand}" ToolTip="Stop Recording" Margin="505,445,12,12" />
-        <Label Content="Mic Level:" Height="28" Margin="287,283,290,0" VerticalAlignment="Top" />
-        <Button Command="{Binding RewindCommand}" Content="Rewind" Margin="120,445,397,12" ToolTip="Start Recording" />
-        <Button Command="{Binding PlaybackCommand}" Content="Playback" Margin="0,445,268,12" ToolTip="Start Recording" HorizontalAlignment="Right" Width="123" />
-
-
-        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="12,445,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
-        
         <Rectangle Height="21" HorizontalAlignment="Left" Margin="1,0,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="639">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
@@ -38,6 +16,27 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
+
+        <my:WaveFileTrimmerControl Margin="5,27,5,230" 
+                SampleAggregator="{Binding SampleAggregator}"                                    
+                TotalWaveFormSamples="{Binding TotalWaveFormSamples}"
+                LeftSelection="{Binding LeftPosition, Mode=TwoWay}"
+                RightSelection="{Binding RightPosition, Mode=TwoWay}" Loaded="WaveFileTrimmerControl_Loaded" />
+        
+        <ProgressBar Margin="5,256,5,204" Orientation="Horizontal" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="20" />
+
+        <Slider Margin="100,317,100,141" Orientation="Horizontal" Value="{Binding MicrophoneLevel, Mode=TwoWay}" Maximum="100" />
+
+        <TextBlock Margin="223,381,217,71" Text="{Binding RecordedTime}" FontWeight="Bold" FontSize="16" Width="200" />
+        <Button Content="Start Recording" Command="{Binding BeginRecordingCommand}" ToolTip="Start Recording" Margin="378,430,139,27" />
+        <Button Content="Stop Recording" Command="{Binding StopCommand}" ToolTip="Stop Recording" Margin="505,430,12,27" />
+        <Label Content="Mic Level:" Height="28" Margin="287,283,290,0" VerticalAlignment="Top" />
+        <Button Command="{Binding RewindCommand}" Content="Rewind" Margin="120,430,397,27" ToolTip="Start Recording" />
+        <Button Command="{Binding PlaybackCommand}" Content="Playback" Margin="0,430,268,27" ToolTip="Start Recording" HorizontalAlignment="Right" Width="123" />
+
+
+        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="12,430,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
+        
         <Label Margin="275,347,281,0" Height="28" VerticalAlignment="Top">Elapsed Time:</Label>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
     </Grid>

@@ -15,7 +15,7 @@ using Microsoft.Speech.Recognition;
 
 namespace OFWGKTA 
 {
-    class MicRecordViewModel : ViewModelBase, IView
+    class MicRecordViewModel : KinectViewModelBase, IView
     {
         public const string ViewName = "MicRecordViewModel";
 
@@ -204,6 +204,7 @@ namespace OFWGKTA
         {
             this.waveFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".wav");
             recorder.BeginRecording(waveFileName);
+            recorder.SampleAggregator.RaiseStart();
             RaisePropertyChanged("MicrophoneLevel");
             //RaisePropertyChanged("ShowWaveForm");
         }
@@ -211,6 +212,7 @@ namespace OFWGKTA
         public ICommand StopCommand { get { return stopCommand; } }
         private void Stop()
         {
+            recorder.SampleAggregator.RaiseStop();
             recorder.Stop();
         }
         
