@@ -8,6 +8,9 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
+using Microsoft.Win32;
+using System.IO;
+using Microsoft.Speech.Recognition;
 
 namespace OFWGKTA 
 {
@@ -36,13 +39,52 @@ namespace OFWGKTA
             this.applicationModes.Add("Record");
             this.applicationModes.Add("Replay");
             this.applicationModes.Add("Free Use");
+            this.applicationModes.Add("Audio App");
         }
 
         public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
 
         private void MoveToHomeScreen()
         {
-            Messenger.Default.Send(new NavigateMessage(HomeScreenViewModel.ViewName, this.applicationModes[SelectedIndex]));
+            Stream fileStream;
+            switch (this.applicationModes[SelectedIndex])
+            {
+                case ("Replay"):
+                    OpenFileDialog openFileDialog = new OpenFileDialog { };
+                    openFileDialog.ShowDialog();
+                    try
+                    {
+                        fileStream = File.OpenRead(openFileDialog.FileName);
+                        var curState = new DemoAppState(this.applicationModes[SelectedIndex], new ReplayKinectModel(fileStream));
+                        Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                    }
+                    catch { }
+                    break;
+                case ("Record"):
+                    SaveFileDialog saveFileDialog = new SaveFileDialog { };
+                    saveFileDialog.ShowDialog();
+                    try
+                    {
+                        fileStream = File.OpenWrite(saveFileDialog.FileName);
+                        var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
+                        Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                    }
+                    catch { }
+                    break;
+                case ("Free Use"):
+                    {
+                        var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(null));
+                        Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                        break;
+                    }
+                case ("Audio App"):
+                    {
+                        List<string> list = new List<string> { "color", "wireframe", "shape", "exit" };
+                        var curState = new AppState(new AudioKinectModel(list, null));
+                        Messenger.Default.Send(new NavigateMessage(HomeViewModel.ViewName, curState));
+                        break;
+                    }
+            }
         }
         
         public int SelectedIndex

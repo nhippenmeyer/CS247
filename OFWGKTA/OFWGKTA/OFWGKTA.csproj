@@ -55,6 +55,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\v1.0 Beta2\Assemblies\Microsoft.Research.Kinect.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Speech, Version=10.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.Speech.dll</HintPath>
+    </Reference>
     <Reference Include="NAudio">
       <HintPath>..\Packages\NAudio.dll</HintPath>
     </Reference>
@@ -80,19 +84,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppState.cs" />
+    <Compile Include="DemoView.xaml.cs">
+      <DependentUpon>DemoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DemoViewModel.cs" />
+    <Compile Include="KinectViewModelBase.cs" />
+    <Compile Include="Kinect\AudioKinectModel.cs" />
     <Compile Include="ValueConverters.cs" />
     <Compile Include="Kinect\FreePlayKinectModel.cs" />
     <Compile Include="Kinect\ReplayKinectModel.cs" />
     <Compile Include="Kinect\KinectModel.cs" />
-    <Compile Include="HomeScreenViewModel.cs" />
+    <Compile Include="HomeViewModel.cs" />
     <Compile Include="Messaging\Messages.cs" />
     <Compile Include="WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WelcomeViewModel.cs" />
-    <Compile Include="HomeScreenView.xaml.cs">
-      <DependentUpon>HomeScreenView.xaml</DependentUpon>
+    <Compile Include="HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
+    <Page Include="DemoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WelcomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -110,7 +125,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="HomeScreenView.xaml">
+    <Page Include="HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

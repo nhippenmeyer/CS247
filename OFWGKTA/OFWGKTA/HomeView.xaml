@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="OFWGKTA.HomeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:blah="clr-namespace:Microsoft.Research.Kinect.Nui;assembly=Microsoft.Research.Kinect"
+        xmlns:ofwgkta="clr-namespace:OFWGKTA"
+        Height="480" Width="640">
+        <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+        <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}" />
+        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="24,435,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
+        
+        <Rectangle Height="21" HorizontalAlignment="Left" Margin="1,0,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="639">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Color="{Binding Path=Kinect.IsOnStage, Converter={StaticResource StageHighlight}}" Offset="{Binding Kinect.Head.X, Converter={StaticResource Normalizer}}" x:Name="boo"/>
+                    <GradientStop Color="Black" Offset="{Binding Offset, ElementName=boo, Converter={StaticResource translateDouble}, ConverterParameter='0.1'}" />
+                    <GradientStop Color="Black" Offset="{Binding Offset, ElementName=boo, Converter={StaticResource translateDouble}, ConverterParameter='-0.1'}" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
+    </Grid>
+</UserControl>

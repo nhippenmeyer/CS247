@@ -8,10 +8,11 @@ using Microsoft.Research.Kinect.Nui;
 using GalaSoft.MvvmLight;
 using Coding4Fun.Kinect.Wpf;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace OFWGKTA
 {
-    class KinectModel : ViewModelBase
+    public class KinectModel : ViewModelBase
     {
         private Vector head;
         private Vector handLeft;
@@ -73,8 +74,11 @@ namespace OFWGKTA
             get { return handRight; }
             set
             {
-                handRight = value;
-                RaisePropertyChanged("HandRight");
+                if (!handRight.Equals(value))
+                {
+                    handRight = value;
+                    RaisePropertyChanged("HandRight");
+                }
             }
         }
 
@@ -260,6 +264,11 @@ namespace OFWGKTA
             }
         }
 
+    }
+
+    public class SkeletonEventArgs : EventArgs
+    {
+        // just using this to fire an event when i'm done processing the skeleton
     }
 }
     

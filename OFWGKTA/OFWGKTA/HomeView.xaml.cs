@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace OFWGKTA
 {
     /// <summary>
-    /// Interaction logic for SantorumView.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class HomeScreenView : UserControl
+    public partial class HomeView : UserControl
     {
-        public HomeScreenView()
+        public HomeView()
         {
             InitializeComponent();
         }

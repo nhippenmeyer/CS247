@@ -26,7 +26,8 @@ namespace OFWGKTA
             
             // Set up the view for each viewmodel
             SetupView(WelcomeViewModel.ViewName, new WelcomeView(), new WelcomeViewModel());
-            SetupView(HomeScreenViewModel.ViewName, new HomeScreenView(), new HomeScreenViewModel());
+            SetupView(HomeViewModel.ViewName, new HomeView(), new HomeViewModel());
+            SetupView(DemoViewModel.ViewName, new DemoView(), new DemoViewModel());
 
             // Send message that welcome view is ready to be displayed
             Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));

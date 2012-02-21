@@ -7,16 +7,20 @@ using Microsoft.Research.Kinect.Nui;
 using Kinect.Toolbox.Record;
 using Coding4Fun.Kinect.Wpf;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Research.Kinect.Audio;
+using Microsoft.Speech.Recognition;
+using Microsoft.Speech.AudioFormat;
 
 namespace OFWGKTA
 {
-    class FreePlayKinectModel : KinectModel
+    public class FreePlayKinectModel : KinectModel
     {
+        // Normal kinect related parameters
         protected bool isRecorder = false;
-        protected bool isConnected = false;
         protected Stream fileStream;
         protected Runtime kinectRuntime;
         protected SkeletonRecorder recorder = new SkeletonRecorder();
+        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
 
         public FreePlayKinectModel(Stream fileStream) : base()
         {
@@ -30,10 +34,10 @@ namespace OFWGKTA
 
             if (Runtime.Kinects.Count > 0)
             {
-                isConnected = true;
                 kinectRuntime = Runtime.Kinects[0];
                 kinectRuntime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
                 kinectRuntime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);
+
             }
         }
 
@@ -94,6 +98,11 @@ namespace OFWGKTA
                 KneeLeft = GetScaledPosition(skeleton.Joints[JointID.KneeLeft]);
                 KneeRight = GetScaledPosition(skeleton.Joints[JointID.KneeRight]);
                 HipCenter = GetScaledPosition(skeleton.Joints[JointID.HipCenter]);
+
+                if (SkeletonUpdated != null)
+                {
+                    SkeletonUpdated(this, new SkeletonEventArgs());
+                }
             }
         }
     }
