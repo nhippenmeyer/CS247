@@ -68,7 +68,10 @@ namespace OFWGKTA
         {
             this.Kinect = ((AppState)state).Kinect;
             this.Kinect.SetSpeechCallback(speechCallback);
-            this.Kinect.PropertyChanged += KinectListener;
+            // subscribe to changes in kinect properties
+            // allows us to set callbacks at this level when stage status changes 
+            // (remember to unsubscribe from this)
+            this.Kinect.PropertyChanged += KinectListener; 
 
             this.recorder.SampleAggregator.RaiseRestart();
             this.micIndex = ((AppState)state).MicIndex;
@@ -292,6 +295,7 @@ namespace OFWGKTA
         private void ReturnToWelcome()
         {
             this.Stop();
+            Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 
