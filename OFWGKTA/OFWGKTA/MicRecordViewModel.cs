@@ -27,7 +27,6 @@ namespace OFWGKTA
         private IAudioRecorder recorder;
         private IAudioPlayer player;
         
-        //private SampleAggregator sampleAggregator;
         private int leftPosition;
         private int rightPosition;
         private int totalWaveFormSamples;
@@ -66,8 +65,10 @@ namespace OFWGKTA
 
         public void Activated(object state)
         {
-            this.micIndex = (int)state;
-            BeginMonitoring();
+            this.micIndex = ((AppState)state).MicIndex;
+
+            if (this.recorder.RecordingState != RecordingState.Monitoring)
+                BeginMonitoring();
         }
 
         private void BeginMonitoring()
@@ -217,12 +218,11 @@ namespace OFWGKTA
         }
         
 
-
         private void OnShuttingDown(ShuttingDownMessage message)
         {
             if (message.CurrentViewName == ViewName)
             {
-                recorder.Stop();
+                this.Stop();
             }
         }
 
@@ -258,9 +258,7 @@ namespace OFWGKTA
 
         private void ReturnToWelcome()
         {
-            //Stop();
-            this.recorder = null;
-            this.player = null;
+            this.Stop();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 
