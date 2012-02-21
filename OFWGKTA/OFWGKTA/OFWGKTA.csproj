@@ -85,12 +85,33 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppState.cs" />
+    <Compile Include="Audio\AudioPlayer.cs" />
+    <Compile Include="Audio\AudioRecorder.cs" />
+    <Compile Include="Audio\AudioSaver.cs" />
+    <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Audio\IAudioRecorder.cs" />
+    <Compile Include="Audio\IWaveFormRenderer.cs" />
+    <Compile Include="Audio\RangeSelectionControl.xaml.cs">
+      <DependentUpon>RangeSelectionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Audio\TrimWaveStream.cs" />
+    <Compile Include="Audio\WaveFileTrimmerControl.xaml.cs">
+      <DependentUpon>WaveFileTrimmerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Audio\WaveFormVisual.cs" />
+    <Compile Include="Audio\WavFileUtils.cs" />
+    <Compile Include="MicRecordView.xaml.cs">
+      <DependentUpon>MicRecordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MicRecordViewModel.cs" />
     <Compile Include="DemoView.xaml.cs">
       <DependentUpon>DemoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DemoViewModel.cs" />
-    <Compile Include="KinectViewModelBase.cs" />
+    <Compile Include="Kinect\KinectViewModelBase.cs" />
     <Compile Include="Kinect\AudioKinectModel.cs" />
+    <Compile Include="Audio\RecordingState.cs" />
+    <Compile Include="Audio\SampleAggregator.cs" />
     <Compile Include="ValueConverters.cs" />
     <Compile Include="Kinect\FreePlayKinectModel.cs" />
     <Compile Include="Kinect\ReplayKinectModel.cs" />
@@ -104,6 +125,18 @@
     <Compile Include="HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Audio\RangeSelectionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Audio\WaveFileTrimmerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MicRecordView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DemoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
