@@ -8,13 +8,16 @@ namespace OFWGKTA
     public class AppState
     {
         private AudioKinectModel kinect;
+        public AudioKinectModel Kinect { get { return kinect; } }
 
-        public AppState(AudioKinectModel kinect)
+        private int micIndex;
+        public int MicIndex { get { return micIndex; } }
+
+        public AppState(AudioKinectModel kinect, int micIndex)
         {
             this.kinect = kinect;
+            this.micIndex = micIndex;
         }
-
-        public AudioKinectModel Kinect { get { return kinect; } }
     }
 
     public class DemoAppState 
