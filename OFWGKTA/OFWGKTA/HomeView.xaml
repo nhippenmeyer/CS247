@@ -20,5 +20,6 @@
             </Rectangle.Fill>
         </Rectangle>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
+        <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="807,146,0,0" Name="label1" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

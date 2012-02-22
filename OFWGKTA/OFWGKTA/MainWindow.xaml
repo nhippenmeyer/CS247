@@ -4,5 +4,5 @@
         Title="MainWindow" Height="480" Width="640">
         <Grid>
             <ContentControl Content="{Binding CurrentView}" />
-        </Grid>
+    </Grid>
 </Window>

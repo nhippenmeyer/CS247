@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight;
 using Coding4Fun.Kinect.Wpf;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -32,7 +33,32 @@ namespace OFWGKTA
         private Vector kneeRight;
         private Vector hipCenter;
 
-        public virtual void Destroy() { }
+        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
+        public event EventHandler<SwipeEventArgs> SwipeDetected;
+        private string gesture = "";
+
+        public KinectModel() : base()
+        {
+            swipeGestureRecognizer.OnGestureDetected += OnGestureDetected;
+        }
+
+        public virtual void Destroy()
+        {
+            swipeGestureRecognizer.OnGestureDetected -= OnGestureDetected;    
+        }
+
+        public void OnGestureDetected(string gesture)
+        {
+            Gesture = gesture;
+            if (SwipeDetected != null)
+            {
+                SwipeDetected(this, new SwipeEventArgs()
+                {
+                    Gesture = gesture
+                });
+            }
+        }
+
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
 
@@ -264,11 +290,29 @@ namespace OFWGKTA
             }
         }
 
+        public string Gesture
+        {
+            get { return gesture; }
+            set
+            {
+                if (!gesture.Equals(value))
+                {
+                    gesture = value;
+                    RaisePropertyChanged("Gesture");
+                }
+            }
+        }
     }
 
     public class SkeletonEventArgs : EventArgs
     {
-        // just using this to fire an event when i'm done processing the skeleton
+        public Vector LeftHandPosition { get; set; }
+        public Vector RightHandPosition { get; set; }
+    }
+
+    public class SwipeEventArgs : EventArgs
+    {
+        public string Gesture { get; set; }
     }
 }
     
