@@ -306,6 +306,7 @@ namespace OFWGKTA
 
     public class SkeletonEventArgs : EventArgs
     {
+        public Vector LeftHandPosition { get; set; }
         public Vector RightHandPosition { get; set; }
     }
 

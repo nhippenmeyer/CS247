@@ -103,6 +103,7 @@ namespace OFWGKTA
                 {
                     SkeletonUpdated(this, new SkeletonEventArgs()
                     {
+                        LeftHandPosition = skeleton.Joints[JointID.HandLeft].Position,
                         RightHandPosition = skeleton.Joints[JointID.HandRight].Position
                     });
                 }
