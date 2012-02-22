@@ -16,6 +16,33 @@ namespace OFWGKTA
 {
     class WelcomeViewModel : ViewModelBase, IView
     {
+        private AppState appState;
+        private AppState AppState
+        {
+            get
+            {
+                // appState is set lazily
+                if (this.appState != null)
+                    return this.appState;
+
+                // try to get Kinect reference and instantiate its model
+                AudioKinectModel audioKinectModel = null;
+                try
+                {
+                    List<string> list = new List<string> {"record", "play"};
+                    audioKinectModel = new AudioKinectModel(list, null);
+                }
+                catch 
+                {
+                    // TODO: alert the user that no Kinect was detected
+                }
+
+                // mic interface is hardcoded to 0 here:
+                this.appState = new AppState(audioKinectModel, 0);
+                return this.appState;
+            }
+        }
+
         public const string ViewName = "WelcomeView";
 
         // Instance variables
@@ -52,31 +79,36 @@ namespace OFWGKTA
             if (SelectedIndex < 0 || SelectedIndex > this.applicationModes.Count)
                 return;
 
-            Stream fileStream;
             switch (this.applicationModes[SelectedIndex])
             {
                 case ("Replay"):
-                    OpenFileDialog openFileDialog = new OpenFileDialog { };
-                    openFileDialog.ShowDialog();
-                    try
                     {
-                        fileStream = File.OpenRead(openFileDialog.FileName);
-                        var curState = new DemoAppState(this.applicationModes[SelectedIndex], new ReplayKinectModel(fileStream));
-                        Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                        Stream fileStream;
+                        OpenFileDialog openFileDialog = new OpenFileDialog { };
+                        openFileDialog.ShowDialog();
+                        try
+                        {
+                            fileStream = File.OpenRead(openFileDialog.FileName);
+                            var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
+                            Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                        }
+                     catch { }
+                        break;
                     }
-                    catch { }
-                    break;
                 case ("Record"):
-                    SaveFileDialog saveFileDialog = new SaveFileDialog { };
-                    saveFileDialog.ShowDialog();
-                    try
                     {
-                        fileStream = File.OpenWrite(saveFileDialog.FileName);
-                        var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
-                        Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                        SaveFileDialog saveFileDialog = new SaveFileDialog { };
+                        saveFileDialog.ShowDialog();
+                        Stream fileStream;
+                        try
+                        {
+                            fileStream = File.OpenWrite(saveFileDialog.FileName);
+                            var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
+                            Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
+                        }
+                        catch { }
+                        break;
                     }
-                    catch { }
-                    break;
                 case ("Free Use"):
                     {
                         var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(null));
@@ -85,15 +117,12 @@ namespace OFWGKTA
                     }
                 case ("Audio App"):
                     {
-                        List<string> list = new List<string> { "color", "wireframe", "shape", "exit" };
-                        var curState = new AppState(new AudioKinectModel(list, null));
-                        Messenger.Default.Send(new NavigateMessage(HomeViewModel.ViewName, curState));
+                        Messenger.Default.Send(new NavigateMessage(HomeViewModel.ViewName, this.AppState));
                         break;
                     }
                 case ("Mic Record"):
                     {
-                        // mic index is currently hard-coded to 0
-                        Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, 0));
+                        Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, this.AppState));
                         break;
                     }
             }

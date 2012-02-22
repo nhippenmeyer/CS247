@@ -11,11 +11,12 @@ using GalaSoft.MvvmLight;
 using Microsoft.Win32;
 using System.IO;
 using Microsoft.Speech.Recognition;
+using System.ComponentModel;
 
 
 namespace OFWGKTA 
 {
-    class MicRecordViewModel : ViewModelBase, IView
+    class MicRecordViewModel : KinectViewModelBase, IView
     {
         public const string ViewName = "MicRecordViewModel";
 
@@ -27,7 +28,6 @@ namespace OFWGKTA
         private IAudioRecorder recorder;
         private IAudioPlayer player;
         
-        //private SampleAggregator sampleAggregator;
         private int leftPosition;
         private int rightPosition;
         private int totalWaveFormSamples;
@@ -66,8 +66,52 @@ namespace OFWGKTA
 
         public void Activated(object state)
         {
-            this.micIndex = (int)state;
-            BeginMonitoring();
+            this.Kinect = ((AppState)state).Kinect;
+            if (this.Kinect != null)
+            {
+                this.Kinect.SetSpeechCallback(speechCallback);
+                // subscribe to changes in kinect properties
+                // allows us to set callbacks at this level when stage status changes 
+                // (remember to unsubscribe from this)
+                this.Kinect.PropertyChanged += KinectListener; 
+            }
+
+            this.recorder.SampleAggregator.RaiseRestart();
+            this.micIndex = ((AppState)state).MicIndex;
+
+            if (this.recorder.RecordingState != RecordingState.Monitoring)
+                BeginMonitoring();
+        }
+
+        void KinectListener(object sender, PropertyChangedEventArgs e)
+        {
+
+            if (e.PropertyName == "IsOnStage")
+            {
+                if (!Kinect.IsOnStage)
+                {
+                    this.Stop();
+                }
+            }
+        }
+
+        void speechCallback(object sender, SpeechRecognizedEventArgs e)
+        {
+            if (this.Kinect.IsOnStage)
+            {
+                if (e.Result.Text == "record")
+                {
+                    if (recorder.RecordingState != RecordingState.Recording)
+                    {
+                        recorder.SampleAggregator.RaiseRestart();
+                        this.BeginRecording();
+                    }
+                }
+                else if (e.Result.Text == "play" && recorder.RecordingState != RecordingState.Recording)
+                {
+                    this.Playback();
+                }
+            }
         }
 
         private void BeginMonitoring()
@@ -204,6 +248,7 @@ namespace OFWGKTA
         {
             this.waveFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".wav");
             recorder.BeginRecording(waveFileName);
+            recorder.SampleAggregator.RaiseStart();
             RaisePropertyChanged("MicrophoneLevel");
             //RaisePropertyChanged("ShowWaveForm");
         }
@@ -211,16 +256,16 @@ namespace OFWGKTA
         public ICommand StopCommand { get { return stopCommand; } }
         private void Stop()
         {
+            recorder.SampleAggregator.RaiseStop();
             recorder.Stop();
         }
         
-
 
         private void OnShuttingDown(ShuttingDownMessage message)
         {
             if (message.CurrentViewName == ViewName)
             {
-                recorder.Stop();
+                this.Stop();
             }
         }
 
@@ -256,9 +301,8 @@ namespace OFWGKTA
 
         private void ReturnToWelcome()
         {
-            //Stop();
-            this.recorder = null;
-            this.player = null;
+            this.Stop();
+            Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 

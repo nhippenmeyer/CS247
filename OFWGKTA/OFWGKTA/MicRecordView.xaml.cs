@@ -22,5 +22,10 @@ namespace OFWGKTA
         {
             InitializeComponent();
         }
+
+        private void WaveFileTrimmerControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
