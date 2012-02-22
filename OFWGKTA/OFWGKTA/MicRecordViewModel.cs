@@ -25,8 +25,8 @@ namespace OFWGKTA
         private RelayCommand rewindCommand;
         private RelayCommand playbackCommand;
 
-        private IAudioRecorder recorder;
-        private IAudioPlayer player;
+        private AudioRecorder recorder;
+        private AudioPlayer player;
         
         private int leftPosition;
         private int rightPosition;
@@ -99,17 +99,22 @@ namespace OFWGKTA
         {
             if (this.Kinect.IsOnStage)
             {
-                if (e.Result.Text == "record")
+                if (e.Result.Text == "odd future record")
                 {
-                    if (recorder.RecordingState != RecordingState.Recording)
+                    if (recorder.RecordingState != RecordingState.Recording && player.PlayState == PlaybackState.Stopped) 
                     {
+                        Console.WriteLine(e.Result.Confidence);
                         recorder.SampleAggregator.RaiseRestart();
                         this.BeginRecording();
                     }
                 }
-                else if (e.Result.Text == "play" && recorder.RecordingState != RecordingState.Recording)
+                else if (e.Result.Text == "odd future play" && recorder.RecordingState != RecordingState.Recording)
                 {
-                    this.Playback();
+                    Console.WriteLine(e.Result.Confidence);
+                    if (recorder.RecordedTime != TimeSpan.Zero)
+                    {
+                        this.Playback();
+                    }
                 }
             }
         }
@@ -248,6 +253,7 @@ namespace OFWGKTA
         {
             this.waveFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".wav");
             recorder.BeginRecording(waveFileName);
+            recorder.SampleAggregator.RaiseRestart();
             recorder.SampleAggregator.RaiseStart();
             RaisePropertyChanged("MicrophoneLevel");
             //RaisePropertyChanged("ShowWaveForm");

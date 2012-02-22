@@ -59,6 +59,21 @@ namespace OFWGKTA
             set { inStream.StartPosition = value; }
         }
 
+        public PlaybackState PlayState
+        {
+            get
+            {
+                if (waveOut == null)
+                {
+                    return PlaybackState.Stopped;
+                }
+                else
+                {
+                    return waveOut.PlaybackState;
+                }
+            }
+        }
+
         public TimeSpan EndPosition
         {
             get { return inStream.EndPosition; }

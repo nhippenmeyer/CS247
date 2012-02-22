@@ -57,6 +57,8 @@ namespace OFWGKTA
 
         void waveIn_RecordingStopped(object sender, EventArgs e)
         {
+            waveIn.DataAvailable -= waveIn_DataAvailable;
+            waveIn.RecordingStopped -= waveIn_RecordingStopped;
             recordingState = RecordingState.Stopped;
             writer.Dispose();
             Stopped(this, EventArgs.Empty);
