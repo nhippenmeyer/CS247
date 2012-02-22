@@ -67,11 +67,14 @@ namespace OFWGKTA
         public void Activated(object state)
         {
             this.Kinect = ((AppState)state).Kinect;
-            this.Kinect.SetSpeechCallback(speechCallback);
-            // subscribe to changes in kinect properties
-            // allows us to set callbacks at this level when stage status changes 
-            // (remember to unsubscribe from this)
-            this.Kinect.PropertyChanged += KinectListener; 
+            if (this.Kinect != null)
+            {
+                this.Kinect.SetSpeechCallback(speechCallback);
+                // subscribe to changes in kinect properties
+                // allows us to set callbacks at this level when stage status changes 
+                // (remember to unsubscribe from this)
+                this.Kinect.PropertyChanged += KinectListener; 
+            }
 
             this.recorder.SampleAggregator.RaiseRestart();
             this.micIndex = ((AppState)state).MicIndex;
@@ -98,7 +101,11 @@ namespace OFWGKTA
             {
                 if (e.Result.Text == "record")
                 {
-                    this.BeginRecording();
+                    if (recorder.RecordingState != RecordingState.Recording)
+                    {
+                        recorder.SampleAggregator.RaiseRestart();
+                        this.BeginRecording();
+                    }
                 }
                 else if (e.Result.Text == "play" && recorder.RecordingState != RecordingState.Recording)
                 {
