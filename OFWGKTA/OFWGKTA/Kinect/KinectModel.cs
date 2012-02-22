@@ -34,20 +34,29 @@ namespace OFWGKTA
         private Vector hipCenter;
 
         protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
-        protected string gesture;
+        public event EventHandler<SwipeEventArgs> SwipeDetected;
+        private string gesture = "";
 
         public KinectModel() : base()
         {
-            this.gesture = "none";
-            swipeGestureRecognizer = new SwipeGestureDetector();
             swipeGestureRecognizer.OnGestureDetected += OnGestureDetected;
         }
 
-        public virtual void Destroy() { }
+        public virtual void Destroy()
+        {
+            swipeGestureRecognizer.OnGestureDetected -= OnGestureDetected;    
+        }
 
         public void OnGestureDetected(string gesture)
         {
             Gesture = gesture;
+            if (SwipeDetected != null)
+            {
+                SwipeDetected(this, new SwipeEventArgs()
+                {
+                    Gesture = gesture
+                });
+            }
         }
 
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
@@ -297,7 +306,12 @@ namespace OFWGKTA
 
     public class SkeletonEventArgs : EventArgs
     {
-        // just using this to fire an event when i'm done processing the skeleton
+        public Vector RightHandPosition { get; set; }
+    }
+
+    public class SwipeEventArgs : EventArgs
+    {
+        public string Gesture { get; set; }
     }
 }
     

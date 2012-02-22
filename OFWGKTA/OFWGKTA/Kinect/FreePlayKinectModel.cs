@@ -101,10 +101,11 @@ namespace OFWGKTA
 
                 if (SkeletonUpdated != null)
                 {
-                    SkeletonUpdated(this, new SkeletonEventArgs());
+                    SkeletonUpdated(this, new SkeletonEventArgs()
+                    {
+                        RightHandPosition = skeleton.Joints[JointID.HandRight].Position
+                    });
                 }
-
-                swipeGestureRecognizer.Add((skeleton.Joints[JointID.HandLeft]).Position, kinectRuntime.SkeletonEngine);
             }
         }
     }
