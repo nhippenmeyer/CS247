@@ -34,7 +34,10 @@ CS247 Project 4: Gestural Interfaces
 						<a href="#2">
 			II. Initial Prototyping</a>
 						<a href="#3">
+						<br/>
 			III. Wizard-of-Oz Testing</a>
+						<a href="#4">
+			IV. Functional Prototype I</a>
 		</nav>
 	</header>
 
@@ -303,6 +306,125 @@ Gestures which might involve lifting the guitar too high can block too many join
 			</p>
 			<img src="img/WizardofOz.jpg"/>
 				</a>
+				<a name="4">
+					<h1>
+						IV. Functional Prototype I
+					</h1>
+					<h3>
+						Feature Choices, Rationale, & Implementation Progress
+					</h3>
+					<p>
+						For the first functional prototype of our guitarist-friendly music recording interface, we chose to implement the following features:
+					</p>
+					<ul>
+						<li>
+							Voice-activated audio recording interface
+							<ul>
+								<li>
+									Say "record" to start recording (while on-stage)
+								</li>
+								<li>
+									Step off stage to stop recording
+								</li>
+								<li>
+									"Play" to cue playback
+								</li>
+								<li>
+									"Stop" to stop playback
+								</li>
+							</ul>
+						</li>
+						<li>
+							Gesture-based audio recording interface
+							<ul>
+								<li>
+									Swipe right to record
+								</li>
+								<li>
+									Swipe left to stop recording
+								</li>
+								<li>
+									Swipe left to start playback
+								</li>
+								<li>
+									Swipe left while playing to stop playback
+								</li>
+							</ul>
+						<li>
+							Stage indicator and clutch
+						</li>
+						<li>
+							Waveform display
+						</li>
+						<li>
+							Microphone input level display
+						</li>
+						<li>
+							Microphone input level adjustment
+						</li>
+						<li>
+							Elapsed time display
+						</li>
+					</ul>
+					<p>
+						While our main focus in terms of features was getting our recording interface up and running and allowing users to start recording, stop recording, and play back recordings, we also implemented two different controllers for our application.  The first controller utilizes a combination of voice commands and a clutch (based on the position of the user's head) in order to determine if he/she is "on-stage" or not.  As the user moves around in front of the Kinect, the position of their head is tracked and displayed on screen.  If a user is "on-stage" (i.e. - their head is centered relative to the Kinect), the indicator at the top of the screen turns from red to blue, notifying them that they can now start recording by saying "record."  Recording can then be stopped by stepping off-stage.  The rationale behind this design decision was to eliminate false positives by ensuring that voice commands are only detected when someone actually intends to use our app.  As far as the choice to track the user's head goes, we determined that head position is a good indicator of body position and a guitarist's head is also hardly ever occluded (as opposed to their waistline), so the Kinect can reliably pick it up.
+					</p>
+					<p>
+						Our second controller is entirely gesture-based and relies on swiping motions in order to start/stop playback and recording.  The rationale behind this came mainly from our wizard-of-oz testing where we discovered that one-handed gestures are natural for guitarists to perform using their strumming hand.  We also feel that a swiping gesture is really easy to remember, isn't too fatiguing, and can be reliably detected using the Kinect.
+					</p>
+					<p>
+						Another feature that we chose to include was a waveform display that traces out the actual wave that is being recorded by our app.  This gives users visual feedback and confirms that they have in fact started or stopped a recording.  We are also thinking about including a playhead marker that indicates playback position so users know exactly where they are in a track.
+					</p>
+					<p>
+						Our microphone level adjustment allows users to control the input volume of the microphone using a left-to-right slider, which can be confirmed by looking at the microphone input level display.  The rationale behind the slider was to give users greater control over their audio recordings and allow them to eliminate clipping (or distortion from the input level being too high).  This is especially important when recording instruments because clipping can make even the best guitarist sound awful.
+					</p>
+					<p>
+						The elapsed time display is similar to the waveform display in that it offers users visual feedback and confirms that audio is being recorded.  It also lets users know how long they've been recording for and could be used in the future to make fine adjustments to the playhead position.
+					</p>
+					<h3>
+						Remaining Implementation Ideas/Design Issues (from high priority to low priority)
+					</h3>
+					<p/>
+					<ul>
+						<li>
+						Reorganize audio recorder to better support multiple tracks
+						</li>
+						<li>
+						Better understand Sample Aggregator implementation to represent multiple waveforms
+						</li>
+						<li>
+						Simultaneous playback and audio recording
+						</li>
+						<li>
+						Being able to scroll through wider waveforms rather than having them cut off at the end of the screen
+						</li>
+						<li>
+						Navigating to a specific point within a track
+						</li>
+						<li>
+						Exporting audio into a convenient format
+						</li>
+						<li>
+						Microphone selection
+						</li>
+						<li>
+						Add effects (distortion? flange? echo?)
+						</li>
+					</ul>
+					<h3>
+						Sources Cited
+					</h3>
+					<p>
+						<a href="http://channel9.msdn.com/coding4fun/articles/NET-Voice-Recorder">
+						.NET Voice Recorder
+						</a>
+					</p>
+					<p>
+						<a href="http://kinecttoolbox.codeplex.com/">
+						Kinect Toolbox
+						</a>
+					</p>
+				</a>
 	</div>
 
 	<footer>
@@ -311,8 +433,11 @@ Gestures which might involve lifting the guitar too high can block too many join
 			I. Team Formation and Application Area</a>
 						<a href="#2">
 			II. Initial Prototyping</a>
+						<br/>
 						<a href="#3">
 			III. Wizard-of-Oz Testing</a>
+						<a href="#4">
+			IV. Functional Prototype I</a>
 		</nav>
 
 		<nav class="links">
@@ -326,7 +451,7 @@ Computer Science 247: Human-Computer Interaction Design Studio</a>
 Project 4: Gestural Interfaces</a>
 		</nav>
 
-Last modified February 2nd, 2012
+Last modified February 24th, 2012
 	</footer>
 
 </body>
