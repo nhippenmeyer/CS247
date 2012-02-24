@@ -30,7 +30,7 @@ namespace OFWGKTA
         public AudioKinectModel(List<string> wordsToRecognize, EventHandler<SpeechRecognizedEventArgs> speechCallback) : base(null)
         {
             SkeletonUpdated += new EventHandler<SkeletonEventArgs>(ParseSkeletonUpdate);
-            SwipeDetected += new EventHandler<SwipeEventArgs>(SwipeGestureCallback);
+            //SwipeDetected += new EventHandler<SwipeEventArgs>(SwipeGestureCallback);
 
             if (wordsToRecognize != null && wordsToRecognize.Count > 0)
             {

@@ -44,7 +44,7 @@ namespace OFWGKTA
 
         void waveOut_PlaybackStopped(object sender, EventArgs e)
         {
-            this.PlaybackState = PlaybackState.Stopped;
+            //this.PlaybackState = PlaybackState.Stopped;
         }
 
         public void Stop()
@@ -59,7 +59,7 @@ namespace OFWGKTA
             set { inStream.StartPosition = value; }
         }
 
-        public PlaybackState PlayState
+        public PlaybackState PlaybackState
         {
             get
             {
@@ -81,7 +81,7 @@ namespace OFWGKTA
         }
 
         public TimeSpan CurrentPosition { get; set; }
-        public PlaybackState PlaybackState { get; private set; }
+        //public PlaybackState PlaybackState { get; private set; }
 
         public void Dispose()
         {

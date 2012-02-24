@@ -29,7 +29,7 @@ namespace OFWGKTA
                 AudioKinectModel audioKinectModel = null;
                 try
                 {
-                    List<string> list = new List<string> {"odd future record", "odd future play"};
+                    List<string> list = new List<string> {"record", "play", "stop"};
                     audioKinectModel = new AudioKinectModel(list, null);
                 }
                 catch 

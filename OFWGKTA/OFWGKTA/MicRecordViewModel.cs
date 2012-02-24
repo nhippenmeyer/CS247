@@ -69,6 +69,7 @@ namespace OFWGKTA
             this.Kinect = ((AppState)state).Kinect;
             if (this.Kinect != null)
             {
+                this.Kinect.SwipeDetected += new EventHandler<SwipeEventArgs>(Kinect_SwipeDetected);
                 this.Kinect.SetSpeechCallback(speechCallback);
                 // subscribe to changes in kinect properties
                 // allows us to set callbacks at this level when stage status changes 
@@ -81,6 +82,38 @@ namespace OFWGKTA
 
             if (this.recorder.RecordingState != RecordingState.Monitoring)
                 BeginMonitoring();
+        }
+
+        void Kinect_SwipeDetected(object sender, SwipeEventArgs e)
+        {
+            if (this.Kinect.IsOnStage)
+            {
+                if (e.Gesture == "SwipeToRight")
+                {
+                    if (this.recorder.RecordingState != RecordingState.Recording)
+                    {
+                        this.BeginRecording();
+                    }
+                }
+                else if (e.Gesture == "SwipeToLeft")
+                {
+                    if (this.recorder.RecordingState == RecordingState.Recording)
+                    {
+                        this.Stop();
+                    }
+                    else
+                    {
+                        if (this.player.PlaybackState == PlaybackState.Playing)
+                        {
+                            this.player.Stop();
+                        }
+                        else
+                        {
+                            this.Playback();
+                        }
+                    }
+                }
+            }
         }
 
         void KinectListener(object sender, PropertyChangedEventArgs e)
@@ -99,23 +132,35 @@ namespace OFWGKTA
         {
             if (this.Kinect.IsOnStage)
             {
-                if (e.Result.Text == "odd future record")
+                if (e.Result.Text == "record")
                 {
-                    if (recorder.RecordingState != RecordingState.Recording && player.PlayState == PlaybackState.Stopped) 
+                    if (e.Result.Confidence > .88)
                     {
-                        Console.WriteLine(e.Result.Confidence);
-                        recorder.SampleAggregator.RaiseRestart();
-                        this.BeginRecording();
+                        if (recorder.RecordingState != RecordingState.Recording && player.PlaybackState == PlaybackState.Stopped)
+                        {
+                            recorder.SampleAggregator.RaiseRestart();
+                            this.BeginRecording();
+                        }
                     }
                 }
-                else if (e.Result.Text == "odd future play" && recorder.RecordingState != RecordingState.Recording)
+                else if (e.Result.Text == "play" && recorder.RecordingState != RecordingState.Recording)
                 {
-                    Console.WriteLine(e.Result.Confidence);
-                    if (recorder.RecordedTime != TimeSpan.Zero)
+                    if (e.Result.Confidence > .88)
                     {
-                        this.Playback();
+                        if (recorder.RecordedTime != TimeSpan.Zero)
+                        {
+                            this.Playback();
+                        }
                     }
                 }
+                else if (e.Result.Text == "stop" && this.player.PlaybackState == PlaybackState.Playing)
+                {
+                    if (e.Result.Confidence > .88)
+                    {
+                        this.player.Stop();
+                    }
+                }
+
             }
         }
 
@@ -244,19 +289,28 @@ namespace OFWGKTA
         public ICommand PlaybackCommand { get { return playbackCommand; } }
         private void Playback()
         {
-            this.player.LoadFile(this.waveFileName);
-            this.player.Play();
+            if (this.recorder.RecordedTime != TimeSpan.Zero && this.recorder.RecordingState != RecordingState.Recording)
+            {
+                if (this.player.PlaybackState == PlaybackState.Stopped)
+                {
+                    this.player.LoadFile(this.waveFileName);
+                    this.player.Play();
+                }
+            }
         }
 
         public ICommand BeginRecordingCommand { get { return beginRecordingCommand; } }
         private void BeginRecording()
         {
-            this.waveFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".wav");
-            recorder.BeginRecording(waveFileName);
-            recorder.SampleAggregator.RaiseRestart();
-            recorder.SampleAggregator.RaiseStart();
-            RaisePropertyChanged("MicrophoneLevel");
-            //RaisePropertyChanged("ShowWaveForm");
+            if (this.player.PlaybackState == PlaybackState.Stopped)
+            {
+                this.waveFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".wav");
+                recorder.BeginRecording(waveFileName);
+                recorder.SampleAggregator.RaiseRestart();
+                recorder.SampleAggregator.RaiseStart();
+                RaisePropertyChanged("MicrophoneLevel");
+                //RaisePropertyChanged("ShowWaveForm");
+            }
         }
 
         public ICommand StopCommand { get { return stopCommand; } }
