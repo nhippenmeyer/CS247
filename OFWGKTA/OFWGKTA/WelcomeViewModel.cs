@@ -89,7 +89,7 @@ namespace OFWGKTA
                         try
                         {
                             fileStream = File.OpenRead(openFileDialog.FileName);
-                            var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
+                            var curState = new DemoAppState(this.applicationModes[SelectedIndex], new ReplayKinectModel(fileStream));
                             Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
                         }
                      catch { }

@@ -21,7 +21,7 @@ namespace OFWGKTA
 
         // Kinect related variables for UI
         static int appWidth = 640;
-        static double stageSize = .25; // portion of center of screen treated as stage, whole screen = 1
+        static double stageSize = .20; // portion of center of screen treated as stage, whole screen = 1
         static double stageLeft = ((1 - stageSize) / 2) * appWidth;
         static double stageRight = appWidth - stageLeft;
 
