@@ -70,7 +70,7 @@ namespace OFWGKTA
             IsOnStage = !(Head.X < stageLeft || Head.X > stageRight);
 
             // Feed points to gesture recognizer
-            swipeGestureRecognizer.Add(e.RightHandPosition, kinectRuntime.SkeletonEngine);
+            swipeGestureRecognizer.Add(HandRight, kinectRuntime.SkeletonEngine);
         }
 
         public void SwipeGestureCallback(object sender, SwipeEventArgs e)

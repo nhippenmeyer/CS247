@@ -33,6 +33,8 @@ namespace OFWGKTA
         private Vector kneeRight;
         private Vector hipCenter;
 
+        protected MenuRecognizer menuRecognizer = new MenuRecognizer(4, 100);
+        public MenuRecognizer MenuRecognizer { get { return menuRecognizer; } }
         protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
         public event EventHandler<SwipeEventArgs> SwipeDetected;
         private string gesture = "";
