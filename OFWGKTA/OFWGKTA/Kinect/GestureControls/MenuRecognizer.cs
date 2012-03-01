@@ -86,6 +86,7 @@ namespace OFWGKTA
         {
             this.Disabled = true;
             HideMenu();
+            StopTimer();
             this.SelectionDead = false;
         }
 
