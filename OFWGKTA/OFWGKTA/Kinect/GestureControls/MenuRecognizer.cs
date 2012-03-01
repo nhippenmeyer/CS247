@@ -10,7 +10,7 @@ namespace OFWGKTA
 {
     public class MenuRecognizer : ViewModelBase
     {
-        private double selectionZTolerance = 0.20;
+        private double selectionZTolerance = 0.15;
 
         private Timer selectionTimer;
         private bool menuEnabled = false;
@@ -40,6 +40,8 @@ namespace OFWGKTA
         #region Timer
         private void SelectionTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            this.SelectionDead = true;
+            this.MenuEnabled = false;
             if (this.MenuItemSelected != null)
             {
                 this.MenuItemSelected(this, new MenuEventArgs()
@@ -76,7 +78,6 @@ namespace OFWGKTA
         private void HideMenu()
         {
             this.MenuEnabled = false;
-            this.SelectionDead = false;
             this.HoverIndex = -1;
             this.SelectedIndex = -1;
         }
@@ -85,6 +86,7 @@ namespace OFWGKTA
         {
             this.Disabled = true;
             HideMenu();
+            this.SelectionDead = false;
         }
 
         public void Enable()
@@ -98,31 +100,16 @@ namespace OFWGKTA
         {
             if (deltaZ > this.selectionZTolerance)
             {
-                if (!this.SelectionDead)
+                if (this.SelectedIndex < 0)
                 {
-                    if (this.SelectedIndex < 0)
-                    {
-                        this.SelectedIndex = this.HoverIndex;
-                        StartTimer(1.5);
-                    }
-                    else
-                    {
-                        // At some point, we were 'pushing' a button but changed our selection
-                        // As a result, we've got a dead selection
-                        if (this.SelectedIndex != this.HoverIndex)
-                        {
-                            StopTimer();
-                            this.SelectedIndex = -1;
-                            this.SelectionDead = true;
-                        }
-                    }
+                    this.SelectedIndex = this.HoverIndex;
+                    StartTimer(1.5);
                 }
             }
             else
             {
                 StopTimer();
                 this.SelectedIndex = -1;
-                this.SelectionDead = false;
             }
         }
 
@@ -137,15 +124,20 @@ namespace OFWGKTA
         {
             if (handRight.Y < shoulderCenter.Y)
             {
-                if (!this.MenuEnabled)
+                if (!this.SelectionDead)
                 {
-                    ShowMenu(handRight);
+                    if (!this.MenuEnabled)
+                    {
+                        ShowMenu(handRight);
+                    }
+                    ProcessDelta(handRight.X - center.X);
+                    ProcessDeltaZ(center.Z - handRight.Z);
                 }
-                ProcessDelta(handRight.X - center.X);
-                ProcessDeltaZ(center.Z - handRight.Z);
             }
             else
             {
+                StopTimer();
+                this.SelectionDead = false;
                 HideMenu();
             }
         }
@@ -155,15 +147,20 @@ namespace OFWGKTA
             float shoulderWidth = (shoulderRight.X - shoulderCenter.X) * 2;
             if (handRight.X - shoulderRight.X > shoulderWidth)
             {
-                if (!this.MenuEnabled)
+                if (!this.SelectionDead)
                 {
-                    ShowMenu(handRight);
+                    if (!this.MenuEnabled)
+                    {
+                        ShowMenu(handRight);
+                    }
+                    ProcessDelta(handRight.Y - center.Y);
+                    ProcessDeltaZ(center.Z - handRight.Z);
                 }
-                ProcessDelta(handRight.Y - center.Y);
-                ProcessDeltaZ(center.Z - handRight.Z);
             }
             else
             {
+                StopTimer();
+                this.SelectionDead = false;
                 HideMenu();
             }
         }
