@@ -22,8 +22,14 @@ namespace OFWGKTA
         protected SkeletonRecorder recorder = new SkeletonRecorder();
         public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
 
+        public void Beep(object sender, MenuEventArgs e)
+        {
+            Console.Beep();
+        }
+
         public FreePlayKinectModel(Stream fileStream) : base()
         {
+            menuRecognizer.MenuItemSelected += Beep;
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
             if (fileStream != null)
             {

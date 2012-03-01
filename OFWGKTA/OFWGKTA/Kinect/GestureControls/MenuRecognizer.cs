@@ -4,18 +4,15 @@ using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
 using Microsoft.Research.Kinect.Nui;
+using System.Timers;
 
 namespace OFWGKTA
 {
-    public class MenuEventArgs : EventArgs
-    {
-        public int SelectedIndex;
-    }
-
     public class MenuRecognizer : ViewModelBase
     {
         private double selectionZTolerance = 0.20;
 
+        private Timer selectionTimer;
         private bool menuEnabled = false;
         private bool isHorizontal; // whether menu is enabled above head and panned L/R, or to right and U/D
         private int maxIndex;
@@ -25,7 +22,7 @@ namespace OFWGKTA
         private int selectedIndex = -1;
         public bool selectionDead = false;
 
-        //public event EventHandler<MenuEventArgs> MenuItemSelected;
+        public event EventHandler<MenuEventArgs> MenuItemSelected;
 
         public bool Disabled { get; private set; }
 
@@ -40,6 +37,36 @@ namespace OFWGKTA
             this.menuSize = menuSize;
         }
 
+        #region Timer
+        private void SelectionTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (this.MenuItemSelected != null)
+            {
+                this.MenuItemSelected(this, new MenuEventArgs()
+                {
+                    SelectedIndex = this.SelectedIndex
+                });
+            }
+        }
+
+        private void StartTimer(double seconds)
+        {
+            this.selectionTimer = new Timer(seconds * 1000);
+            this.selectionTimer.AutoReset = false;
+            this.selectionTimer.Elapsed += new ElapsedEventHandler(SelectionTimer_Elapsed);
+            this.selectionTimer.Enabled = true;
+        }
+
+        private void StopTimer()
+        {
+            if (this.selectionTimer != null)
+            {
+                this.selectionTimer.Dispose();
+            }
+        }
+        #endregion
+
+        #region Menu
         private void ShowMenu(Vector center)
         {
             this.MenuEnabled = true;
@@ -54,6 +81,58 @@ namespace OFWGKTA
             this.SelectedIndex = -1;
         }
 
+        public void Disable()
+        {
+            this.Disabled = true;
+            HideMenu();
+        }
+
+        public void Enable()
+        {
+            this.Disabled = false;
+        }
+        #endregion
+
+        #region ProcessDeltas
+        private void ProcessDeltaZ(float deltaZ)
+        {
+            if (deltaZ > this.selectionZTolerance)
+            {
+                if (!this.SelectionDead)
+                {
+                    if (this.SelectedIndex < 0)
+                    {
+                        this.SelectedIndex = this.HoverIndex;
+                        StartTimer(1.5);
+                    }
+                    else
+                    {
+                        // At some point, we were 'pushing' a button but changed our selection
+                        // As a result, we've got a dead selection
+                        if (this.SelectedIndex != this.HoverIndex)
+                        {
+                            StopTimer();
+                            this.SelectedIndex = -1;
+                            this.SelectionDead = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                StopTimer();
+                this.SelectedIndex = -1;
+                this.SelectionDead = false;
+            }
+        }
+
+        private void ProcessDelta(float delta)
+        {
+            this.HoverIndex = Math.Min(this.maxIndex, Math.Max(0, (int)Math.Ceiling((delta / this.menuSize + 0.5) * this.maxIndex)));
+        }
+        #endregion
+
+        #region AddPoints
         private void AddHorizontal(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
         {
             if (handRight.Y < shoulderCenter.Y)
@@ -62,45 +141,31 @@ namespace OFWGKTA
                 {
                     ShowMenu(handRight);
                 }
-
-                float delta = handRight.X - center.X;
-                this.HoverIndex = Math.Min(this.maxIndex, Math.Max(0, (int)Math.Ceiling((delta / this.menuSize + 0.5) * this.maxIndex)));
-
-                float deltaZ = center.Z - handRight.Z;
-                if (deltaZ > this.selectionZTolerance)
-                {
-                    if (!this.SelectionDead)
-                    {
-                        if (this.SelectedIndex < 0)
-                        {
-                            this.SelectedIndex = this.HoverIndex;
-                        }
-                        else
-                        {
-                            if (this.SelectedIndex != this.HoverIndex)
-                            {
-                                this.SelectedIndex = -1;
-                                this.SelectionDead = true;
-                                // disable things until they back up and push back down again
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    this.SelectedIndex = -1;
-                    this.SelectionDead = false;
-                }
+                ProcessDelta(handRight.X - center.X);
+                ProcessDeltaZ(center.Z - handRight.Z);
             }
             else
             {
                 HideMenu();
-                this.SelectionDead = false;
             }
         }
 
         private void AddVertical(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
         {
+            float shoulderWidth = (shoulderRight.X - shoulderCenter.X) * 2;
+            if (handRight.X - shoulderRight.X > shoulderWidth)
+            {
+                if (!this.MenuEnabled)
+                {
+                    ShowMenu(handRight);
+                }
+                ProcessDelta(handRight.Y - center.Y);
+                ProcessDeltaZ(center.Z - handRight.Z);
+            }
+            else
+            {
+                HideMenu();
+            }
         }
 
         public void Add(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
@@ -117,18 +182,9 @@ namespace OFWGKTA
                 }
             }
         }
+        #endregion
 
-        public void Disable()
-        {
-            this.Disabled = true;
-            this.menuEnabled = false;
-        }
-
-        public void Enable()
-        {
-            this.Disabled = false;
-        }
-
+        #region Properties
         public bool MenuEnabled
         {
             get { return this.menuEnabled; }
@@ -180,5 +236,12 @@ namespace OFWGKTA
                 }
             }
         }
+        #endregion
     }
+
+    public class MenuEventArgs : EventArgs
+    {
+        public int SelectedIndex;
+    }
+
 }

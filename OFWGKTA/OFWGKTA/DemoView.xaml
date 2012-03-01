@@ -22,5 +22,6 @@
         <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="104,147,0,0" Text="{Binding Path=Kinect.MenuRecognizer.HoverIndex}" Name="TextBlock" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
         <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="471,147,0,0" Text="{Binding Path=Kinect.MenuRecognizer.SelectedIndex}" Name="TextBlock2" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
         <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="285,147,0,0" Text="{Binding Path=Kinect.MenuRecognizer.SelectionDead}" Name="TextBlock3" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
+        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="104,25,0,0" Text="{Binding Path=Kinect.MenuRecognizer.MenuEnabled}" Name="TextBlock4" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
     </Grid>
 </UserControl>
