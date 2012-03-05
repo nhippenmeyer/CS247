@@ -19,19 +19,19 @@ namespace OFWGKTA
     {
         public const string ViewName = "MicRecordViewModel";
 
-        private RelayCommand playAllCommand;
-        private RelayCommand newTrackCommand;
-        private RelayCommand beginRecordingCommand;
-        private RelayCommand stopCommand;
-        private RelayCommand playbackCommand;
-
-        //private AudioTrack audioTrack;
-
+        /**
+         * Instance variables
+         */
+        private List<AudioTrack> audioTracks;
         private int micIndex;
+        private float lastPeak;
 
+        /**
+         * Constructor
+         */ 
         public MicRecordViewModel()
         {
-            this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
+            this.goBackCommand = new RelayCommand(() => GoBack());
             this.newTrackCommand = new RelayCommand(() => newTrack());
             this.beginRecordingCommand = new RelayCommand(() => BeginRecording());
             this.stopCommand = new RelayCommand(() => Stop());
@@ -40,6 +40,9 @@ namespace OFWGKTA
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
         }
         
+        /**
+         * Initialization
+         */
         public void Activated(object state)
         {
             micIndex = (int)state;
@@ -47,80 +50,51 @@ namespace OFWGKTA
             if (this.audioTracks == null)
             {
                 audioTracks = new List<AudioTrack>();
-                AudioTrack audioTrack = new AudioTrack(micIndex);
-                this.audioTracks.Add(audioTrack);
-
-                //this.audioTrack = new AudioTrack(micIndex);
-                //this.audioTrack.State = AudioTrackState.Monitoring;
-                //this.audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
-                //RaisePropertyChanged("MicrophoneLevel");
+                newTrack();
             }
         }
 
-        public ICommand NewTrackCommand { get { return newTrackCommand; } }
-        private void newTrack()
+        /**
+         * Properties
+         */
+
+        /* TODO:
+        public double MicrophoneLevel
         {
-            AudioTrack audioTrack = new AudioTrack(micIndex);
-            this.audioTracks.Add(audioTrack);
-        }
-
-        public ICommand PlayAllCommand { get { return playAllCommand; } }
-        private void playAll()
-        {
-            foreach (AudioTrack track in this.audioTracks)
-                track.State = AudioTrackState.Playing;
-        }
-
-        private List<AudioTrack> audioTracks;
-
-
-        
-
-
-
-        void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
-        {
-            //lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
-            //RaisePropertyChanged("CurrentInputLevel");
-            RaisePropertyChanged("RecordedTime");
-        }
-
-        /*
-        public ICommand RewindCommand { get { return rewindCommand; } }
-        private void Rewind()
-        {
-            this.player.CurrentPosition = new System.TimeSpan(0);
+            get { return recorder.MicrophoneLevel; }
+            set { recorder.MicrophoneLevel = value; }
         }
         */
 
-        public ICommand PlaybackCommand { get { return playbackCommand; } }
-        private void Playback()
+        public string RecordedTime
         {
-            this.audioTracks.Last().State = AudioTrackState.Playing;
-            //this.audioTrack.State = AudioTrackState.Playing;
-            //this.player.LoadFile(this.waveFileName);
-            //this.player.Play();
+            get
+            {
+                if (audioTracks == null
+                    ||
+                    audioTracks.Count() == 0)
+                    return "";
+
+                TimeSpan current = audioTracks.Last().RecordedTime;
+                return String.Format("{0:D2}:{1:D2}.{2:D3}", current.Minutes, current.Seconds, current.Milliseconds);
+            }
         }
 
-        public ICommand BeginRecordingCommand { get { return beginRecordingCommand; } }
-        private void BeginRecording()
+        // multiply by 100 because the Progress bar's default maximum value is 100
+        public float CurrentInputLevel { get { return lastPeak * 100; } }
+
+
+        /**
+         * Handlers
+         */
+
+        void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
         {
-            //AudioTrack audioTrack = new AudioTrack(micIndex);
-            //this.audioTracks.Add(audioTrack);
-            this.audioTracks.Last().State = AudioTrackState.Monitoring;
-            this.audioTracks.Last().State = AudioTrackState.Recording;
-
-
-            //RaisePropertyChanged("MicrophoneLevel");
-            //RaisePropertyChanged("ShowWaveForm");
+            lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
+            RaisePropertyChanged("CurrentInputLevel");
+            RaisePropertyChanged("RecordedTime");
         }
 
-        public ICommand StopCommand { get { return stopCommand; } }
-        private void Stop()
-        {
-            this.audioTracks.Last().State = AudioTrackState.StopRecording;
-        }
-        
         private void OnShuttingDown(ShuttingDownMessage message)
         {
             if (message.CurrentViewName == ViewName)
@@ -130,30 +104,84 @@ namespace OFWGKTA
             }
         }
 
-        public string RecordedTime
+
+        /**
+         * Commands
+         */
+
+        private RelayCommand newTrackCommand;
+        public ICommand NewTrackCommand { get { return newTrackCommand; } }
+        private void newTrack()
         {
-            get
+            if (this.audioTracks.Count() > 0)
             {
-                return "poop";
-                //TimeSpan current = recorder.RecordedTime;
-                //return String.Format("{0:D2}:{1:D2}.{2:D3}", current.Minutes, current.Seconds, current.Milliseconds);
+                if (this.audioTracks.Last().State != AudioTrackState.Loaded)
+                    return;
+
+                this.audioTracks.Last().SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
             }
+
+            AudioTrack audioTrack = new AudioTrack(micIndex);
+            audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
+            this.audioTracks.Add(audioTrack);
+
+            RaisePropertyChanged("RecordedTime");
         }
 
-        /*
-        public double MicrophoneLevel
+        private RelayCommand playAllCommand;
+        public ICommand PlayAllCommand { get { return playAllCommand; } }
+        private void playAll()
         {
-            get { return recorder.MicrophoneLevel; }
-            set { recorder.MicrophoneLevel = value; }
-        }*/
+            if (this.audioTracks.Count == 0
+                ||
+                this.audioTracks.Last().State != AudioTrackState.Loaded)
+                return;
 
-        // multiply by 100 because the Progress bar's default maximum value is 100
-        //public float CurrentInputLevel { get { return lastPeak * 100; } }
+            foreach (AudioTrack track in this.audioTracks)
+                track.State = AudioTrackState.Playing;
+        }
 
+        private RelayCommand playbackCommand;
+        public ICommand PlaybackCommand { get { return playbackCommand; } }
+        private void Playback()
+        {
+            if (this.audioTracks.Count == 0
+                ||
+                this.audioTracks.Last().State != AudioTrackState.Loaded)
+                return; 
+            
+            this.audioTracks.Last().State = AudioTrackState.Playing;
+        }
+
+        private RelayCommand beginRecordingCommand;
+        public ICommand BeginRecordingCommand { get { return beginRecordingCommand; } }
+        private void BeginRecording()
+        {
+            if (this.audioTracks.Count == 0)
+                return;
+
+            if (this.audioTracks.Last().State == AudioTrackState.Loaded)
+                this.audioTracks.Last().State = AudioTrackState.Monitoring;
+
+            if (this.audioTracks.Last().State != AudioTrackState.Monitoring)
+                return;
+
+            this.audioTracks.Last().State = AudioTrackState.Recording;
+        }
+
+        private RelayCommand stopCommand;
+        public ICommand StopCommand { get { return stopCommand; } }
+        private void Stop()
+        {
+            if (this.audioTracks.Last().State != AudioTrackState.Recording)
+                return;
+
+            this.audioTracks.Last().State = AudioTrackState.StopRecording;
+        }
+        
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
-
-        private void ReturnToWelcome()
+        private void GoBack()
         {
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }

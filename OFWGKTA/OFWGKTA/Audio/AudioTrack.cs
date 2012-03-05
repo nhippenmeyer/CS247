@@ -51,7 +51,7 @@ namespace OFWGKTA
             sampleAggregator = new SampleAggregator();
             sampleAggregator.NotificationCount = waveFormat.SampleRate / 10;
 
-            //this.State = AudioTrackState.Monitoring;
+            this.State = AudioTrackState.Monitoring;
         }
 
         /**
@@ -208,6 +208,21 @@ namespace OFWGKTA
             saver.SaveAudio(fileName);
 
             this.State = AudioTrackState.Loaded;
+        }
+
+        public TimeSpan RecordedTime
+        {
+            get
+            {
+                if (writer == null)
+                {
+                    return TimeSpan.Zero;
+                }
+                else
+                {
+                    return TimeSpan.FromSeconds((double)writer.Length / writer.WaveFormat.AverageBytesPerSecond);
+                }
+            }
         }
     }
 }
