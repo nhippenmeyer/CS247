@@ -105,7 +105,7 @@ namespace OFWGKTA
                 KneeRight = GetScaledPosition(skeleton.Joints[JointID.KneeRight]);
                 HipCenter = GetScaledPosition(skeleton.Joints[JointID.HipCenter]);
 
-                menuRecognizer.Add(HandRight, ShoulderCenter, ShoulderRight);
+                menuRecognizer.Add(this);
                 if (SkeletonUpdated != null)
                 {
                     SkeletonUpdated(this, new SkeletonEventArgs()

@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace OFWGKTA
 {
-    public class MenuRecognizer : ViewModelBase
+    public class MenuRecognizer : ViewModelBase, IGestureRecognizer
     {
         private double selectionZTolerance = 0.15;
 
@@ -21,6 +21,7 @@ namespace OFWGKTA
         private int hoverIndex = -1; // index of item hovered over from 0 to numberOfItems - 1
         private int selectedIndex = -1;
         public bool selectionDead = false;
+        public bool isClutched = false;
 
         public event EventHandler<MenuEventArgs> MenuItemSelected;
 
@@ -166,17 +167,17 @@ namespace OFWGKTA
             }
         }
 
-        public void Add(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
+        public void Add(KinectModel kinect)
         {
             if (!Disabled)
             {
                 if (isHorizontal)
                 {
-                    AddHorizontal(handRight, shoulderCenter, shoulderRight);
+                    AddHorizontal(kinect.HandRight, kinect.ShoulderCenter, kinect.ShoulderRight);
                 }
                 else
                 {
-                    AddVertical(handRight, shoulderCenter, shoulderRight);
+                    AddVertical(kinect.HandRight, kinect.ShoulderCenter, kinect.ShoulderRight);
                 }
             }
         }
@@ -231,6 +232,19 @@ namespace OFWGKTA
                 {
                     this.selectedIndex = value;
                     RaisePropertyChanged("SelectedIndex");
+                }
+            }
+        }
+
+        public bool IsClutched
+        {
+            get { return this.isClutched; }
+            private set
+            {
+                if (this.isClutched != value)
+                {
+                    this.isClutched = value;
+                    RaisePropertyChanged("IsClutched");
                 }
             }
         }
