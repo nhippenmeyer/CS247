@@ -20,6 +20,7 @@ namespace OFWGKTA
         private Vector center; // center assigned on menuEnabled
         private int hoverIndex = -1; // index of item hovered over from 0 to numberOfItems - 1
         private int selectedIndex = -1;
+        private bool autoClose;
         public bool selectionDead = false;
 
         public event EventHandler<MenuEventArgs> MenuItemSelected;
@@ -27,14 +28,18 @@ namespace OFWGKTA
         public bool Disabled { get; private set; }
 
         public MenuRecognizer(int numberOfItems, int menuSize)
-            : this(numberOfItems, menuSize, true) { }
+            : this(numberOfItems, menuSize, true, true) { }
 
         public MenuRecognizer(int numberOfItems, int menuSize, bool isHorizontal)
+            : this(numberOfItems, menuSize, isHorizontal, true) { }
+
+        public MenuRecognizer(int numberOfItems, int menuSize, bool isHorizontal, bool autoClose)
         {
             this.Disabled = false;
             this.isHorizontal = isHorizontal;
             this.maxIndex = numberOfItems - 1;
             this.menuSize = menuSize;
+            this.autoClose = autoClose;
         }
 
         #region Timer
@@ -123,7 +128,7 @@ namespace OFWGKTA
         #region AddPoints
         private void AddHorizontal(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
         {
-            if (handRight.Y < shoulderCenter.Y)
+            if (handRight.Y < shoulderCenter.Y)// || !this.autoClose)
             {
                 if (!this.SelectionDead)
                 {
@@ -137,9 +142,12 @@ namespace OFWGKTA
             }
             else
             {
-                StopTimer();
                 this.SelectionDead = false;
-                HideMenu();
+                //if (this.autoClose)
+                //{
+                    StopTimer();
+                    HideMenu();
+                //}
             }
         }
 
