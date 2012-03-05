@@ -33,11 +33,13 @@ namespace OFWGKTA
         private Vector kneeRight;
         private Vector hipCenter;
 
-        protected MenuRecognizer menuRecognizer = new MenuRecognizer(4, 100);
+        protected MenuRecognizer menuRecognizer = new MenuRecognizer(4, 100, false);
         public MenuRecognizer MenuRecognizer { get { return menuRecognizer; } }
         protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
         public event EventHandler<SwipeEventArgs> SwipeDetected;
         private string gesture = "";
+
+        private bool menuMode = false;
 
         public KinectModel() : base()
         {
@@ -301,6 +303,19 @@ namespace OFWGKTA
                 {
                     gesture = value;
                     RaisePropertyChanged("Gesture");
+                }
+            }
+        }
+
+        public bool MenuMode
+        {
+            get { return menuMode; }
+            set
+            {
+                if (!menuMode.Equals(value))
+                {
+                    menuMode = value;
+                    RaisePropertyChanged("MenuMode");
                 }
             }
         }
