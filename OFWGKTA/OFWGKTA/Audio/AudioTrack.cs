@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NAudio.Wave;
+using System.IO;
 
 namespace OFWGKTA
 {
     public enum AudioTrackState
     {
-        Stopped,
         Monitoring,
-        Playing,
         Recording,
-        RequestedStop
+        StopRecording,
+        Loaded,
+        Playing
     }
 
     /**
@@ -26,11 +27,35 @@ namespace OFWGKTA
          * Constants
          */
         private const uint maxRecordingLengthInSeconds = 60;
-        private const WaveFormat waveFormat = new WaveFormat(44100, 1);
-        private const long maxFileLength = waveFormat.AverageBytesPerSecond * maxRecordingLengthInSeconds
+        private static WaveFormat waveFormat = new WaveFormat(44100, 1);
+        private static long maxFileLength = waveFormat.AverageBytesPerSecond * maxRecordingLengthInSeconds;
+
+        /** 
+         * Instance variables
+         */
+        WaveFileWriter writer;     
+        WaveIn waveIn;
+        int recordingDeviceIndex;
+        private string waveFileName;
+
+        // TODO? integrate player class into this class
+        IAudioPlayer player;
 
         /**
-         * Public audio track state property
+         * Constructor
+         */ 
+        public AudioTrack(int recordingDeviceIndex)
+        {
+            this.recordingDeviceIndex = recordingDeviceIndex;
+
+            sampleAggregator = new SampleAggregator();
+            sampleAggregator.NotificationCount = waveFormat.SampleRate / 10;
+
+            //this.State = AudioTrackState.Monitoring;
+        }
+
+        /**
+         * State property
          */
         AudioTrackState state;
         public AudioTrackState State
@@ -39,15 +64,96 @@ namespace OFWGKTA
             {
                 return state;
             }
-            // TODO? set 
+            set
+            {
+                // init -> monitoring
+                // OR
+                // loaded -> monitoring
+                if ((waveIn == null
+                     ||
+                     state == AudioTrackState.Loaded)
+                    &&
+                    value == AudioTrackState.Monitoring)
+                {
+                    waveIn = new WaveIn();
+                    waveIn.DeviceNumber = recordingDeviceIndex;
+                    waveIn.DataAvailable += waveIn_DataAvailable;
+                    waveIn.WaveFormat = waveFormat;
+                    waveIn.StartRecording();
+                }
+
+                // monitoring -> recording
+                else if (state == AudioTrackState.Monitoring
+                         &&
+                         value == AudioTrackState.Recording)
+                {
+                    this.waveFileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".wav");
+                    writer = new WaveFileWriter(waveFileName, waveFormat);
+                    waveIn.RecordingStopped += new EventHandler(waveIn_RecordingStopped);
+                }
+
+                // recording -> stop recording
+                else if (state == AudioTrackState.Recording
+                         &&
+                         value == AudioTrackState.StopRecording)
+                {
+                    waveIn.StopRecording();
+                }
+
+                // stop recording -> loaded
+                else if (state == AudioTrackState.StopRecording
+                         &&
+                         value == AudioTrackState.Loaded)
+                {
+                    writer.Dispose();
+                    writer = null;
+
+                    waveIn.Dispose();
+                    waveIn.DataAvailable -= waveIn_DataAvailable;
+                    waveIn.RecordingStopped -= new EventHandler(waveIn_RecordingStopped);
+                    waveIn = null;
+                }
+
+                // loaded -> playing
+                else if (state == AudioTrackState.Loaded
+                         &&
+                         value == AudioTrackState.Playing)
+                {
+                    // TODO: improve this mode, a lot
+                    this.player = new AudioPlayer();
+                    this.player.LoadFile(this.waveFileName);
+                    this.player.Play();
+                    return; // <- hack
+                }
+ 
+                // throw exception
+                else
+                {
+                    throw new InvalidOperationException("Can't transition to  " + value.ToString() + " state from " + state.ToString() + " state");
+                }
+
+                // set state value
+                state = value;
+            }
+        }
+
+        /**
+         * SampleAggregator property
+         */
+        SampleAggregator sampleAggregator;
+        public SampleAggregator SampleAggregator
+        {
+            get
+            {
+                return sampleAggregator;
+            }
         }
 
 
         /**
-         * Writer instance variable and its helper method
+         * WaveIn event handlers
          */
-        WaveFileWriter writer;
-        
+
         // called from waveIn_DataAvailable
         private void writeBufferToFile(byte[] buffer, int bytesRecorded)
         {
@@ -58,32 +164,19 @@ namespace OFWGKTA
             }
             else
             {
-                // TODO:
-                Stop();
+                this.state = AudioTrackState.Loaded;
             }
         }
 
-        
-        /**
-         * Reader instance variable
-         */
-        WaveFileReader reader;
-
-
-        /**
-         * WaveIn iVar, handler and helper
-         */
-        WaveIn waveIn;
-        
-        // ...
         private void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
             byte[] buffer = e.Buffer;
             int bytesRecorded = e.BytesRecorded;
 
+            // write buffer to file if recording
             if (this.state == AudioTrackState.Recording
                 ||
-                this.state == AudioTrackState.RequestedStop)
+                this.state == AudioTrackState.StopRecording)
             {
                 writeBufferToFile(buffer, bytesRecorded);
             }
@@ -98,27 +191,23 @@ namespace OFWGKTA
             }
         }
 
-        
-        /**
-         * Other iVars
-         */ 
-        
-        SampleAggregator sampleAggregator;
-        int recordingDeviceIndex;
-
-        
-        /**
-         * Constructor
-         */ 
-        AudioTrack(int recordingDeviceIndex)
+        void waveIn_RecordingStopped(object sender, EventArgs e)
         {
-            this.recordingDeviceIndex = recordingDeviceIndex;
-            
-            this.sampleAggregator = new SampleAggregator();
-            this.sampleAggregator.NotificationCount = waveFormat.SampleRate / 10;
 
-            this.state = AudioTrackState.Stopped;
+   
+            // save wave file
+            AudioSaver saver = new AudioSaver(this.waveFileName);
+
+            // TODO: allow trimming recording
+            //saver.TrimFromStart = PositionToTimeSpan(LeftPosition);
+            //saver.TrimFromEnd = PositionToTimeSpan(TotalWaveFormSamples - RightPosition);
+
+            // TODO: generate a more meaningful unique filename 
+            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".wav");
+            saver.SaveFileFormat = SaveFileFormat.Wav;
+            saver.SaveAudio(fileName);
+
+            this.State = AudioTrackState.Loaded;
         }
-
     }
 }
