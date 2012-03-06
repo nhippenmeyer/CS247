@@ -152,17 +152,12 @@ namespace OFWGKTA
 
                     testWriter.Close();
                     
-                    //PlaybackState playbackState = PlaybackState.Paused;
 
-
-                    /*
-                    // TODO: improve this mode, a lot
+                    // TODO: improve this: a lot
                     this.player = new AudioPlayer();
                     this.player.LoadFile(this.waveFileName);
                     this.player.Play();
-                    return; // <- hack
-                    */
-
+                    return; 
                 }
  
                 // throw exception
@@ -178,7 +173,6 @@ namespace OFWGKTA
 
         void waveOut_PlaybackStopped(object sender, EventArgs e)
         {
-            //this.PlaybackState = PlaybackState.Stopped;
             Console.WriteLine("PLAYBACK STOPPED!!!!");
         }
 
