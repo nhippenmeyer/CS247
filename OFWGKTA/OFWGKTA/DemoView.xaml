@@ -7,6 +7,17 @@
         <UserControl.Resources>
     </UserControl.Resources>
     <Grid Background="Black">
+            <ListBox Height="100" ItemsSource="{Binding MenuList}" SelectedIndex="{Binding Path=Kinect.MenuRecognizer.HoverIndex, Mode=OneWay}" Margin="0,12,0,368">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="10" BorderBrush="Black" BorderThickness="1" Margin="1">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Label}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         
         <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}" />
         <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="142,413,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" Panel.ZIndex="1" />

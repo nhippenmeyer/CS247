@@ -105,7 +105,6 @@ namespace OFWGKTA
                         break;
                 }
             }
-            menuRecognizer.Add(HandRight, ShoulderCenter, ShoulderRight);
         }
     }
 }

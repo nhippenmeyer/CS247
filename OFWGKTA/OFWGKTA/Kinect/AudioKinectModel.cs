@@ -30,8 +30,8 @@ namespace OFWGKTA
         public AudioKinectModel(List<string> wordsToRecognize, EventHandler<SpeechRecognizedEventArgs> speechCallback) : base(null)
         {
             SkeletonUpdated += new EventHandler<SkeletonEventArgs>(ParseSkeletonUpdate);
-            //SwipeDetected += new EventHandler<SwipeEventArgs>(SwipeGestureCallback);
-            MenuRecognizer.MenuItemSelected += new EventHandler<MenuEventArgs>(SelectMenuOption);
+            SwipeDetected += new EventHandler<SwipeEventArgs>(SwipeGestureCallback);
+            //MenuRecognizer.MenuItemSelected += new EventHandler<MenuEventArgs>(SelectMenuOption);
 
             if (wordsToRecognize != null && wordsToRecognize.Count > 0)
             {
@@ -70,15 +70,17 @@ namespace OFWGKTA
             // i'll know we updated the skeleton, so i should compute whether or not it's on stage
             IsOnStage = !(Head.X < stageLeft || Head.X > stageRight);
 
+            /*
             if (HandRight.Y < Head.Y) MenuMode = true;
 
             if (MenuMode)
             {
                 MenuRecognizer.Add(HandRight, ShoulderCenter, ShoulderRight);
             }
+            */
 
             // Feed points to gesture recognizer
-            swipeGestureRecognizer.Add(HandRight, kinectRuntime.SkeletonEngine);
+            swipeGestureRecognizer.Add(e.RightHandPosition, kinectRuntime.SkeletonEngine);
         }
 
         public void SwipeGestureCallback(object sender, SwipeEventArgs e)

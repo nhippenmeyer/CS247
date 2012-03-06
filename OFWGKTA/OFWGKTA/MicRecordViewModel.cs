@@ -37,8 +37,19 @@ namespace OFWGKTA
 
         private int micIndex;
 
+        private MenuRecognizer menuRecognizer;
+        private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
+
+
         public MicRecordViewModel()
         {
+            this.menuList = new ObservableCollection<MenuOption>();
+            this.MenuList.Add(new MenuOption("one", null));
+            this.MenuList.Add(new MenuOption("two", null));
+            this.MenuList.Add(new MenuOption("three", null));
+            this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
+
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
 
             // Recorder instance ould be passed in as a parameter to the constructor
@@ -75,6 +86,7 @@ namespace OFWGKTA
                 // allows us to set callbacks at this level when stage status changes 
                 // (remember to unsubscribe from this)
                 this.Kinect.PropertyChanged += KinectListener; 
+                this.Kinect.SkeletonUpdated += new EventHandler<SkeletonEventArgs>(Kinect_SkeletonUpdated);
             }
 
             this.recorder.SampleAggregator.RaiseRestart();
@@ -82,6 +94,11 @@ namespace OFWGKTA
 
             if (this.recorder.RecordingState != RecordingState.Monitoring)
                 BeginMonitoring();
+        }
+
+        void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
+        {
+            menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
         }
 
         void Kinect_SwipeDetected(object sender, SwipeEventArgs e)
@@ -364,6 +381,19 @@ namespace OFWGKTA
             this.Stop();
             Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
+        }
+
+        public MenuRecognizer MenuRecognizer
+        {
+            get { return menuRecognizer; }
+            set
+            {
+                if (this.menuRecognizer != value)
+                {
+                    this.menuRecognizer = value;
+                    RaisePropertyChanged("MenuRecognizer");
+                }
+            }
         }
 
     }

@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="Audio\WaveFormVisual.cs" />
     <Compile Include="Audio\WavFileUtils.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Kinect\GestureControls\MenuRecognizer.cs" />
     <Compile Include="MicRecordView.xaml.cs">
       <DependentUpon>MicRecordView.xaml</DependentUpon>
@@ -189,12 +190,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Bitmap1.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

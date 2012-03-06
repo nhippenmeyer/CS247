@@ -29,7 +29,6 @@ namespace OFWGKTA
 
         public FreePlayKinectModel(Stream fileStream) : base()
         {
-            menuRecognizer.MenuItemSelected += Beep;
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
             if (fileStream != null)
             {
@@ -105,7 +104,6 @@ namespace OFWGKTA
                 KneeRight = GetScaledPosition(skeleton.Joints[JointID.KneeRight]);
                 HipCenter = GetScaledPosition(skeleton.Joints[JointID.HipCenter]);
 
-                menuRecognizer.Add(HandRight, ShoulderCenter, ShoulderRight);
                 if (SkeletonUpdated != null)
                 {
                     SkeletonUpdated(this, new SkeletonEventArgs()

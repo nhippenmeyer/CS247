@@ -38,11 +38,11 @@
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <ItemsControl Background="White" Margin="0,0,0,230" Height="0">
+        <ItemsControl Background="White" Margin="0,0,0,230" Height="250">
             <ItemsControl.Style>
                 <Style>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=Kinect.MenuMode}" Value="True">
+                        <DataTrigger Binding="{Binding Path=MenuRecognizer.MenuEnabled}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -61,7 +61,14 @@
                     </Style.Triggers>
                 </Style>
             </ItemsControl.Style>
-            <ContentControl></ContentControl>
+            <ListBox ItemsSource="{Binding MenuList}" SelectedIndex="{Binding Path=MenuRecognizer.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItems}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <!--
             <ContentControl>
                 <Button Content="Rewind" FontSize="25" Height="38" HorizontalAlignment="Left" Margin="29,20,0,20
                         " Name="button1" VerticalAlignment="Top" Width="584">
@@ -76,7 +83,8 @@
             <ContentControl>
                 <Button Content="Stop Recording" FontSize="25" Height="38" HorizontalAlignment="Left" Margin="29,0,0,20" Name="button4" VerticalAlignment="Top" Width="584" />
             </ContentControl>
+            -->
         </ItemsControl>
-        <TextBlock Text="{Binding Kinect.MenuRecognizer.SelectedIndex}" Background="White" Padding="5,0,4,5" FontSize="30" Height="48" HorizontalAlignment="Left" Margin="592,405,0,0" Name="textBlock1" VerticalAlignment="Top" Width="36" />
+        <TextBlock Text="{Binding Path=MenuRecognizer.HoverIndex}" Background="White" Padding="5,0,4,5" FontSize="30" Height="48" HorizontalAlignment="Left" Margin="592,405,0,0" Name="textBlock1" VerticalAlignment="Top" Width="36" />
     </Grid>
 </UserControl>

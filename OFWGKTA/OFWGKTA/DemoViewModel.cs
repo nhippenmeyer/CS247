@@ -25,9 +25,14 @@ namespace OFWGKTA
         // Commands
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
+        private ObservableCollection<MenuOption> menu = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> Menu { get { return this.menu; } }
 
         public DemoViewModel()
         {
+            this.menu.Add(new MenuOption("hi", null));
+            this.menu.Add(new MenuOption("what", null));
+            this.menu.Add(new MenuOption("hello", null));
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
 
