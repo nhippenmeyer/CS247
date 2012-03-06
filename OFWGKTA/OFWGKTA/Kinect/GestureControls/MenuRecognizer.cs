@@ -128,7 +128,7 @@ namespace OFWGKTA
         #region AddPoints
         private void AddHorizontal(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
         {
-            if (handRight.Y < shoulderCenter.Y)// || !this.autoClose)
+            if (handRight.Y < shoulderCenter.Y || !this.autoClose)
             {
                 if (!this.SelectionDead)
                 {
@@ -143,11 +143,11 @@ namespace OFWGKTA
             else
             {
                 this.SelectionDead = false;
-                //if (this.autoClose)
-                //{
+                if (this.autoClose)
+                {
                     StopTimer();
                     HideMenu();
-                //}
+                }
             }
         }
 
