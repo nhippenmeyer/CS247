@@ -28,10 +28,10 @@ namespace OFWGKTA
         public bool Disabled { get; private set; }
 
         public MenuRecognizer(int numberOfItems, int menuSize)
-            : this(numberOfItems, menuSize, true, false) { }
+            : this(numberOfItems, menuSize, true, true) { }
 
         public MenuRecognizer(int numberOfItems, int menuSize, bool isHorizontal)
-            : this(numberOfItems, menuSize, isHorizontal, false) { }
+            : this(numberOfItems, menuSize, isHorizontal, true) { }
 
         public MenuRecognizer(int numberOfItems, int menuSize, bool isHorizontal, bool autoClose)
         {

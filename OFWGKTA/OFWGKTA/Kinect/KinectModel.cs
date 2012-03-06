@@ -33,32 +33,24 @@ namespace OFWGKTA
         private Vector kneeRight;
         private Vector hipCenter;
 
-        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
-        public event EventHandler<SwipeEventArgs> SwipeDetected;
-        private string gesture = "";
+        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+
+        protected void RaiseSkeletonUpdate(SkeletonEventArgs e)
+        {
+            if (SkeletonUpdated != null)
+            {
+                SkeletonUpdated(this, e);
+            }
+        }
 
         private bool menuMode = false;
 
         public KinectModel() : base()
         {
-            swipeGestureRecognizer.OnGestureDetected += OnGestureDetected;
         }
 
         public virtual void Destroy()
         {
-            swipeGestureRecognizer.OnGestureDetected -= OnGestureDetected;    
-        }
-
-        public void OnGestureDetected(string gesture)
-        {
-            Gesture = gesture;
-            if (SwipeDetected != null)
-            {
-                SwipeDetected(this, new SwipeEventArgs()
-                {
-                    Gesture = gesture
-                });
-            }
         }
 
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
@@ -291,32 +283,6 @@ namespace OFWGKTA
                 }
             }
         }
-
-        public string Gesture
-        {
-            get { return gesture; }
-            set
-            {
-                if (!gesture.Equals(value))
-                {
-                    gesture = value;
-                    RaisePropertyChanged("Gesture");
-                }
-            }
-        }
-
-        public bool MenuMode
-        {
-            get { return menuMode; }
-            set
-            {
-                if (!menuMode.Equals(value))
-                {
-                    menuMode = value;
-                    RaisePropertyChanged("MenuMode");
-                }
-            }
-        }
     }
 
     public class SkeletonEventArgs : EventArgs
@@ -325,9 +291,5 @@ namespace OFWGKTA
         public Vector RightHandPosition { get; set; }
     }
 
-    public class SwipeEventArgs : EventArgs
-    {
-        public string Gesture { get; set; }
-    }
 }
     

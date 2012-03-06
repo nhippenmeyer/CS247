@@ -12,6 +12,7 @@ using Microsoft.Win32;
 using System.IO;
 using Microsoft.Speech.Recognition;
 using System.ComponentModel;
+using Kinect.Toolbox;
 
 
 namespace OFWGKTA 
@@ -41,6 +42,7 @@ namespace OFWGKTA
         private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
 
+        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
 
         public MicRecordViewModel()
         {
@@ -48,6 +50,7 @@ namespace OFWGKTA
             this.MenuList.Add(new MenuOption("one", null));
             this.MenuList.Add(new MenuOption("two", null));
             this.MenuList.Add(new MenuOption("three", null));
+
             this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
 
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
@@ -80,7 +83,7 @@ namespace OFWGKTA
             this.Kinect = ((AppState)state).Kinect;
             if (this.Kinect != null)
             {
-                this.Kinect.SwipeDetected += new EventHandler<SwipeEventArgs>(Kinect_SwipeDetected);
+                this.swipeGestureRecognizer.OnGestureDetected += SwipeDetected;
                 this.Kinect.SetSpeechCallback(speechCallback);
                 // subscribe to changes in kinect properties
                 // allows us to set callbacks at this level when stage status changes 
@@ -98,21 +101,22 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.KinectRuntime.SkeletonEngine);
         }
 
-        void Kinect_SwipeDetected(object sender, SwipeEventArgs e)
+        void SwipeDetected(string gesture)
         {
             if (this.Kinect.IsOnStage)
             {
-                if (e.Gesture == "SwipeToRight")
+                if (gesture == "SwipeToRight")
                 {
                     if (this.recorder.RecordingState != RecordingState.Recording)
                     {
                         this.BeginRecording();
                     }
                 }
-                else if (e.Gesture == "SwipeToLeft")
+                else if (gesture == "SwipeToLeft")
                 {
                     if (this.recorder.RecordingState == RecordingState.Recording)
                     {

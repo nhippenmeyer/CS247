@@ -38,7 +38,7 @@
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <ItemsControl Background="White" Margin="0,0,0,230" Height="250">
+        <ItemsControl Background="White" Margin="0,0,0,230" Height="0">
             <ItemsControl.Style>
                 <Style>
                     <Style.Triggers>

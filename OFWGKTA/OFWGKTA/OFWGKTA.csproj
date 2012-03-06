@@ -100,8 +100,8 @@
     </Compile>
     <Compile Include="Audio\WaveFormVisual.cs" />
     <Compile Include="Audio\WavFileUtils.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Kinect\GestureControls\MenuRecognizer.cs" />
+    <Compile Include="MenuOption.cs" />
     <Compile Include="MicRecordView.xaml.cs">
       <DependentUpon>MicRecordView.xaml</DependentUpon>
     </Compile>
