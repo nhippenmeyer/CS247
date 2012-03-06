@@ -28,10 +28,10 @@ namespace OFWGKTA
         public bool Disabled { get; private set; }
 
         public MenuRecognizer(int numberOfItems, int menuSize)
-            : this(numberOfItems, menuSize, true, true) { }
+            : this(numberOfItems, menuSize, true, false) { }
 
         public MenuRecognizer(int numberOfItems, int menuSize, bool isHorizontal)
-            : this(numberOfItems, menuSize, isHorizontal, true) { }
+            : this(numberOfItems, menuSize, isHorizontal, false) { }
 
         public MenuRecognizer(int numberOfItems, int menuSize, bool isHorizontal, bool autoClose)
         {
@@ -128,7 +128,7 @@ namespace OFWGKTA
         #region AddPoints
         private void AddHorizontal(Vector handRight, Vector shoulderCenter, Vector shoulderRight)
         {
-            if (handRight.Y < shoulderCenter.Y || !this.autoClose)
+            if (handRight.Y < shoulderCenter.Y || (!this.autoClose && this.MenuEnabled))
             {
                 if (!this.SelectionDead)
                 {
@@ -140,12 +140,13 @@ namespace OFWGKTA
                     ProcessDeltaZ(center.Z - handRight.Z);
                 }
             }
-            else
+            if (handRight.Y >= shoulderCenter.Y)
             {
-                this.SelectionDead = false;
-                if (this.autoClose)
+                if ((!this.autoClose && !this.MenuEnabled && this.SelectionDead) ||
+                      this.autoClose)
                 {
                     StopTimer();
+                    this.SelectionDead = false;
                     HideMenu();
                 }
             }
