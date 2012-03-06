@@ -41,6 +41,7 @@ namespace OFWGKTA
             this.applicationModes.Add("Free Use");
             this.applicationModes.Add("Audio App");
             this.applicationModes.Add("Mic Record");
+            this.applicationModes.Add("Fancy Graph");
         }
 
         public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
@@ -94,6 +95,11 @@ namespace OFWGKTA
                     {
                         // mic index is currently hard-coded to 0
                         Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, 0));
+                        break;
+                    }
+                case ("Fancy Graph"):
+                    {
+                        Messenger.Default.Send(new NavigateMessage(FancyGraphViewModel.ViewName, 0));
                         break;
                     }
             }

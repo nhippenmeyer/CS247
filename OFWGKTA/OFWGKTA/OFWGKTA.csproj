@@ -75,6 +75,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Visiblox.Charts">
+      <HintPath>..\..\visiblox\Visiblox.Charts.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -101,6 +104,10 @@
     </Compile>
     <Compile Include="Audio\WaveFormVisual.cs" />
     <Compile Include="Audio\WavFileUtils.cs" />
+    <Compile Include="FancyGraphView.xaml.cs">
+      <DependentUpon>FancyGraphView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FancyGraphViewModel.cs" />
     <Compile Include="MicRecordView.xaml.cs">
       <DependentUpon>MicRecordView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +140,10 @@
     <Page Include="Audio\WaveFileTrimmerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FancyGraphView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MicRecordView.xaml">
       <Generator>MSBuild:Compile</Generator>

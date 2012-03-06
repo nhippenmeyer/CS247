@@ -29,6 +29,7 @@ namespace OFWGKTA
             SetupView(HomeViewModel.ViewName, new HomeView(), new HomeViewModel());
             SetupView(DemoViewModel.ViewName, new DemoView(), new DemoViewModel());
             SetupView(MicRecordViewModel.ViewName, new MicRecordView(), new MicRecordViewModel());
+            SetupView(FancyGraphViewModel.ViewName, new FancyGraphView(), new FancyGraphViewModel());
 
             // Send message that welcome view is ready to be displayed
             Messenger.Default.Send<NavigateMessage>(new NavigateMessage(WelcomeViewModel.ViewName, null));

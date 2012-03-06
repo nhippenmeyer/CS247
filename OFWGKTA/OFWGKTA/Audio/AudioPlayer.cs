@@ -24,7 +24,7 @@ namespace OFWGKTA
 
         public void Play()
         {
-            CreateWaveOut();                
+            CreateWaveOut(); 
             if (waveOut.PlaybackState == PlaybackState.Stopped)
             {
                 inStream.Position = 0;

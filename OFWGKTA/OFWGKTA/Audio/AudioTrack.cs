@@ -38,6 +38,9 @@ namespace OFWGKTA
         int recordingDeviceIndex;
         private string waveFileName;
 
+        TimeSpan playTime;
+
+
         // TODO? integrate player class into this class
         IAudioPlayer player;
 
@@ -119,11 +122,47 @@ namespace OFWGKTA
                          &&
                          value == AudioTrackState.Playing)
                 {
+
+                    WaveOut waveOut = new WaveOut();
+                    WaveFileReader waveReader = new WaveFileReader(this.waveFileName);
+                    
+                    TrimWaveStream inStream = new TrimWaveStream(waveReader);
+                    inStream.CurrentTime = new TimeSpan(0); //#ticks = time * (1sec / 100ns)
+
+                    waveOut.Init(inStream);
+                    waveOut.PlaybackStopped += new EventHandler(waveOut_PlaybackStopped);
+                    waveOut.Play();
+
+                    /*
+                    playTime = DateTime.Now.TimeOfDay;
+                    TimeSpan elapsedTime = DateTime.Now.TimeOfDay.Subtract(playTime);
+                    Console.WriteLine("Play time elapsed: " + elapsedTime.ToString());
+                    */
+ 
+                    string testFileName = Path.Combine(Path.GetTempPath(),"testar.wav");
+                    Console.WriteLine("TEST FILE PATH: " + testFileName);
+                     
+                    WaveFileWriter testWriter = new WaveFileWriter(testFileName, waveFormat);
+
+                    float sampleValue;
+                    while(waveReader.TryReadFloat(out sampleValue))
+                    {
+                        testWriter.WriteSample(sampleValue);
+                    }
+
+                    testWriter.Close();
+                    
+                    //PlaybackState playbackState = PlaybackState.Paused;
+
+
+                    /*
                     // TODO: improve this mode, a lot
                     this.player = new AudioPlayer();
                     this.player.LoadFile(this.waveFileName);
                     this.player.Play();
                     return; // <- hack
+                    */
+
                 }
  
                 // throw exception
@@ -135,6 +174,12 @@ namespace OFWGKTA
                 // set state value
                 state = value;
             }
+        }
+
+        void waveOut_PlaybackStopped(object sender, EventArgs e)
+        {
+            //this.PlaybackState = PlaybackState.Stopped;
+            Console.WriteLine("PLAYBACK STOPPED!!!!");
         }
 
         /**

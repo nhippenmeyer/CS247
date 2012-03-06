@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="OFWGKTA.FancyGraphView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:blah="clr-namespace:Microsoft.Research.Kinect.Nui;assembly=Microsoft.Research.Kinect"
+        xmlns:my="clr-namespace:OFWGKTA"
+        xmlns:charts="clr-namespace:Visiblox.Charts;assembly=Visiblox.Charts"
+        Height="480" Width="640">
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+
+        <charts:Chart Name="trackChart" Width="640" Height="400" Margin="50,0,50,0">
+            <charts:Chart.XAxis>
+                <charts:LinearAxis Range="{Binding XRange}">
+                </charts:LinearAxis>
+            </charts:Chart.XAxis>
+            <charts:Chart.YAxis>
+                <charts:LinearAxis>
+                    <charts:LinearAxis.Range>
+                        <charts:DoubleRange Minimum="0" Maximum="1" />
+                    </charts:LinearAxis.Range>
+                </charts:LinearAxis>
+            </charts:Chart.YAxis>
+            <charts:Chart.Series>
+                <charts:StaircaseSeries ShowLine="True" ShowArea="True" ShowPoints="False" ToolTipEnabled="True">
+                    <charts:StaircaseSeries.DataSeries>
+                        <charts:BindableDataSeries ItemsSource="{Binding SampleData}" XValueBinding="{Binding sampleNum}" YValueBinding="{Binding sampleVal}" />
+                    </charts:StaircaseSeries.DataSeries>
+                </charts:StaircaseSeries>
+            </charts:Chart.Series>
+        </charts:Chart>
+        
+        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="12,445,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
+    </Grid>
+</UserControl>
