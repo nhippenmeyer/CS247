@@ -110,7 +110,7 @@ namespace OFWGKTA
             double param;
             if (parameter != null)
             {
-                param = (double) double.Parse((string)parameter);
+                param = (double)double.Parse((string)parameter);
             }
             else
             {
@@ -120,11 +120,25 @@ namespace OFWGKTA
             double coord = (double)value;
             return coord + param;
         }
-    
+
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double translatedCoord = (double)value;
             return translatedCoord + 10;
+        }
+    }
+
+    [ValueConversion(typeof(int), typeof(int))]
+    public class OptionWidthConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return 630 / (int)value - 10;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return 630 / ((int)value + 10);
         }
     }
 }
