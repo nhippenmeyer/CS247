@@ -12,6 +12,6 @@ namespace OFWGKTA
         void Add(KinectModel kinect);
         void Disable();
         void Enable();
-        bool IsClutched { get; set; }
+        bool IsClutched { get; }
     }
 }

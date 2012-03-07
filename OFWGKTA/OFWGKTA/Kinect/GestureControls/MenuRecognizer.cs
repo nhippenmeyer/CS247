@@ -93,7 +93,12 @@ namespace OFWGKTA
         public void Disable()
         {
             this.Disabled = true;
-            HideMenu();
+
+            this.MenuEnabled = false;
+            this.HoverIndex = -1;
+            this.SelectedIndex = -1;
+            this.isClutched = false;
+
             StopTimer();
             this.SelectionDead = false;
         }

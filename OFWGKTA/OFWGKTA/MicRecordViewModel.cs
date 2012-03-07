@@ -101,7 +101,7 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.menuRecognizer.Add(Kinect);
             this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.KinectRuntime.SkeletonEngine);
         }
 

@@ -23,7 +23,9 @@ namespace OFWGKTA
         KinectModel kinect;
 
         private MenuRecognizer menuRecognizer;
-
+        private MenuRecognizer menuRecognizer2;
+        private GestureController gestureController = new GestureController();
+        
         // Commands
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
@@ -37,6 +39,9 @@ namespace OFWGKTA
             this.menuList.Add(new MenuOption("hello", null));
 
             this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
+            this.MenuRecognizer2 = new MenuRecognizer(this.MenuList.Count, 100, false);
+            this.gestureController.Add(this.menuRecognizer);
+            this.gestureController.Add(this.menuRecognizer2);
 
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
@@ -52,7 +57,8 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.menuRecognizer.Add(Kinect);
+            this.menuRecognizer2.Add(Kinect);
         }
 
         private void ReturnToWelcome()
@@ -93,6 +99,19 @@ namespace OFWGKTA
                 {
                     this.menuRecognizer = value;
                     RaisePropertyChanged("MenuRecognizer");
+                }
+            }
+        }
+
+        public MenuRecognizer MenuRecognizer2
+        {
+            get { return menuRecognizer2; }
+            set
+            {
+                if (this.menuRecognizer2 != value)
+                {
+                    this.menuRecognizer2 = value;
+                    RaisePropertyChanged("MenuRecognizer2");
                 }
             }
         }

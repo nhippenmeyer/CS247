@@ -20,7 +20,6 @@ namespace OFWGKTA
         {
             recognizer.PropertyChanged += KinectListener;
             this.recognizers.Add(recognizer);
-
         }
 
         void KinectListener(object sender, PropertyChangedEventArgs e)
@@ -28,6 +27,24 @@ namespace OFWGKTA
             if (e.PropertyName == "IsClutched")
             {
                 Console.Beep();
+                IGestureRecognizer gr_sender = (IGestureRecognizer)sender;
+                if (gr_sender.IsClutched)
+                {
+                    foreach (IGestureRecognizer gr in this.recognizers)
+                    {
+                        if (gr != sender)
+                        {
+                            gr.Disable();
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IGestureRecognizer gr in this.recognizers)
+                    {
+                        gr.Enable();
+                    }
+                }
             }
         }
     }
