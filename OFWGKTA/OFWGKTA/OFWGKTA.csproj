@@ -100,7 +100,6 @@
     </Compile>
     <Compile Include="Audio\WaveFormVisual.cs" />
     <Compile Include="Audio\WavFileUtils.cs" />
-    <Compile Include="Kinect\GestureControls\Class1.cs" />
     <Compile Include="Kinect\GestureControls\GestureController.cs" />
     <Compile Include="Kinect\GestureControls\IGestureRecognizer.cs" />
     <Compile Include="Kinect\GestureControls\MenuRecognizer.cs" />

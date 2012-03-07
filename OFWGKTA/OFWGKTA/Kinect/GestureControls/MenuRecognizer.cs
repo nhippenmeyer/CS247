@@ -21,7 +21,7 @@ namespace OFWGKTA
         private int hoverIndex = -1; // index of item hovered over from 0 to numberOfItems - 1
         private int selectedIndex = -1;
         public bool selectionDead = false;
-        public bool isClutched = false;
+        private bool isClutched = false;
 
         public event EventHandler<MenuEventArgs> MenuItemSelected;
 
@@ -74,6 +74,7 @@ namespace OFWGKTA
         {
             this.MenuEnabled = true;
             this.center = center;
+            this.IsClutched = true;
         }
 
         private void HideMenu()
@@ -81,6 +82,7 @@ namespace OFWGKTA
             this.MenuEnabled = false;
             this.HoverIndex = -1;
             this.SelectedIndex = -1;
+            this.IsClutched = false;
         }
 
         public void Disable()

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
+using System.ComponentModel;
 
 namespace OFWGKTA
 {
-    public interface IGestureRecognizer
+    public interface IGestureRecognizer: INotifyPropertyChanged
     {
         void Add(KinectModel kinect);
         void Disable();
         void Enable();
-        protected bool isClutched;
-        public bool IsClutched { get; set; }
+        bool IsClutched { get; set; }
     }
 }
