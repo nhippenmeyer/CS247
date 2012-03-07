@@ -91,7 +91,7 @@
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\AudioRecorder.cs" />
     <Compile Include="Audio\AudioSaver.cs" />
-    <Compile Include="Audio\AudioTrack.cs" />
+    <Compile Include="AudioTrack.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="Audio\IAudioRecorder.cs" />
     <Compile Include="Audio\IWaveFormRenderer.cs" />

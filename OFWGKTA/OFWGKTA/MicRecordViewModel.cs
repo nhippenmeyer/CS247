@@ -31,12 +31,6 @@ namespace OFWGKTA
          */ 
         public MicRecordViewModel()
         {
-            this.goBackCommand = new RelayCommand(() => GoBack());
-            this.newTrackCommand = new RelayCommand(() => newTrack());
-            this.beginRecordingCommand = new RelayCommand(() => BeginRecording());
-            this.stopCommand = new RelayCommand(() => Stop());
-            this.playbackCommand = new RelayCommand(() => Playback());
-            this.playAllCommand = new RelayCommand(() => playAll());
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
         }
         
@@ -46,12 +40,6 @@ namespace OFWGKTA
         public void Activated(object state)
         {
             micIndex = (int)state;
-
-            if (this.audioTracks == null)
-            {
-                audioTracks = new List<AudioTrack>();
-                newTrack();
-            }
         }
 
         /**
@@ -70,12 +58,7 @@ namespace OFWGKTA
         {
             get
             {
-                if (audioTracks == null
-                    ||
-                    audioTracks.Count() == 0)
-                    return "";
-
-                TimeSpan current = audioTracks.Last().RecordedTime;
+                TimeSpan current = this.currentAudioTrack.RecordedTime;
                 return String.Format("{0:D2}:{1:D2}.{2:D3}", current.Minutes, current.Seconds, current.Milliseconds);
             }
         }
@@ -104,21 +87,50 @@ namespace OFWGKTA
             }
         }
 
+        // 
+        private AudioTrack currentAudioTrack 
+        { 
+            get 
+            {
+                if (this.audioTracks == null) {
+                    audioTracks = new List<AudioTrack>();
+                    newTrack();
+                }
+                return this.audioTracks.Last(); 
+            } 
+        }
 
-        /**
-         * Commands
-         */
+        public String PlayButtonTitle
+        {
+            get
+            {
+                return "test";
+            }
+        }
 
+
+        #region Commands
+
+        // new track
         private RelayCommand newTrackCommand;
-        public ICommand NewTrackCommand { get { return newTrackCommand; } }
+        public ICommand NewTrackCommand 
+        { 
+            get 
+            { 
+                if (newTrackCommand == null)
+                    newTrackCommand = new RelayCommand(() => newTrack());
+
+                return newTrackCommand; 
+            } 
+        }
         private void newTrack()
         {
             if (this.audioTracks.Count() > 0)
             {
-                if (this.audioTracks.Last().State != AudioTrackState.Loaded)
+                if (this.currentAudioTrack.State != AudioTrackState.Loaded)
                     return;
 
-                this.audioTracks.Last().SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
+                this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
             }
 
             AudioTrack audioTrack = new AudioTrack(micIndex);
@@ -129,12 +141,19 @@ namespace OFWGKTA
         }
 
         private RelayCommand playAllCommand;
-        public ICommand PlayAllCommand { get { return playAllCommand; } }
+        public ICommand PlayAllCommand 
+        { 
+            get 
+            { 
+                if (playAllCommand == null)
+                    playAllCommand = new RelayCommand(() => playAll());
+
+                return playAllCommand; 
+            } 
+        }
         private void playAll()
         {
-            if (this.audioTracks.Count == 0
-                ||
-                this.audioTracks.Last().State != AudioTrackState.Loaded)
+            if (this.currentAudioTrack.State != AudioTrackState.Loaded)
                 return;
 
             foreach (AudioTrack track in this.audioTracks)
@@ -142,49 +161,100 @@ namespace OFWGKTA
         }
 
         private RelayCommand playbackCommand;
-        public ICommand PlaybackCommand { get { return playbackCommand; } }
+        public ICommand PlaybackCommand 
+        { 
+            get 
+            { 
+                if (playbackCommand == null)
+                    playbackCommand = new RelayCommand(() => Playback());
+
+                return playbackCommand; 
+            } 
+        }
         private void Playback()
         {
-            if (this.audioTracks.Count == 0
-                ||
-                this.audioTracks.Last().State != AudioTrackState.Loaded)
+            if (this.currentAudioTrack.State != AudioTrackState.Loaded)
                 return; 
             
-            this.audioTracks.Last().State = AudioTrackState.Playing;
+            this.currentAudioTrack.State = AudioTrackState.Playing;
         }
 
         private RelayCommand beginRecordingCommand;
-        public ICommand BeginRecordingCommand { get { return beginRecordingCommand; } }
+        public ICommand BeginRecordingCommand 
+        { 
+            get 
+            {
+                if (beginRecordingCommand == null)
+                    beginRecordingCommand = new RelayCommand(() => BeginRecording());
+
+                return beginRecordingCommand; 
+            } 
+        }
         private void BeginRecording()
         {
-            if (this.audioTracks.Count == 0)
+            if (this.currentAudioTrack.State == AudioTrackState.Loaded)
+                this.currentAudioTrack.State = AudioTrackState.Monitoring;
+
+            if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
                 return;
 
-            if (this.audioTracks.Last().State == AudioTrackState.Loaded)
-                this.audioTracks.Last().State = AudioTrackState.Monitoring;
+            this.currentAudioTrack.State = AudioTrackState.Recording;
+        }
 
-            if (this.audioTracks.Last().State != AudioTrackState.Monitoring)
+        private RelayCommand stopRecordingCommand;
+        public ICommand StopRecordingCommand 
+        { 
+            get 
+            {
+                if (stopRecordingCommand == null)
+                    stopRecordingCommand = new RelayCommand(() => StopRecording());
+                    
+                return stopRecordingCommand; 
+            } 
+        }
+        private void StopRecording()
+        {
+            if (this.currentAudioTrack.State != AudioTrackState.Recording)
                 return;
 
-            this.audioTracks.Last().State = AudioTrackState.Recording;
+            this.currentAudioTrack.State = AudioTrackState.StopRecording;
         }
 
         private RelayCommand stopCommand;
-        public ICommand StopCommand { get { return stopCommand; } }
+        public ICommand StopCommand 
+        { 
+            get 
+            {
+                if (stopCommand == null)
+                    stopCommand = new RelayCommand(() => Stop());
+
+                return stopCommand; 
+            } 
+        }
         private void Stop()
         {
-            if (this.audioTracks.Last().State != AudioTrackState.Recording)
+            if (this.currentAudioTrack.State != AudioTrackState.Playing)
                 return;
 
-            this.audioTracks.Last().State = AudioTrackState.StopRecording;
+            this.currentAudioTrack.State = AudioTrackState.Loaded;
         }
-        
+
         private ICommand goBackCommand;
-        public ICommand GoBackCommand { get { return goBackCommand; } }
+        public ICommand GoBackCommand 
+        { 
+            get 
+            { 
+                if (goBackCommand == null)
+                    goBackCommand = new RelayCommand(() => GoBack());
+
+                return goBackCommand; 
+            } 
+        }
         private void GoBack()
         {
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 
+        #endregion
     }
 }

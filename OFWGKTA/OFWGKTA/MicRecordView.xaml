@@ -21,11 +21,12 @@
 
         <TextBlock Margin="223,381,217,71" Text="{Binding RecordedTime}" FontWeight="Bold" FontSize="16" Width="200" />
         <Button Content="Start Recording" Command="{Binding BeginRecordingCommand}" ToolTip="Start Recording" Margin="443,445,111,12" />
-        <Button Content="Stop Recording" Command="{Binding StopCommand}" ToolTip="Stop Recording" Margin="535,445,12,12" />
+        <Button Content="Stop Recording" Command="{Binding StopRecordingCommand}" ToolTip="Stop Recording" Margin="535,445,12,12" />
         <Label Content="Mic Level:" Height="28" Margin="287,283,290,0" VerticalAlignment="Top" />
         <Button Command="{Binding PlayAllCommand}" Content="Play All" Margin="129,445,0,12" ToolTip="Start Recording" HorizontalAlignment="Left" Width="69" />
-        <Button Command="{Binding PlaybackCommand}" Content="Playback" Margin="352,445,0,12" ToolTip="Start Recording" HorizontalAlignment="Left" Width="85" />
+        <Button Command="{Binding PlaybackCommand}" Content="{Binding PlayButtonTitle}" Margin="0,445,203,12" ToolTip="Play current track" HorizontalAlignment="Right" Width="81" />
 
+        <Button Command="{Binding StopCommand}" Content="Stop" Margin="275,445,0,12" ToolTip="Start Recording" HorizontalAlignment="Left" Width="75" />
 
         <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="12,445,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
         
