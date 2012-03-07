@@ -266,5 +266,15 @@ namespace GesturesViewer
         {
             ProcessFrame(e.SkeletonFrame);
         }
+
+        private void detectedGestures_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void detectedGestures_SelectionChanged_1(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -19,8 +19,14 @@ namespace OFWGKTA
         protected bool isRecorder = false;
         protected Stream fileStream;
         protected Runtime kinectRuntime;
+        public Runtime KinectRuntime { get { return this.kinectRuntime; } }
+
         protected SkeletonRecorder recorder = new SkeletonRecorder();
-        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+
+        public void Beep(object sender, MenuEventArgs e)
+        {
+            Console.Beep();
+        }
 
         public FreePlayKinectModel(Stream fileStream) : base()
         {
@@ -99,10 +105,11 @@ namespace OFWGKTA
                 KneeRight = GetScaledPosition(skeleton.Joints[JointID.KneeRight]);
                 HipCenter = GetScaledPosition(skeleton.Joints[JointID.HipCenter]);
 
-                if (SkeletonUpdated != null)
+                RaiseSkeletonUpdate(new SkeletonEventArgs()
                 {
-                    SkeletonUpdated(this, new SkeletonEventArgs());
-                }
+                    LeftHandPosition = skeleton.Joints[JointID.HandLeft].Position,
+                    RightHandPosition = skeleton.Joints[JointID.HandRight].Position
+                });
             }
         }
     }

@@ -4,7 +4,7 @@
         Loaded="Window_Loaded"
         Closing="Window_Closing"
         WindowState="Maximized"
-        Title="Gestures Viewer" Height="350" Width="525">
+        Title="Gestures Viewer" Height="450" Width="1353">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe UI"/>
@@ -74,7 +74,7 @@
             </ListBox>
         </Grid>
         <TextBlock Text="DETECTED GESTURES" Grid.Column="1" Grid.Row="2" Margin="4"/>
-        <ListBox x:Name="detectedGestures" FontSize="20" Grid.Column="1" Margin="10" Grid.Row="3">
+        <ListBox x:Name="detectedGestures" FontSize="20" Grid.Column="1" Margin="10" Grid.Row="3" SelectionChanged="detectedGestures_SelectionChanged_1">
         </ListBox>
         <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="20, 10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <CheckBox Content="Audio Control" x:Name="audioControl" VerticalAlignment="Center"/>

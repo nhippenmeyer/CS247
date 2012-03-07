@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight;
 using Coding4Fun.Kinect.Wpf;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -32,7 +33,26 @@ namespace OFWGKTA
         private Vector kneeRight;
         private Vector hipCenter;
 
-        public virtual void Destroy() { }
+        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+
+        protected void RaiseSkeletonUpdate(SkeletonEventArgs e)
+        {
+            if (SkeletonUpdated != null)
+            {
+                SkeletonUpdated(this, e);
+            }
+        }
+
+        private bool menuMode = false;
+
+        public KinectModel() : base()
+        {
+        }
+
+        public virtual void Destroy()
+        {
+        }
+
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
 
@@ -263,12 +283,13 @@ namespace OFWGKTA
                 }
             }
         }
-
     }
 
     public class SkeletonEventArgs : EventArgs
     {
-        // just using this to fire an event when i'm done processing the skeleton
+        public Vector LeftHandPosition { get; set; }
+        public Vector RightHandPosition { get; set; }
     }
+
 }
     

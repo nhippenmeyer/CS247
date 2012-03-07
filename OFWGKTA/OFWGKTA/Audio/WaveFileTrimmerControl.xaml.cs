@@ -101,13 +101,25 @@ namespace OFWGKTA
 
         private void Subscribe()
         {
-            SampleAggregator.MaximumCalculated += SampleAggregator_MaximumCalculated;
+            SampleAggregator.Start += SampleAggregator_Start;
+            SampleAggregator.Stop += SampleAggregator_Stop;
+            //SampleAggregator.MaximumCalculated += SampleAggregator_MaximumCalculated;
             SampleAggregator.Restart += new EventHandler(SampleAggregator_Restart);
         }
 
         void SampleAggregator_Restart(object sender, EventArgs e)
         {
             this.waveFormRenderer.Reset();
+        }
+
+        void SampleAggregator_Start(object sender, EventArgs e)
+        {
+            SampleAggregator.MaximumCalculated += SampleAggregator_MaximumCalculated;
+        }
+
+        void SampleAggregator_Stop(object sender, EventArgs e)
+        {
+            SampleAggregator.MaximumCalculated -= SampleAggregator_MaximumCalculated;
         }
 
         void SampleAggregator_MaximumCalculated(object sender, MaxSampleEventArgs e)

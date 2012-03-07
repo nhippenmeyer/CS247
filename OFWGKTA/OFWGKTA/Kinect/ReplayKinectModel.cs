@@ -48,6 +48,9 @@ namespace OFWGKTA
                 }
             }
 
+            Joint leftHandUnscaled = new Joint();
+            Joint rightHandUnscaled = new Joint();
+
             for (int i = 0; i < skeleton.Joints.Count; i++)
             {
                 switch (skeleton.Joints.ElementAt(i).ID)
@@ -57,9 +60,11 @@ namespace OFWGKTA
                         break;
                     case (JointID.HandLeft):
                         HandLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
+                        leftHandUnscaled = skeleton.Joints.ElementAt(i);
                         break;
                     case (JointID.HandRight):
                         HandRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
+                        rightHandUnscaled = skeleton.Joints.ElementAt(i);
                         break;
                     case (JointID.ShoulderCenter):
                         ShoulderCenter = GetScaledPosition(skeleton.Joints.ElementAt(i));
@@ -105,6 +110,11 @@ namespace OFWGKTA
                         break;
                 }
             }
+            RaiseSkeletonUpdate(new SkeletonEventArgs()
+            {
+                LeftHandPosition = leftHandUnscaled.Position,
+                RightHandPosition = rightHandUnscaled.Position
+            });
         }
     }
 }

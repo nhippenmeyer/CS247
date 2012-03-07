@@ -35,8 +35,8 @@ namespace OFWGKTA
 
         private void ReturnToWelcome()
         {
-            kinect.Destroy();
-            kinect.Dispose();
+            // kinect.Destroy();
+            // kinect.Dispose();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 

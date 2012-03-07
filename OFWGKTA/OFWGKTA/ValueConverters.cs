@@ -5,9 +5,30 @@ using System.Text;
 using System.Windows.Data;
 using System.Globalization;
 using System.Windows.Media;
+using Coding4Fun.Kinect.Wpf;
+using Microsoft.Research.Kinect.Nui;
 
 namespace OFWGKTA
 {
+    [ValueConversion(typeof(Vector), typeof(Vector))]
+    public class VectorScaler : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Vector input = (Vector)value;
+            input.X /= 2;
+            input.X += 160;
+            input.Y /= 2;
+            input.Y += 200;
+            return input;
+        }
+    
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Vector input = (Vector)value;
+            return input;
+        }
+    }
     [ValueConversion(typeof(bool), typeof(Color))]
     public class StageConverter : IValueConverter
     {
@@ -16,7 +37,7 @@ namespace OFWGKTA
             bool onStage = (bool)value;
             if (onStage)
             {
-                return Colors.Green;
+                return Colors.White;
             }
             else
             {
@@ -37,7 +58,7 @@ namespace OFWGKTA
             float param;
             if (parameter != null)
             {
-                param = (float)parameter;
+                param = float.Parse((string)parameter);
             }
             else
             {
