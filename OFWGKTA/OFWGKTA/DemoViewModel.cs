@@ -22,12 +22,22 @@ namespace OFWGKTA
         private string applicationMode; 
         KinectModel kinect;
 
+        private MenuRecognizer menuRecognizer;
+
         // Commands
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
+        private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
 
         public DemoViewModel()
         {
+            this.menuList.Add(new MenuOption("hi", null));
+            this.menuList.Add(new MenuOption("what", null));
+            this.menuList.Add(new MenuOption("hello", null));
+
+            this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
+
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
 
@@ -35,7 +45,14 @@ namespace OFWGKTA
         {
             DemoAppState curState = (DemoAppState)state;
             this.Kinect = curState.Kinect;
+            this.Kinect.SkeletonUpdated += new EventHandler<SkeletonEventArgs>(Kinect_SkeletonUpdated);
             this.ApplicationMode = curState.ApplicationMode;
+        }
+
+
+        void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
+        {
+            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
         }
 
         private void ReturnToWelcome()
@@ -63,6 +80,19 @@ namespace OFWGKTA
                 {
                     applicationMode = value;
                     RaisePropertyChanged("ApplicationMode");
+                }
+            }
+        }
+
+        public MenuRecognizer MenuRecognizer
+        {
+            get { return menuRecognizer; }
+            set
+            {
+                if (this.menuRecognizer != value)
+                {
+                    this.menuRecognizer = value;
+                    RaisePropertyChanged("MenuRecognizer");
                 }
             }
         }

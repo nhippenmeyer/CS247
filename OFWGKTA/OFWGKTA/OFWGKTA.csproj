@@ -103,6 +103,7 @@
     <Compile Include="Kinect\GestureControls\GestureController.cs" />
     <Compile Include="Kinect\GestureControls\IGestureRecognizer.cs" />
     <Compile Include="Kinect\GestureControls\MenuRecognizer.cs" />
+    <Compile Include="MenuOption.cs" />
     <Compile Include="MicRecordView.xaml.cs">
       <DependentUpon>MicRecordView.xaml</DependentUpon>
     </Compile>

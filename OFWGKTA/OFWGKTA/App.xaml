@@ -78,5 +78,24 @@
             </Grid>
         </HierarchicalDataTemplate>
 
+        <DataTemplate x:Key="MicMenuItems">
+            <Grid>
+                <Grid.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="False">
+                                <Setter Property="Grid.Background" Value="Red"/>
+                            </DataTrigger>
+                        </Style.Triggers> 
+                    </Style> 
+                </Grid.Style>
+                <StackPanel>
+                    <Border CornerRadius="10">
+                        <Label Content="{Binding Label}" Height="150" Width="150" HorizontalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

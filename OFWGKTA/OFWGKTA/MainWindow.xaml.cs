@@ -30,6 +30,11 @@ namespace OFWGKTA
             InitializeComponent();
             this.DataContext = vm;
         }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }

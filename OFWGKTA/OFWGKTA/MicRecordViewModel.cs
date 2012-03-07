@@ -12,6 +12,7 @@ using Microsoft.Win32;
 using System.IO;
 using Microsoft.Speech.Recognition;
 using System.ComponentModel;
+using Kinect.Toolbox;
 
 
 namespace OFWGKTA 
@@ -37,8 +38,21 @@ namespace OFWGKTA
 
         private int micIndex;
 
+        private MenuRecognizer menuRecognizer;
+        private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
+
+        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
+
         public MicRecordViewModel()
         {
+            this.menuList = new ObservableCollection<MenuOption>();
+            this.MenuList.Add(new MenuOption("one", null));
+            this.MenuList.Add(new MenuOption("two", null));
+            this.MenuList.Add(new MenuOption("three", null));
+
+            this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
+
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
 
             // Recorder instance ould be passed in as a parameter to the constructor
@@ -69,12 +83,13 @@ namespace OFWGKTA
             this.Kinect = ((AppState)state).Kinect;
             if (this.Kinect != null)
             {
-                this.Kinect.SwipeDetected += new EventHandler<SwipeEventArgs>(Kinect_SwipeDetected);
+                this.swipeGestureRecognizer.OnGestureDetected += SwipeDetected;
                 this.Kinect.SetSpeechCallback(speechCallback);
                 // subscribe to changes in kinect properties
                 // allows us to set callbacks at this level when stage status changes 
                 // (remember to unsubscribe from this)
                 this.Kinect.PropertyChanged += KinectListener; 
+                this.Kinect.SkeletonUpdated += new EventHandler<SkeletonEventArgs>(Kinect_SkeletonUpdated);
             }
 
             this.recorder.SampleAggregator.RaiseRestart();
@@ -84,18 +99,24 @@ namespace OFWGKTA
                 BeginMonitoring();
         }
 
-        void Kinect_SwipeDetected(object sender, SwipeEventArgs e)
+        void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
+        {
+            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.KinectRuntime.SkeletonEngine);
+        }
+
+        void SwipeDetected(string gesture)
         {
             if (this.Kinect.IsOnStage)
             {
-                if (e.Gesture == "SwipeToRight")
+                if (gesture == "SwipeToRight")
                 {
                     if (this.recorder.RecordingState != RecordingState.Recording)
                     {
                         this.BeginRecording();
                     }
                 }
-                else if (e.Gesture == "SwipeToLeft")
+                else if (gesture == "SwipeToLeft")
                 {
                     if (this.recorder.RecordingState == RecordingState.Recording)
                     {
@@ -364,6 +385,19 @@ namespace OFWGKTA
             this.Stop();
             Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
+        }
+
+        public MenuRecognizer MenuRecognizer
+        {
+            get { return menuRecognizer; }
+            set
+            {
+                if (this.menuRecognizer != value)
+                {
+                    this.menuRecognizer = value;
+                    RaisePropertyChanged("MenuRecognizer");
+                }
+            }
         }
 
     }

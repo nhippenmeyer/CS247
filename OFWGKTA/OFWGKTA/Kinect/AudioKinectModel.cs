@@ -30,7 +30,6 @@ namespace OFWGKTA
         public AudioKinectModel(List<string> wordsToRecognize, EventHandler<SpeechRecognizedEventArgs> speechCallback) : base(null)
         {
             SkeletonUpdated += new EventHandler<SkeletonEventArgs>(ParseSkeletonUpdate);
-            //SwipeDetected += new EventHandler<SwipeEventArgs>(SwipeGestureCallback);
 
             if (wordsToRecognize != null && wordsToRecognize.Count > 0)
             {
@@ -68,14 +67,6 @@ namespace OFWGKTA
             // set all properties i'd like to be constantly updated on skeleton update
             // i'll know we updated the skeleton, so i should compute whether or not it's on stage
             IsOnStage = !(Head.X < stageLeft || Head.X > stageRight);
-
-            // Feed points to gesture recognizer
-            swipeGestureRecognizer.Add(HandRight, kinectRuntime.SkeletonEngine);
-        }
-
-        public void SwipeGestureCallback(object sender, SwipeEventArgs e)
-        {
-            // do something
         }
 
         // Sets words to be recognized by kinect, so they can be checked for in speechCallback
