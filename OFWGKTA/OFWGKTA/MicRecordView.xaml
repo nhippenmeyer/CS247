@@ -8,7 +8,7 @@
 
     </UserControl.Resources>
     <Grid>
-        <!-- <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}"/> -->
+        <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}"/>
         <my:WaveFileTrimmerControl Margin="5,27,5,230" 
                 SampleAggregator="{Binding SampleAggregator}"                                    
                 TotalWaveFormSamples="{Binding TotalWaveFormSamples}"
@@ -45,18 +45,18 @@
             <ItemsControl.Style>
                 <Style>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=MenuRecognizer.MenuEnabled}" Value="True">
+                        <DataTrigger Binding="{Binding Path=MenuRecognizerHoriz.MenuEnabled}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="250" Duration="0:0:1" />
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,-87,0,486" To="0,41,0,374" Duration="0:0:1" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" From="250" To="0" Duration="0:0:1" />
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,41,0,374" To="0,-87,0,486" Duration="0:0:1" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
@@ -64,12 +64,38 @@
                     </Style.Triggers>
                 </Style>
             </ItemsControl.Style>
-            <ListBox ItemsSource="{Binding MenuList}" SelectedIndex="{Binding Path=MenuRecognizer.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItems}">
+            <ListBox ItemsSource="{Binding MenuListHoriz}" SelectedIndex="{Binding Path=MenuRecognizerHoriz.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsHoriz}" Background="#CCFFFFFF">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+            </ListBox>
+        </ItemsControl>
+        <ItemsControl Margin="646,62,-177,70">
+            <ItemsControl.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=MenuRecognizerVert.MenuEnabled}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="646,62,-177,70" To="471,62,0,70" Duration="0:0:1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="471,62,0,70" To="646,62,-177,70" Duration="0:0:1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
+            <ListBox ItemsSource="{Binding MenuListHoriz}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">
             </ListBox>
         </ItemsControl>
         

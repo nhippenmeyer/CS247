@@ -22,21 +22,35 @@ namespace OFWGKTA
         private string applicationMode; 
         KinectModel kinect;
 
-        private MenuRecognizer menuRecognizer;
+        private GestureController gestureController = new GestureController();
+        private MenuRecognizer menuRecognizerHoriz;
+        private MenuRecognizer menuRecognizerVert;
 
         // Commands
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
-        private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
-        public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
+
+        private ObservableCollection<MenuOption> menuListHoriz = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuListHoriz { get { return this.menuListHoriz; } }
+        private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
         public DemoViewModel()
         {
-            this.menuList.Add(new MenuOption("hi", null));
-            this.menuList.Add(new MenuOption("what", null));
-            this.menuList.Add(new MenuOption("hello", null));
+            this.menuListHoriz.Add(new MenuOption("Play", null, 4));
+            this.menuListHoriz.Add(new MenuOption("Rewind", null, 4));
+            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4));
+            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4));
+            this.MenuRecognizerHoriz = new MenuRecognizer(this.MenuListHoriz.Count, 100);
 
-            this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
+            this.menuListVert.Add(new MenuOption("Play", null, 4));
+            this.menuListVert.Add(new MenuOption("Rewind", null, 4));
+            this.menuListVert.Add(new MenuOption("Start Recording", null, 4));
+            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
+            this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
+
+            this.gestureController.Add(this.menuRecognizerHoriz);
+            this.gestureController.Add(this.menuRecognizerVert);
 
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
@@ -52,7 +66,8 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.menuRecognizerHoriz.Add(Kinect);
+            this.menuRecognizerVert.Add(Kinect);
         }
 
         private void ReturnToWelcome()
@@ -84,15 +99,28 @@ namespace OFWGKTA
             }
         }
 
-        public MenuRecognizer MenuRecognizer
+        public MenuRecognizer MenuRecognizerHoriz
         {
-            get { return menuRecognizer; }
+            get { return menuRecognizerHoriz; }
             set
             {
-                if (this.menuRecognizer != value)
+                if (this.menuRecognizerHoriz != value)
                 {
-                    this.menuRecognizer = value;
-                    RaisePropertyChanged("MenuRecognizer");
+                    this.menuRecognizerHoriz = value;
+                    RaisePropertyChanged("MenuRecognizerHoriz");
+                }
+            }
+        }
+
+        public MenuRecognizer MenuRecognizerVert
+        {
+            get { return menuRecognizerVert; }
+            set
+            {
+                if (this.menuRecognizerVert != value)
+                {
+                    this.menuRecognizerVert = value;
+                    RaisePropertyChanged("MenuRecognizerVert");
                 }
             }
         }

@@ -35,9 +35,13 @@ namespace OFWGKTA
         
         private int micIndex;
 
-        private MenuRecognizer menuRecognizer;
-        private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
-        public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
+        private MenuRecognizer menuRecognizerHoriz;
+        private MenuRecognizer menuRecognizerVert;
+
+        private ObservableCollection<MenuOption> menuListHoriz = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuListHoriz { get { return this.menuListHoriz; } }
+        private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
         protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
 
@@ -46,12 +50,17 @@ namespace OFWGKTA
          */     
         public MicRecordViewModel()
         {
-            this.menuList = new ObservableCollection<MenuOption>();
-            this.MenuList.Add(new MenuOption("one", null));
-            this.MenuList.Add(new MenuOption("two", null));
-            this.MenuList.Add(new MenuOption("three", null));
+            this.menuListHoriz.Add(new MenuOption("Play", null, 4));
+            this.menuListHoriz.Add(new MenuOption("Rewind", null, 4));
+            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4));
+            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4));
+            this.MenuRecognizerHoriz = new MenuRecognizer(this.MenuListHoriz.Count, 100);
 
-            this.MenuRecognizer = new MenuRecognizer(this.MenuList.Count, 100);
+            this.menuListVert.Add(new MenuOption("Play", null, 4));
+            this.menuListVert.Add(new MenuOption("Rewind", null, 4));
+            this.menuListVert.Add(new MenuOption("Start Recording", null, 4));
+            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
+            this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
 
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
         }
@@ -115,7 +124,8 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            this.menuRecognizer.Add(Kinect.HandRight, Kinect.ShoulderCenter, Kinect.ShoulderRight);
+            this.menuRecognizerHoriz.Add(Kinect);
+            this.menuRecognizerVert.Add(Kinect);
             this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.KinectRuntime.SkeletonEngine);
         }
 
@@ -461,15 +471,28 @@ namespace OFWGKTA
         #endregion
 
 
-        public MenuRecognizer MenuRecognizer
+        public MenuRecognizer MenuRecognizerHoriz
         {
-            get { return menuRecognizer; }
+            get { return menuRecognizerHoriz; }
             set
             {
-                if (this.menuRecognizer != value)
+                if (this.menuRecognizerHoriz != value)
                 {
-                    this.menuRecognizer = value;
-                    RaisePropertyChanged("MenuRecognizer");
+                    this.menuRecognizerHoriz = value;
+                    RaisePropertyChanged("MenuRecognizerHoriz");
+                }
+            }
+        }
+
+        public MenuRecognizer MenuRecognizerVert
+        {
+            get { return menuRecognizerVert; }
+            set
+            {
+                if (this.menuRecognizerVert != value)
+                {
+                    this.menuRecognizerVert = value;
+                    RaisePropertyChanged("MenuRecognizerVert");
                 }
             }
         }
