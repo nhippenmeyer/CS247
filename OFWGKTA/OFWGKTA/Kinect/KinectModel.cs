@@ -43,15 +43,9 @@ namespace OFWGKTA
             }
         }
 
-        private bool menuMode = false;
+        public KinectModel() : base() {}
 
-        public KinectModel() : base()
-        {
-        }
-
-        public virtual void Destroy()
-        {
-        }
+        public virtual void Destroy() {}
 
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }

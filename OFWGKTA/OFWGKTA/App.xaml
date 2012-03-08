@@ -10,6 +10,7 @@
         <local:NormalizeConverter x:Key="Normalizer" />
         <local:StageConverter x:Key="StageHighlight" />
         <local:VectorScaler x:Key="VectorScaler" />
+        <local:OptionWidthConverter x:Key="OptionWidth" />
 
         <DataTemplate x:Key="VectorTemplate">
             <Ellipse VerticalAlignment="Top" HorizontalAlignment="Left" Fill="Blue" Width="10" Height="10" DataContext="{Binding Converter={StaticResource VectorScaler}}">
@@ -78,24 +79,35 @@
             </Grid>
         </HierarchicalDataTemplate>
 
-        <DataTemplate x:Key="MicMenuItems">
-            <Grid>
-                <Grid.Style>
+        <DataTemplate x:Key="MicMenuItemsHoriz">
+            <Button Content="{Binding Label}" Width="{Binding NumOptions, Converter={StaticResource OptionWidth}}" Height="50" HorizontalAlignment="Center" Margin="5" FontSize="20">
+                <Button.Style>
                     <Style>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="False">
-                                <Setter Property="Grid.Background" Value="Red"/>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                <Setter Property="Button.Background"  Value="DarkSeaGreen"/>
+                                <Setter Property="Button.Foreground" Value="White" />
                             </DataTrigger>
-                        </Style.Triggers> 
-                    </Style> 
-                </Grid.Style>
-                <StackPanel>
-                    <Border CornerRadius="10">
-                        <Label Content="{Binding Label}" Height="150" Width="150" HorizontalAlignment="Center"/>
-                    </Border>
-                </StackPanel>
-            </Grid>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </DataTemplate>
 
+        <DataTemplate x:Key="MicMenuItemsVert">
+            <Button Content="{Binding Label}" Width="150" Height="50" HorizontalAlignment="Center" Margin="5" FontSize="20">
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                <Setter Property="Button.Background"  Value="DarkSeaGreen"/>
+                                <Setter Property="Button.Foreground" Value="White" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </DataTemplate>
+        
     </Application.Resources>
 </Application>
