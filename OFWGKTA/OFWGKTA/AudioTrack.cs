@@ -114,6 +114,8 @@ namespace OFWGKTA
                 }
 
                 // stop recording -> loaded
+                // ONLY called from writeBufferToFile
+                // NOT to be set from anywhere else
                 else if (state == AudioTrackState.StopRecording
                          &&
                          value == AudioTrackState.Loaded)
@@ -121,9 +123,9 @@ namespace OFWGKTA
                     writer.Dispose();
                     writer = null;
 
-                    waveIn.Dispose();
                     waveIn.DataAvailable -= waveIn_DataAvailable;
                     waveIn.RecordingStopped -= new EventHandler(waveIn_RecordingStopped);
+                    waveIn.Dispose();
                     waveIn = null;
                 }
 
@@ -198,6 +200,7 @@ namespace OFWGKTA
             }
             else
             {
+                // done writing
                 this.state = AudioTrackState.Loaded;
             }
         }
