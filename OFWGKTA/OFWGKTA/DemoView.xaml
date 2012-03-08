@@ -65,7 +65,7 @@
                     </Style.Triggers>
                 </Style>
             </ItemsControl.Style>
-            <ListBox ItemsSource="{Binding MenuListHoriz}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">  
+            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">  
             </ListBox>
         </ItemsControl>
         <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}" />
