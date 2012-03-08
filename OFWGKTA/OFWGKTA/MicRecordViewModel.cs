@@ -13,46 +13,37 @@ using System.IO;
 using Microsoft.Speech.Recognition;
 using System.ComponentModel;
 using Kinect.Toolbox;
+using System.Timers;
+
 
 
 namespace OFWGKTA 
 {
     class MicRecordViewModel : KinectViewModelBase, IView
     {
+
+        System.Timers.Timer timer;
+
         public const string ViewName = "MicRecordViewModel";
 
         /**
          * Instance variables
          */
         private List<AudioTrack> audioTracks;
-        private RelayCommand beginRecordingCommand;
-        private RelayCommand stopCommand;
-        private RelayCommand rewindCommand;
-        private RelayCommand playbackCommand;
-
-        private AudioRecorder recorder;
-        private AudioPlayer player;
-        
-        private int leftPosition;
-        private int rightPosition;
-        private int totalWaveFormSamples;
 
         private float lastPeak;
-        private string waveFileName;
-
+        
         private int micIndex;
+
+        private MenuRecognizer menuRecognizer;
+        private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
+        public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
+
+        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
 
         /**
          * Constructor
-         */ 
-        public MicRecordViewModel()
-        {
-            private MenuRecognizer menuRecognizer;
-            private ObservableCollection<MenuOption> menuList = new ObservableCollection<MenuOption>();
-            public ObservableCollection<MenuOption> MenuList { get { return this.menuList; } }
-
-            protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
-
+         */     
         public MicRecordViewModel()
         {
             this.menuList = new ObservableCollection<MenuOption>();
@@ -83,16 +74,29 @@ namespace OFWGKTA
             }
 
             this.micIndex = ((AppState)state).MicIndex;
+
+            this.timer = new System.Timers.Timer();
+            timer.Elapsed += new ElapsedEventHandler(OnTimer);
+            timer.Interval = 10;
+            timer.Enabled = true;
+            timer.AutoReset = true;
+        }
+
+        void OnTimer(Object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine("time!!!!");
+            RaisePropertyChanged("RecordedTime");
         }
 
         private void OnShuttingDown(ShuttingDownMessage message)
         {
             if (message.CurrentViewName == ViewName)
             {
-                // TODO: cleanup here
- 
-                this.Stop();
-                Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
+                // TODO clean up AudioTrack states
+                
+                if (this.Kinect != null)
+                    Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
+                
                 Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
             }
         }
@@ -109,28 +113,17 @@ namespace OFWGKTA
             {
                 if (gesture == "SwipeToRight")
                 {
-                    if (this.recorder.RecordingState != RecordingState.Recording)
-                    {
-                        this.BeginRecording();
-                    }
+                    this.BeginRecording();
                 }
                 else if (gesture == "SwipeToLeft")
                 {
-                    if (this.recorder.RecordingState == RecordingState.Recording)
-                    {
-                        this.Stop();
-                    }
-                    else
-                    {
-                        if (this.player.PlaybackState == PlaybackState.Playing)
-                        {
-                            this.player.Stop();
-                        }
-                        else
-                        {
-                            this.Playback();
-                        }
-                    }
+                    if (this.currentAudioTrack.State == AudioTrackState.Recording)
+                        this.StopRecording();
+                    else if (this.currentAudioTrack.State == AudioTrackState.Playing)
+                        this.StopPlaying();
+                    else if (this.currentAudioTrack.State == AudioTrackState.Loaded)
+                        this.Playback();
+
                 }
             }
         }
@@ -142,7 +135,7 @@ namespace OFWGKTA
             {
                 if (!Kinect.IsOnStage)
                 {
-                    this.Stop();
+                    this.StopRecording();
                 }
             }
         }
@@ -151,6 +144,7 @@ namespace OFWGKTA
         {
             if (this.Kinect.IsOnStage)
             {
+                /*
                 if (e.Result.Text == "record")
                 {
                     if (e.Result.Confidence > .88)
@@ -179,7 +173,7 @@ namespace OFWGKTA
                         this.player.Stop();
                     }
                 }
-
+                */
             }
         }
 
@@ -187,19 +181,17 @@ namespace OFWGKTA
          * Properties
          */
 
-        /* TODO:
         public double MicrophoneLevel
         {
-            get { return recorder.MicrophoneLevel; }
-            set { recorder.MicrophoneLevel = value; }
+            get { return this.currentAudioTrack.MicrophoneLevel; }
+            set { this.currentAudioTrack.MicrophoneLevel = value; }
         }
-        */
 
         public string RecordedTime
         {
             get
             {
-                TimeSpan current = this.currentAudioTrack.RecordedTime;
+                TimeSpan current = this.currentAudioTrack.Time;
                 return String.Format("{0:D2}:{1:D2}.{2:D3}", current.Minutes, current.Seconds, current.Milliseconds);
             }
         }
@@ -216,16 +208,7 @@ namespace OFWGKTA
         {
             lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
             RaisePropertyChanged("CurrentInputLevel");
-            RaisePropertyChanged("RecordedTime");
-        }
-
-        private void OnShuttingDown(ShuttingDownMessage message)
-        {
-            if (message.CurrentViewName == ViewName)
-            {
-                // TODO?
-                //this.audioTrack.State = AudioTrackState.StopRe;
-            }
+            //RaisePropertyChanged("RecordedTime");
         }
 
         // 
@@ -361,18 +344,18 @@ namespace OFWGKTA
             this.currentAudioTrack.State = AudioTrackState.StopRecording;
         }
 
-        private RelayCommand stopCommand;
-        public ICommand StopCommand 
+        private RelayCommand stopPlayingCommand;
+        public ICommand StopPlayingCommand 
         { 
             get 
             {
-                if (stopCommand == null)
-                    stopCommand = new RelayCommand(() => Stop());
+                if (stopPlayingCommand == null)
+                    stopPlayingCommand = new RelayCommand(() => StopPlaying());
 
-                return stopCommand; 
+                return stopPlayingCommand; 
             } 
         }
-        private void Stop()
+        private void StopPlaying()
         {
             if (this.currentAudioTrack.State != AudioTrackState.Playing)
                 return;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Mixer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,26 +36,33 @@ namespace OFWGKTA
          */
         WaveFileWriter writer;     
         WaveIn waveIn;
+        WaveOut waveOut;
         int recordingDeviceIndex;
         private string waveFileName;
-
         TimeSpan playTime;
 
-
-        // TODO? integrate player class into this class
-        IAudioPlayer player;
+        // TODO: event for updating time?
 
         /**
-         * Constructor
+         * Constructors
          */ 
         public AudioTrack(int recordingDeviceIndex)
         {
             this.recordingDeviceIndex = recordingDeviceIndex;
 
+            // TODO: get rid of?
             sampleAggregator = new SampleAggregator();
             sampleAggregator.NotificationCount = waveFormat.SampleRate / 10;
 
             this.State = AudioTrackState.Monitoring;
+        }
+
+        // TODO: debug me
+        public AudioTrack(string waveFileName)
+        {
+            this.waveFileName = waveFileName;
+
+            this.State = AudioTrackState.Loaded;
         }
 
         /**
@@ -83,6 +91,8 @@ namespace OFWGKTA
                     waveIn.DataAvailable += waveIn_DataAvailable;
                     waveIn.WaveFormat = waveFormat;
                     waveIn.StartRecording();
+
+                    TryGetVolumeControl();
                 }
 
                 // monitoring -> recording
@@ -123,7 +133,7 @@ namespace OFWGKTA
                          value == AudioTrackState.Playing)
                 {
 
-                    WaveOut waveOut = new WaveOut();
+                    waveOut = new WaveOut();
                     WaveFileReader waveReader = new WaveFileReader(this.waveFileName);
                     
                     TrimWaveStream inStream = new TrimWaveStream(waveReader);
@@ -133,33 +143,17 @@ namespace OFWGKTA
                     waveOut.PlaybackStopped += new EventHandler(waveOut_PlaybackStopped);
                     waveOut.Play();
 
-                    /*
                     playTime = DateTime.Now.TimeOfDay;
-                    TimeSpan elapsedTime = DateTime.Now.TimeOfDay.Subtract(playTime);
-                    Console.WriteLine("Play time elapsed: " + elapsedTime.ToString());
-                    */
- 
-                    string testFileName = Path.Combine(Path.GetTempPath(),"testar.wav");
-                    Console.WriteLine("TEST FILE PATH: " + testFileName);
-                     
-                    WaveFileWriter testWriter = new WaveFileWriter(testFileName, waveFormat);
-
-                    float sampleValue;
-                    while(waveReader.TryReadFloat(out sampleValue))
-                    {
-                        testWriter.WriteSample(sampleValue);
-                    }
-
-                    testWriter.Close();
-                    
-
-                    // TODO: improve this: a lot
-                    this.player = new AudioPlayer();
-                    this.player.LoadFile(this.waveFileName);
-                    this.player.Play();
-                    return; 
                 }
- 
+
+                // playing -> loaded
+                else if (state == AudioTrackState.Playing
+                         &&
+                         value == AudioTrackState.Loaded)
+                {
+                    waveOut.Stop();
+                }
+
                 // throw exception
                 else
                 {
@@ -171,9 +165,10 @@ namespace OFWGKTA
             }
         }
 
+
         void waveOut_PlaybackStopped(object sender, EventArgs e)
         {
-            Console.WriteLine("PLAYBACK STOPPED!!!!");
+            this.state = AudioTrackState.Loaded;
         }
 
         /**
@@ -232,12 +227,10 @@ namespace OFWGKTA
 
         void waveIn_RecordingStopped(object sender, EventArgs e)
         {
-
-   
             // save wave file
             AudioSaver saver = new AudioSaver(this.waveFileName);
 
-            // TODO: allow trimming recording
+            // TODO: allow trimming recording?
             //saver.TrimFromStart = PositionToTimeSpan(LeftPosition);
             //saver.TrimFromEnd = PositionToTimeSpan(TotalWaveFormSamples - RightPosition);
 
@@ -249,17 +242,57 @@ namespace OFWGKTA
             this.State = AudioTrackState.Loaded;
         }
 
-        public TimeSpan RecordedTime
+        public TimeSpan Time
         {
             get
             {
-                if (writer == null)
+                if (this.State == AudioTrackState.Playing)
                 {
-                    return TimeSpan.Zero;
+                    return DateTime.Now.TimeOfDay.Subtract(playTime);
+                }
+                else if (this.State == AudioTrackState.Recording)
+                {
+                    return TimeSpan.FromSeconds((double)writer.Length / writer.WaveFormat.AverageBytesPerSecond);
                 }
                 else
                 {
-                    return TimeSpan.FromSeconds((double)writer.Length / writer.WaveFormat.AverageBytesPerSecond);
+                    return TimeSpan.Zero;
+                }
+            }
+        }
+
+        UnsignedMixerControl volumeControl;
+    
+        private void TryGetVolumeControl()
+        {
+            int waveInDeviceNumber = this.recordingDeviceIndex;
+
+            var mixerLine = waveIn.GetMixerLine();
+            //new MixerLine((IntPtr)waveInDeviceNumber, 0, MixerFlags.WaveIn);
+            foreach (var control in mixerLine.Controls)
+            {
+                if (control.ControlType == MixerControlType.Volume)
+                {
+                    this.volumeControl = control as UnsignedMixerControl;
+                    MicrophoneLevel = desiredVolume;
+                    break;
+                }
+            }
+        }
+
+        double desiredVolume = 100;
+        public double MicrophoneLevel
+        {
+            get
+            {
+                return desiredVolume;
+            }
+            set
+            {
+                desiredVolume = value;
+                if (volumeControl != null)
+                {
+                    volumeControl.Percent = value;
                 }
             }
         }

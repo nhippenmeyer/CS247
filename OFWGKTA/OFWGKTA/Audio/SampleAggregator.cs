@@ -12,12 +12,9 @@ namespace OFWGKTA
         // volume
         public event EventHandler<MaxSampleEventArgs> MaximumCalculated;
         public event EventHandler Restart = delegate { };
-<<<<<<< HEAD
-
-=======
         public event EventHandler Start = delegate { };
         public event EventHandler Stop = delegate { };
->>>>>>> rfbowen_dev
+
         public float maxValue;
         public float minValue;
 
