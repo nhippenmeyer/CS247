@@ -14,17 +14,17 @@ using Microsoft.Speech.Recognition;
 
 namespace OFWGKTA 
 {
-    class DemoViewModel : ViewModelBase, IView
+    class DemoViewModel : KinectViewModelBase, IView
     {
         public const string ViewName = "DemoViewModel";
 
         // Instance variables
         private string applicationMode; 
-        KinectModel kinect;
 
         private GestureController gestureController = new GestureController();
         private MenuRecognizer menuRecognizerHoriz;
         private MenuRecognizer menuRecognizerVert;
+        private StateRecognizer stateRecognizer;
 
         // Commands
         private ICommand goBackCommand;
@@ -49,8 +49,11 @@ namespace OFWGKTA
             this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
             this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
 
+            this.stateRecognizer = new StateRecognizer();
+
             this.gestureController.Add(this.menuRecognizerHoriz);
             this.gestureController.Add(this.menuRecognizerVert);
+            this.gestureController.Add(this.stateRecognizer);
 
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
@@ -58,16 +61,30 @@ namespace OFWGKTA
         public void Activated(object state)
         {
             DemoAppState curState = (DemoAppState)state;
-            this.Kinect = curState.Kinect;
-            this.Kinect.SkeletonUpdated += new EventHandler<SkeletonEventArgs>(Kinect_SkeletonUpdated);
+            if (this.Kinect == null) { this.Kinect = (KinectModel)curState.Kinect; }
             this.ApplicationMode = curState.ApplicationMode;
+            EnableKinect();
         }
 
+        public void EnableKinect()
+        {
+            if (this.Kinect != null)
+            {
+                this.Kinect.SkeletonUpdated += Kinect_SkeletonUpdated;
+            }
+        }
+
+        public void DisableKinect()
+        {
+            if (this.Kinect != null)
+            {
+                this.Kinect.SkeletonUpdated -= Kinect_SkeletonUpdated;
+            }
+        }
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            this.menuRecognizerHoriz.Add(Kinect);
-            this.menuRecognizerVert.Add(Kinect);
+            this.gestureController.Update(Kinect);
         }
 
         private void ReturnToWelcome()
@@ -75,15 +92,6 @@ namespace OFWGKTA
             kinect.Destroy();
             kinect.Dispose();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
-        }
-
-        public KinectModel Kinect { 
-            get { return kinect; }
-            set
-            {
-                kinect = value;
-                RaisePropertyChanged("Kinect");
-            }
         }
 
         public string ApplicationMode 

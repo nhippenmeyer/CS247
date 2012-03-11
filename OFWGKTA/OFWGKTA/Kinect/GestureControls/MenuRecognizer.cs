@@ -183,7 +183,7 @@ namespace OFWGKTA
             }
         }
 
-        public void Add(KinectModel kinect)
+        public void Update(KinectModel kinect)
         {
             if (!Disabled)
             {

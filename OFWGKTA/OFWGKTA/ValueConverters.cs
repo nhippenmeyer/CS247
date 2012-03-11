@@ -29,6 +29,7 @@ namespace OFWGKTA
             return input;
         }
     }
+
     [ValueConversion(typeof(bool), typeof(Color))]
     public class StageConverter : IValueConverter
     {

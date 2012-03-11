@@ -8,9 +8,9 @@ namespace OFWGKTA
 {
     class KinectViewModelBase : ViewModelBase 
     {
-        protected AudioKinectModel kinect;
+        protected KinectModel kinect;
 
-        public AudioKinectModel Kinect { 
+        public KinectModel Kinect { 
             get { return kinect; }
             set
             {

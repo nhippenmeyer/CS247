@@ -9,9 +9,10 @@ namespace OFWGKTA
 {
     public interface IGestureRecognizer: INotifyPropertyChanged
     {
-        void Add(KinectModel kinect);
+        void Update(KinectModel kinect);
         void Disable();
         void Enable();
+        bool Disabled { get; }
         bool IsClutched { get; }
     }
 }

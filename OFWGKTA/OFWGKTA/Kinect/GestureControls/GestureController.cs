@@ -22,6 +22,14 @@ namespace OFWGKTA
             this.recognizers.Add(recognizer);
         }
 
+        public void Add(KinectModel kinect)
+        {
+            foreach (IGestureRecognizer gr in this.recognizers)
+            {
+                gr.Add(kinect);
+            }
+        }
+
         void KinectListener(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsClutched")

@@ -7,31 +7,28 @@ namespace OFWGKTA
 {
     public class AppState
     {
-        private AudioKinectModel kinect;
-        public AudioKinectModel Kinect { get { return kinect; } }
+        public KinectModel Kinect { get; private set; }
+        public SpeechRecognizer SpeechRecognizer { get; private set; }
+        public int MicIndex { get; private set; }
 
-        private int micIndex;
-        public int MicIndex { get { return micIndex; } }
-
-        public AppState(AudioKinectModel kinect, int micIndex)
+        public AppState(KinectModel kinect, SpeechRecognizer speechRecognizer, int micIndex)
         {
-            this.kinect = kinect;
-            this.micIndex = micIndex;
+            this.SpeechRecognizer = speechRecognizer;
+            this.Kinect = kinect;
+            this.MicIndex = micIndex;
         }
     }
 
     public class DemoAppState 
     {
-        private string applicationMode;
-        private KinectModel kinect;
+        public string ApplicationMode { get; private set; }
+        public KinectModel Kinect { get; private set; }
 
         public DemoAppState(string applicationMode, KinectModel kinect)
         {
-            this.applicationMode = applicationMode;
-            this.kinect = kinect;
+            this.ApplicationMode = applicationMode;
+            this.Kinect = kinect;
         }
 
-        public string ApplicationMode { get { return applicationMode; } }
-        public KinectModel Kinect { get { return kinect; } }
     }
 }
