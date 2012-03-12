@@ -23,7 +23,6 @@ namespace OFWGKTA
 
         private MenuRecognizer menuRecognizerHoriz;
         private MenuRecognizer menuRecognizerVert;
-        private StateRecognizer stateRecognizer;
 
         // Commands
         private ICommand goBackCommand;
@@ -47,8 +46,6 @@ namespace OFWGKTA
             this.menuListVert.Add(new MenuOption("Rewind", null, 4, this.menuRecognizerVert));
             this.menuListVert.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerVert));
             this.menuListVert.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerVert));
-
-            this.StateRecognizer = new StateRecognizer();
 
             this.gestureController.Add(this.menuRecognizerHoriz);
             this.gestureController.Add(this.menuRecognizerVert);
@@ -87,7 +84,8 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            if (this.stateRecognizer.IsOnStage)
+            this.StateRecognizer.Update(kinect);
+            if (this.StateRecognizer.IsOnStage)
             {
                 this.gestureController.Update(Kinect);
             }
@@ -103,19 +101,6 @@ namespace OFWGKTA
                 {
                     applicationMode = value;
                     RaisePropertyChanged("ApplicationMode");
-                }
-            }
-        }
-
-        public StateRecognizer StateRecognizer
-        {
-            get { return stateRecognizer; }
-            set
-            {
-                if (this.stateRecognizer != value)
-                {
-                    this.stateRecognizer = value;
-                    RaisePropertyChanged("StateRecognizer");
                 }
             }
         }
