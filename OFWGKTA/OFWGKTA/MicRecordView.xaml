@@ -103,6 +103,6 @@
 You're off stage!
 Stand in the spotlight below to begin."
                    VerticalAlignment="Top" Width="356" Foreground="White" TextAlignment="Center" FontSize="20" FontWeight="Normal" 
-                   Visibility="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource BoolToVisibility}}"/>
+                   Visibility="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource BoolToVisibility}}" DataContext="{Binding}" TextWrapping="Wrap" />
     </Grid>
 </UserControl>
