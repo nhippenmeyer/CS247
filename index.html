@@ -40,6 +40,8 @@ CS247 Project 4: Gestural Interfaces
 			IV. Functional Prototype I</a>
 						<a href="#5">
 			V. User Testing</a>
+						<a href="#6">
+			VI. Functional Prototype II</a>
 		</nav>
 	</header>
 
@@ -676,6 +678,62 @@ Gestures which might involve lifting the guitar too high can block too many join
 					    The idea of saving tracks is also intriguing and we will hopefully pursue this in the next iteration of our prototype.  Right now, all of the tracks get saved to a users desktop, which can be quite surprising the first go around, especially if you record a number of tracks and then close the application.  Deleting tracks is also a possibility, although not entirely necessary because only one user mentioned it and it doesn’t seem to be the most pressing issue right now.
 					</p>	   
 				</a>
+      <a name="6" />
+			<h1>VI. Functional Prototype II</h1>
+      <p>
+        After getting a lot of feedback from user testing, we slightly re-prioritized the list of things that we were hoping to tackle after Functional Prototype I
+        in order to make our application maximally useful to our target audience. In addition to improving our multi-track support and adding other functionality which
+        we had already been planning on adding, we also made a number of user experience improvements in order to make our app more usable and accessible.
+      </p>
+
+      <h3>UI Improvements</h3>
+      <p>
+        We made a number of improvements to the UI since the previous prototype, thanks in large part to the wide range of feedback we were able to solicit from User Testing last week.
+        One thing that we had not initially prioritized, but was quickly unearthed during testing, was providing better feedback in error states. For example, we found that it was quite
+        confusing and frustrating for users to determine whether or not they were being sensed by the Kinect properly. In response, we added visual feedback, including a "stage" that
+        helps users identify where the Kinect's range is, and whether they are inside it. More specifically, the changes that we made to the UI include the following:
+      <ul>
+        <li>
+          Storyboard-enriched menus - we added both top- and right-side menus that make the process of using gestures for selection more intuitive. Part of the reasoning for this was
+          the fairly even split we observed in user testing between preference for the speech and gestural interfaces. While we assumed the speech interface would be the overwhelming
+          favorite, we learned that it was still important to provide a good gestural experience (especially given that both interfaces are not 100% accurate).
+        </li>
+        <li>
+          Recognizers implemented for menu systems - as part of revamping our application's menus, we implemented gesture recognizers that could recognize gestures to select from menus
+          (without annoying interaction with other menus and UI elements on the screen). We improved our initial naïve implementation of these recognizers with the Kinect Toolbox to
+          ensure that we wait for the user skeleton to be stable before allowing him or her to select anything, which was very helpful in reducing accidental menu selections.
+        </li>
+        <li>
+          New recorded waveform display - in order to both improve our UI and to rid ourselves of a nasty dependency, we moved to a new means of representing recorded waveforms in our
+          application. The one downside is that the library that we are currently using adds a watermark (in order to upsell to a more expensive, commercial version). We have recently made
+          contact with them in hopes of being able to get rid of the watermark, otherwise we may be forced to roll our own solution.
+        </li>
+        <li>
+          "Stage" and user skeleton display - as we mentioned above, we added a "Stage" to the UI to help users identify when the Kinect was having trouble identifying and recognizing them.
+        </li>
+      </ul>
+
+      <h3>Functionality Improvments</h3>
+      <p>
+        As we noted in our writeup for Functional Prototype I, there were a few very important features that we needed to a
+      </p>
+      <ul>
+        <li>
+          Multitrack support - One of the core missing features from our Functional Prototype I was the ability to easily record to and interact with
+          multiple tracks. In our current version, a user can keep recording over the same track as many times as he or she likes until it's just right, then commit it to the "background
+          track" in order to allow for future recording. While the UI shows all of the previously-recorded tracks being merged into one track, in reality the implementation keeps all of
+          the tracks separate in order to maximize flexibility in post-production.
+        </li>
+        <li>
+          Sample agggregator dependence - we largely eliminated our dependence on SampleAggregator, which was made even more crucial when we switched the way we represented
+          recorded waveforms in the application.
+        </li>
+        <li>
+          Metronome - while limited in its current implementation, we added a stub (with user interface to follow) for allowing the user to set the bpm for the song, and
+          be able to play along with a metronome. Also, a fortunate consequence of this was our newfound ability to marshal events onto the UI thread so that events in different threads
+          can still affect the UI.
+        </li>
+      </ul>
 	</div>
 
 	<footer>
