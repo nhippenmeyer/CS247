@@ -34,7 +34,7 @@ namespace OFWGKTA
         {
             if (e.PropertyName == "IsClutched")
             {
-                Console.Beep();
+                //Console.Beep();
                 IGestureRecognizer gr_sender = (IGestureRecognizer)sender;
                 if (gr_sender.IsClutched)
                 {

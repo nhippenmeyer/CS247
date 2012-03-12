@@ -610,8 +610,12 @@ namespace OFWGKTA
             // "start recording" -> overwrite current track
             // note that at this point if the track was supposed to be saved
             // it already has been (during stoprecording).
-            this.currentTrackSamples.Clear();
-
+            //this.currentTrackSamples.Clear();
+            Dispatcher.CurrentDispatcher.Invoke(new Action(delegate() { 
+                this.currentTrackSamples.Clear(); 
+                RaisePropertyChanged("CurrentTrackData"); 
+            }));
+            
             RaisePropertyChanged("CurrentTrackData");
 
             this.currentAudioTrack.State = AudioTrackState.Recording;
