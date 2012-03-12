@@ -14,6 +14,9 @@ using Microsoft.Speech.Recognition;
 using System.ComponentModel;
 using Kinect.Toolbox;
 using System.Timers;
+using System.Windows.Threading;
+using System.Windows;
+using Visiblox.Charts;
 
 
 
@@ -43,6 +46,8 @@ namespace OFWGKTA
         private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
+        private int secondsElapsed = 0;
+
         /**
          * Constructor
          */     
@@ -66,6 +71,102 @@ namespace OFWGKTA
             this.gestureController.Add(this.MenuRecognizerVert);
 
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
+
+            /* THIS WORKS, BTW
+            Dispatcher dispatcher = Application.Current.Dispatcher;
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+             */
+        }
+
+        /*
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            ++secondsElapsed;
+            RaisePropertyChanged("Time");
+        }
+         */
+
+        private BindableSamplePointCollection backgroundTrackSamples = new BindableSamplePointCollection();
+        public BindableSamplePointCollection BackgroundTrackData
+        {
+            get {
+                return backgroundTrackSamples;
+                //return this.CurrentTrackData;
+            }
+        }
+
+        public DoubleRange BackgroundTrackXRange
+        {
+            get {
+                DoubleRange xRange = new DoubleRange();
+                if (backgroundTrackSamples.Count < 300)
+                {
+                    xRange.Minimum = 0;
+                    xRange.Maximum = 300;
+                }
+                else
+                {
+                    xRange.Minimum = backgroundTrackSamples.Count - 210;
+                    xRange.Maximum = backgroundTrackSamples.Count + 90;
+                }
+                xRange.Minimum = 0;
+                xRange.Maximum = 300;
+                return xRange;
+                //return this.CurrentTrackXRange;
+            }
+        }
+
+        private BindableSamplePointCollection currentTrackSamples = new BindableSamplePointCollection();
+        public BindableSamplePointCollection CurrentTrackData
+        {
+            get { return currentTrackSamples; }
+        }
+
+        public DoubleRange CurrentTrackXRange
+        {
+            get
+            {
+                DoubleRange xRange = new DoubleRange();
+                int numSamples = currentTrackSamples.Count;
+
+                if (this.currentAudioTrack.State == AudioTrackState.Recording || this.currentAudioTrack.State == AudioTrackState.StopRecording)
+                {
+                    if (numSamples < 250)
+                    {
+                        xRange.Minimum = 0;
+                        xRange.Maximum = 300;
+                    }
+                    else
+                    {
+                        xRange.Minimum = numSamples - 250;
+                        xRange.Maximum = numSamples + 50;
+                    }
+                }
+                else if (this.currentAudioTrack.State == AudioTrackState.Monitoring)
+                {
+                    xRange.Minimum = currentTrackSamples.Count - 150;
+                    xRange.Maximum = currentTrackSamples.Count + 150;
+                }
+
+                return xRange;
+            }
+        }
+
+        void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
+        {
+            SamplePoint newSample = new SamplePoint();
+            newSample.sampleNum = currentTrackSamples.Count;
+            newSample.sampleVal = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
+            currentTrackSamples.Add(newSample);
+
+            RaisePropertyChanged("CurrentTrackData");
+            RaisePropertyChanged("CurrentTrackXRange");
+
+            lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
+            RaisePropertyChanged("CurrentInputLevel");
         }
 
         /**
@@ -107,12 +208,13 @@ namespace OFWGKTA
                 this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
             }
         }
-        #endregion
 
         void OnTimer(Object source, ElapsedEventArgs e)
         {
             RaisePropertyChanged("Time");
         }
+        
+        #endregion
 
         void OnMenuItemSelected(object sender, MenuEventArgs e)
         {
@@ -274,11 +376,13 @@ namespace OFWGKTA
          * Handlers
          */
 
+        /*TODO
         void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
         {
             lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
             RaisePropertyChanged("CurrentInputLevel");
         }
+         * */
 
         #region Commands
 
@@ -296,10 +400,30 @@ namespace OFWGKTA
         }
         private void newTrack()
         {
+            Console.WriteLine("NEW TRACK");
             if (this.audioTracks.Count() > 0)
             {
                 if (this.currentAudioTrack.State != AudioTrackState.Loaded)
                     return;
+
+                BindableSamplePointCollection newBackgroundSamples = new BindableSamplePointCollection();
+
+                for (int i = 0; i < Math.Max(currentTrackSamples.Count, backgroundTrackSamples.Count); ++i)
+                {
+                    SamplePoint sample = new SamplePoint();
+                    
+                    double backVal = (backgroundTrackSamples.Count > i) ? backgroundTrackSamples[i].sampleVal : 0.0;
+                    double curVal = (currentTrackSamples.Count > i) ? currentTrackSamples[i].sampleVal : 0.0;
+                    sample.sampleVal = Math.Min(backVal + curVal, 1.0);
+                    sample.sampleNum = i;
+
+                    newBackgroundSamples.Add(sample);
+                }
+
+                backgroundTrackSamples = newBackgroundSamples;
+
+                RaisePropertyChanged("BackgroundTrackData");
+                RaisePropertyChanged("BackgroundTrackXRange");
 
                 this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
             }
@@ -307,7 +431,6 @@ namespace OFWGKTA
             AudioTrack audioTrack = new AudioTrack(micIndex);
             audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
             this.audioTracks.Add(audioTrack);
-
         }
 
         /*
@@ -348,6 +471,9 @@ namespace OFWGKTA
         
         private void playAll()
         {
+            Console.WriteLine("PLAYING ALL");
+            RaisePropertyChanged("BackgroundTrackData");
+            RaisePropertyChanged("BackgroundTrackXRange");
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
@@ -355,6 +481,7 @@ namespace OFWGKTA
         
         private void stopAll()
         {
+            Console.WriteLine("STOPPING ALL");
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Playing)
                     track.State = AudioTrackState.Loaded;
@@ -472,6 +599,13 @@ namespace OFWGKTA
 
             if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
                 return;
+
+            // "start recording" -> overwrite current track
+            // note that at this point if the track was supposed to be saved
+            // it already has been (during stoprecording).
+            currentTrackSamples.Clear();
+
+            RaisePropertyChanged("CurrentTrackData");
 
             this.currentAudioTrack.State = AudioTrackState.Recording;
         }

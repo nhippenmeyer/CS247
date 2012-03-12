@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using NAudio.Wave;
 using System.IO;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace OFWGKTA
 {
