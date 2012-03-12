@@ -46,6 +46,7 @@ namespace OFWGKTA
         private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
+        private Dispatcher uiDispatcher;
         private DispatcherTimer metronomeTimer;
         private Boolean metronomeDotVisible = true;
         private double bpm = 120.0;
@@ -75,7 +76,7 @@ namespace OFWGKTA
 
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
 
-            Dispatcher dispatcher = Application.Current.Dispatcher;
+            this.uiDispatcher = Application.Current.Dispatcher;
             metronomeTimer = new System.Windows.Threading.DispatcherTimer();
             metronomeTimer.Tick += new EventHandler(metronomeTimer_Tick);
             metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration); 
@@ -208,7 +209,7 @@ namespace OFWGKTA
             }
             if (this.SpeechRecognizer != null)
             {
-                this.SpeechRecognizer.SetSpeechCallback(speechCallback);
+                //this.SpeechRecognizer.SetSpeechCallback(speechCallback);
             }
 
             this.micIndex = ((AppState)state).MicIndex;
@@ -229,7 +230,7 @@ namespace OFWGKTA
             }
             if (this.SpeechRecognizer != null)
             {
-                this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
+                //this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
             }
         }
 
@@ -423,36 +424,39 @@ namespace OFWGKTA
         }
         private void newTrack()
         {
-            if (this.audioTracks.Count() > 0)
+            this.uiDispatcher.Invoke(new Action(delegate()
             {
-                if (this.currentAudioTrack.State != AudioTrackState.Loaded)
-                    return;
-
-                BindableSamplePointCollection newBackgroundSamples = new BindableSamplePointCollection();
-
-                for (int i = 0; i < Math.Max(currentTrackSamples.Count, backgroundTrackSamples.Count); ++i)
+                if (this.audioTracks.Count() > 0)
                 {
-                    SamplePoint sample = new SamplePoint();
-                    
-                    double backVal = (backgroundTrackSamples.Count > i) ? backgroundTrackSamples[i].sampleVal : 0.0;
-                    double curVal = (currentTrackSamples.Count > i) ? currentTrackSamples[i].sampleVal : 0.0;
-                    sample.sampleVal = Math.Min(backVal + curVal, 1.0);
-                    sample.sampleNum = i;
+                    if (this.currentAudioTrack.State != AudioTrackState.Loaded)
+                        return;
 
-                    newBackgroundSamples.Add(sample);
+                    BindableSamplePointCollection newBackgroundSamples = new BindableSamplePointCollection();
+
+                    for (int i = 0; i < Math.Max(currentTrackSamples.Count, backgroundTrackSamples.Count); ++i)
+                    {
+                        SamplePoint sample = new SamplePoint();
+
+                        double backVal = (backgroundTrackSamples.Count > i) ? backgroundTrackSamples[i].sampleVal : 0.0;
+                        double curVal = (currentTrackSamples.Count > i) ? currentTrackSamples[i].sampleVal : 0.0;
+                        sample.sampleVal = Math.Min(backVal + curVal, 1.0);
+                        sample.sampleNum = i;
+
+                        newBackgroundSamples.Add(sample);
+                    }
+
+                    backgroundTrackSamples = newBackgroundSamples;
+
+                    RaisePropertyChanged("BackgroundTrackData");
+                    RaisePropertyChanged("BackgroundTrackXRange");
+
+                    this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
                 }
 
-                backgroundTrackSamples = newBackgroundSamples;
-
-                RaisePropertyChanged("BackgroundTrackData");
-                RaisePropertyChanged("BackgroundTrackXRange");
-
-                this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
-            }
-
-            AudioTrack audioTrack = new AudioTrack(micIndex);
-            audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
-            this.audioTracks.Add(audioTrack);
+                AudioTrack audioTrack = new AudioTrack(micIndex);
+                audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
+                this.audioTracks.Add(audioTrack);
+            }));
         }
 
         /*
@@ -553,20 +557,26 @@ namespace OFWGKTA
         }
         private void play()
         {
-            if (this.currentAudioTrack.State == AudioTrackState.Recording)
-                this.currentAudioTrack.State = AudioTrackState.StopRecording;
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.currentAudioTrack.State == AudioTrackState.Recording)
+                    this.currentAudioTrack.State = AudioTrackState.StopRecording;
 
-            if (this.currentAudioTrack.State != AudioTrackState.Loaded)
-                return;
+                if (this.currentAudioTrack.State != AudioTrackState.Loaded)
+                    return;
 
-            this.currentAudioTrack.State = AudioTrackState.Playing;
+                this.currentAudioTrack.State = AudioTrackState.Playing;
+            }));
         }
         private void stop()
         {
-            if (this.currentAudioTrack.State != AudioTrackState.Playing)
-                return;
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.currentAudioTrack.State != AudioTrackState.Playing)
+                    return;
 
-            this.currentAudioTrack.State = AudioTrackState.Loaded;
+                this.currentAudioTrack.State = AudioTrackState.Loaded;
+            }));
         }
 
 
@@ -605,31 +615,35 @@ namespace OFWGKTA
         }
         private void stopRecording()
         {
-            if (this.currentAudioTrack.State != AudioTrackState.Recording)
-                return;
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.currentAudioTrack.State != AudioTrackState.Recording)
+                    return;
 
-            this.currentAudioTrack.State = AudioTrackState.StopRecording;
+                this.currentAudioTrack.State = AudioTrackState.StopRecording;
+            }));
         }
         private void startRecording()
         {
-            if (this.currentAudioTrack.State == AudioTrackState.Loaded)
-                this.currentAudioTrack.State = AudioTrackState.Monitoring;
-
-            if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
-                return;
-
             // "start recording" -> overwrite current track
             // note that at this point if the track was supposed to be saved
             // it already has been (during stoprecording).
             //this.currentTrackSamples.Clear();
-            Dispatcher.CurrentDispatcher.Invoke(new Action(delegate() { 
+            this.uiDispatcher.Invoke(new Action(delegate() { 
+                if (this.currentAudioTrack.State == AudioTrackState.Loaded)
+                    this.currentAudioTrack.State = AudioTrackState.Monitoring;
+    
+                if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
+                    return;
+
                 this.currentTrackSamples.Clear(); 
                 RaisePropertyChanged("CurrentTrackData"); 
+
+                this.currentAudioTrack.State = AudioTrackState.Recording;
             }));
             
             RaisePropertyChanged("CurrentTrackData");
 
-            this.currentAudioTrack.State = AudioTrackState.Recording;
         }
 
 
@@ -663,20 +677,6 @@ namespace OFWGKTA
                     return "Stop";
                 else
                     return "Play";
-            }
-        }
-
-
-        public StateRecognizer StateRecognizer
-        {
-            get { return stateRecognizer; }
-            set
-            {
-                if (this.stateRecognizer != value)
-                {
-                    this.stateRecognizer = value;
-                    RaisePropertyChanged("StateRecognizer");
-                }
             }
         }
 

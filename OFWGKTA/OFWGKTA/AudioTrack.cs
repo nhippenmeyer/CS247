@@ -161,7 +161,7 @@ namespace OFWGKTA
                 // throw exception
                 else
                 {
-                    throw new InvalidOperationException("Can't transition to  " + value.ToString() + " state from " + state.ToString() + " state");
+                    //throw new InvalidOperationException("Can't transition to  " + value.ToString() + " state from " + state.ToString() + " state");
                 }
 
                 // set state value
