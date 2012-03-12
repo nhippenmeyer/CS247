@@ -62,6 +62,8 @@
                 </charts:StaircaseSeries>
             </charts:Chart.Series>
         </charts:Chart>
+        
+        <Canvas Width="100" Height="100" Margin="50,50,0,0"></Canvas>
 
         <ProgressBar Margin="12,0,601,106" Orientation="Vertical" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="101" VerticalAlignment="Bottom" />
 
@@ -164,5 +166,7 @@ Stand in the spotlight below to begin."
                    VerticalAlignment="Top" Width="356" Foreground="White" TextAlignment="Center" FontSize="20" FontWeight="Normal" 
                    Visibility="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource BoolToVisibility}}" DataContext="{Binding}" TextWrapping="Wrap" />
         <Label Content="Elapsed Time:" FontSize="72" Height="28" Margin="433,128,123,0" VerticalAlignment="Top" />
+        <Ellipse Fill="Red" Height="10" Margin="17,386,613,84" Width="10" Visibility="{Binding MetronomeDotVisibility}" />
+        <Label Content="tempo" Foreground="White" Height="28" Margin="26,377,568,0" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

@@ -46,7 +46,10 @@ namespace OFWGKTA
         private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
-        private int secondsElapsed = 0;
+        private DispatcherTimer metronomeTimer;
+        private Boolean metronomeDotVisible = true;
+        private double bpm = 120.0;
+        private double dotDuration = 200.0;
 
         /**
          * Constructor
@@ -72,29 +75,51 @@ namespace OFWGKTA
 
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
 
-            /* THIS WORKS, BTW
             Dispatcher dispatcher = Application.Current.Dispatcher;
-            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
-             */
+            metronomeTimer = new System.Windows.Threading.DispatcherTimer();
+            metronomeTimer.Tick += new EventHandler(metronomeTimer_Tick);
+            metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration); 
+            metronomeTimer.Start();
         }
 
-        /*
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void metronomeTimer_Tick(object sender, EventArgs e)
         {
-            ++secondsElapsed;
-            RaisePropertyChanged("Time");
+            if (metronomeDotVisible)
+            {
+                //about to turn invisible, so interval should be [desired interval] - dotDuration
+                metronomeTimer.Interval = TimeSpan.FromMilliseconds((60 * 1000 / bpm) - dotDuration);
+            }
+            else
+            {
+                metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration);
+            }
+            metronomeDotVisible = !metronomeDotVisible;
+            RaisePropertyChanged("MetronomeDotVisibility");
         }
-         */
+
+        public double BPM
+        {
+            get { return bpm; }
+            set
+            {
+                bpm = value;
+                this.metronomeTimer.Interval = TimeSpan.FromMilliseconds(60 * 1000 / bpm);
+            }
+        }
+        
+        public Visibility MetronomeDotVisibility
+        {
+            get
+            {
+                return metronomeDotVisible? Visibility.Visible : Visibility.Hidden;
+            }
+        }
 
         private BindableSamplePointCollection backgroundTrackSamples = new BindableSamplePointCollection();
         public BindableSamplePointCollection BackgroundTrackData
         {
             get {
                 return backgroundTrackSamples;
-                //return this.CurrentTrackData;
             }
         }
 
@@ -115,7 +140,6 @@ namespace OFWGKTA
                 xRange.Minimum = 0;
                 xRange.Maximum = 300;
                 return xRange;
-                //return this.CurrentTrackXRange;
             }
         }
 
@@ -313,8 +337,8 @@ namespace OFWGKTA
             {
                 if (!this.StateRecognizer.IsOnStage)
                 {
-                    stopRecording(); // stop recording
-                    stop(); // stop playing
+                    stopRecording();
+                    stop();
                 }
             }
         }
@@ -383,18 +407,6 @@ namespace OFWGKTA
         // multiply by 100 because the Progress bar's default maximum value is 100
         public float CurrentInputLevel { get { return lastPeak * 100; } }
 
-        /**
-         * Handlers
-         */
-
-        /*TODO
-        void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
-        {
-            lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
-            RaisePropertyChanged("CurrentInputLevel");
-        }
-         * */
-
         #region Commands
 
         // new track
@@ -411,7 +423,6 @@ namespace OFWGKTA
         }
         private void newTrack()
         {
-            Console.WriteLine("NEW TRACK");
             if (this.audioTracks.Count() > 0)
             {
                 if (this.currentAudioTrack.State != AudioTrackState.Loaded)
@@ -482,9 +493,6 @@ namespace OFWGKTA
         
         private void playAll()
         {
-            Console.WriteLine("PLAYING ALL");
-            RaisePropertyChanged("BackgroundTrackData");
-            RaisePropertyChanged("BackgroundTrackXRange");
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
@@ -492,7 +500,6 @@ namespace OFWGKTA
         
         private void stopAll()
         {
-            Console.WriteLine("STOPPING ALL");
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Playing)
                     track.State = AudioTrackState.Loaded;
@@ -614,7 +621,7 @@ namespace OFWGKTA
             // "start recording" -> overwrite current track
             // note that at this point if the track was supposed to be saved
             // it already has been (during stoprecording).
-            currentTrackSamples.Clear();
+            this.currentTrackSamples.Clear();
 
             RaisePropertyChanged("CurrentTrackData");
 
