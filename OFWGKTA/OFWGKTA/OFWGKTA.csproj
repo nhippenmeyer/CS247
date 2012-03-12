@@ -108,6 +108,8 @@
       <DependentUpon>FancyGraphView.xaml</DependentUpon>
     </Compile>
     <Compile Include="FancyGraphViewModel.cs" />
+    <Compile Include="Kinect\GestureControls\StateRecognizer.cs" />
+    <Compile Include="Kinect\SpeechRecognizer.cs" />
     <Compile Include="Kinect\GestureControls\GestureController.cs" />
     <Compile Include="Kinect\GestureControls\IGestureRecognizer.cs" />
     <Compile Include="Kinect\GestureControls\MenuRecognizer.cs" />
@@ -121,7 +123,6 @@
     </Compile>
     <Compile Include="DemoViewModel.cs" />
     <Compile Include="Kinect\KinectViewModelBase.cs" />
-    <Compile Include="Kinect\AudioKinectModel.cs" />
     <Compile Include="Audio\RecordingState.cs" />
     <Compile Include="Audio\SampleAggregator.cs" />
     <Compile Include="ValueConverters.cs" />

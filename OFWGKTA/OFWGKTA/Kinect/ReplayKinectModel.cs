@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Microsoft.Research.Kinect.Nui;
 using Kinect.Toolbox.Record;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -50,6 +51,10 @@ namespace OFWGKTA
 
             Joint leftHandUnscaled = new Joint();
             Joint rightHandUnscaled = new Joint();
+
+            Vector3 skeletonPosition = new Vector3(skeleton.Position.X, skeleton.Position.Y, skeleton.Position.Z);
+            barycenterHelper.Add(skeletonPosition, skeleton.TrackingID);
+            IsStable = barycenterHelper.IsStable(skeleton.TrackingID);
 
             for (int i = 0; i < skeleton.Joints.Count; i++)
             {

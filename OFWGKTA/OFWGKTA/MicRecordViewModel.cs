@@ -37,6 +37,7 @@ namespace OFWGKTA
 
         private MenuRecognizer menuRecognizerHoriz;
         private MenuRecognizer menuRecognizerVert;
+        private StateRecognizer stateRecognizer;
 
         private ObservableCollection<MenuOption> menuListHoriz = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListHoriz { get { return this.menuListHoriz; } }
@@ -62,24 +63,30 @@ namespace OFWGKTA
             this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
             this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
 
+            this.StateRecognizer = new StateRecognizer();
+            this.gestureController.Add(this.MenuRecognizerHoriz);
+            this.gestureController.Add(this.MenuRecognizerVert);
+
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
         }
-        
+
         /**
          * Initialization
          */
+        #region de/activated
         public void Activated(object state)
         {
             this.Kinect = ((AppState)state).Kinect;
+            this.SpeechRecognizer = ((AppState)state).SpeechRecognizer;
             if (this.Kinect != null)
             {
                 this.swipeGestureRecognizer.OnGestureDetected += SwipeDetected;
-                this.Kinect.SetSpeechCallback(speechCallback);
-                // subscribe to changes in kinect properties
-                // allows us to set callbacks at this level when stage status changes 
-                // (remember to unsubscribe from this)
-                this.Kinect.PropertyChanged += KinectListener; 
-                this.Kinect.SkeletonUpdated += new EventHandler<SkeletonEventArgs>(Kinect_SkeletonUpdated);
+                this.StateRecognizer.PropertyChanged += StateListener;
+                this.Kinect.SkeletonUpdated += Kinect_SkeletonUpdated;
+            }
+            if (this.SpeechRecognizer != null)
+            {
+                this.SpeechRecognizer.SetSpeechCallback(speechCallback);
             }
 
             this.micIndex = ((AppState)state).MicIndex;
@@ -90,6 +97,12 @@ namespace OFWGKTA
             timer.Enabled = true;
             timer.AutoReset = true;
         }
+
+        public void Deactivated()
+        {
+
+        }
+        #endregion
 
         void OnTimer(Object source, ElapsedEventArgs e)
         {
@@ -115,8 +128,8 @@ namespace OFWGKTA
             {
                 // TODO clean up AudioTrack states
                 
-                if (this.Kinect != null)
-                    Kinect.PropertyChanged -= KinectListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
+                if (this.StateRecognizer != null)
+                    StateRecognizer.PropertyChanged -= StateListener; // this listeners for changes in stage status, so we're unsubsribing before we leave
                 
                 Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
             }
@@ -124,14 +137,17 @@ namespace OFWGKTA
 
         void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
         {
-            this.menuRecognizerHoriz.Update(Kinect);
-            this.menuRecognizerVert.Update(Kinect);
-            this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.KinectRuntime.SkeletonEngine);
+            if (Kinect.Runtime != null)
+            {
+                this.StateRecognizer.Update(this.Kinect);
+                this.gestureController.Update(this.Kinect);
+                this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.Runtime.SkeletonEngine);
+            }
         }
 
         void SwipeDetected(string gesture)
         {
-            if (this.Kinect.IsOnStage)
+            if (this.StateRecognizer.IsOnStage)
             {
                 if (gesture == "SwipeToRight")
                 {
@@ -150,12 +166,12 @@ namespace OFWGKTA
             }
         }
 
-        void KinectListener(object sender, PropertyChangedEventArgs e)
+        void StateListener(object sender, PropertyChangedEventArgs e)
         {
 
             if (e.PropertyName == "IsOnStage")
             {
-                if (!Kinect.IsOnStage)
+                if (!this.StateRecognizer.IsOnStage)
                 {
                     this.stopRecording();
                 }
@@ -166,7 +182,7 @@ namespace OFWGKTA
 
         void speechCallback(object sender, SpeechRecognizedEventArgs e)
         {
-            if (this.Kinect.IsOnStage
+            if (this.StateRecognizer.IsOnStage
                 && 
                 e.Result.Confidence > speechConfidenceMin)
             {
@@ -226,7 +242,6 @@ namespace OFWGKTA
         // multiply by 100 because the Progress bar's default maximum value is 100
         public float CurrentInputLevel { get { return lastPeak * 100; } }
 
-
         /**
          * Handlers
          */
@@ -236,21 +251,6 @@ namespace OFWGKTA
             lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
             RaisePropertyChanged("CurrentInputLevel");
         }
-
-        
-        
-
-        public String PlayButtonTitle
-        {
-            get
-            {
-                if (this.currentAudioTrack.State == AudioTrackState.Playing)
-                    return "Stop";
-                else
-                    return "Play";
-            }
-        }
-
 
         #region Commands
 
@@ -470,10 +470,35 @@ namespace OFWGKTA
 
         #endregion
 
+        #region Properties
+        public String PlayButtonTitle
+        {
+            get
+            {
+                if (this.currentAudioTrack.State == AudioTrackState.Playing)
+                    return "Stop";
+                else
+                    return "Play";
+            }
+        }
+
+
+        public StateRecognizer StateRecognizer
+        {
+            get { return stateRecognizer; }
+            set
+            {
+                if (this.stateRecognizer != value)
+                {
+                    this.stateRecognizer = value;
+                    RaisePropertyChanged("StateRecognizer");
+                }
+            }
+        }
 
         public MenuRecognizer MenuRecognizerHoriz
         {
-            get { return menuRecognizerHoriz; }
+            get { return this.menuRecognizerHoriz; }
             set
             {
                 if (this.menuRecognizerHoriz != value)
@@ -496,5 +521,6 @@ namespace OFWGKTA
                 }
             }
         }
+        #endregion Properties
     }
 }

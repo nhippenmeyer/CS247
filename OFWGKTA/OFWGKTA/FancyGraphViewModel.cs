@@ -42,6 +42,7 @@ namespace OFWGKTA
         /**
          * Initialization
          */
+        #region de/activated
         public void Activated(object state)
         {
             micIndex = (int)state;
@@ -52,6 +53,12 @@ namespace OFWGKTA
                 newTrack();
             }
         }
+
+        public void Deactivated()
+        {
+
+        }
+        #endregion
 
         private BindableSamplePointCollection sampleData = new BindableSamplePointCollection();
         public BindableSamplePointCollection SampleData {

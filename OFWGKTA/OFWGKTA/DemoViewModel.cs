@@ -21,7 +21,6 @@ namespace OFWGKTA
         // Instance variables
         private string applicationMode; 
 
-        private GestureController gestureController = new GestureController();
         private MenuRecognizer menuRecognizerHoriz;
         private MenuRecognizer menuRecognizerVert;
         private StateRecognizer stateRecognizer;
@@ -49,7 +48,7 @@ namespace OFWGKTA
             this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
             this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
 
-            this.stateRecognizer = new StateRecognizer();
+            this.StateRecognizer = new StateRecognizer();
 
             this.gestureController.Add(this.menuRecognizerHoriz);
             this.gestureController.Add(this.menuRecognizerVert);
@@ -58,34 +57,26 @@ namespace OFWGKTA
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
 
+        #region de/activated
         public void Activated(object state)
         {
             DemoAppState curState = (DemoAppState)state;
             if (this.Kinect == null) { this.Kinect = (KinectModel)curState.Kinect; }
             this.ApplicationMode = curState.ApplicationMode;
-            EnableKinect();
-        }
-
-        public void EnableKinect()
-        {
             if (this.Kinect != null)
             {
                 this.Kinect.SkeletonUpdated += Kinect_SkeletonUpdated;
             }
         }
 
-        public void DisableKinect()
+        public void Deactivated()
         {
             if (this.Kinect != null)
             {
                 this.Kinect.SkeletonUpdated -= Kinect_SkeletonUpdated;
             }
         }
-
-        void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
-        {
-            this.gestureController.Update(Kinect);
-        }
+        #endregion
 
         private void ReturnToWelcome()
         {
@@ -94,6 +85,15 @@ namespace OFWGKTA
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 
+        void Kinect_SkeletonUpdated(object sender, SkeletonEventArgs e)
+        {
+            if (this.stateRecognizer.IsOnStage)
+            {
+                this.gestureController.Update(Kinect);
+            }
+        }
+
+        #region Properties
         public string ApplicationMode 
         {
             get { return applicationMode; }
@@ -103,6 +103,19 @@ namespace OFWGKTA
                 {
                     applicationMode = value;
                     RaisePropertyChanged("ApplicationMode");
+                }
+            }
+        }
+
+        public StateRecognizer StateRecognizer
+        {
+            get { return stateRecognizer; }
+            set
+            {
+                if (this.stateRecognizer != value)
+                {
+                    this.stateRecognizer = value;
+                    RaisePropertyChanged("StateRecognizer");
                 }
             }
         }
@@ -132,5 +145,6 @@ namespace OFWGKTA
                 }
             }
         }
+        #endregion
     }
 }

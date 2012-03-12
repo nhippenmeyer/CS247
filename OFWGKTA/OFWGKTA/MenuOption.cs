@@ -8,8 +8,6 @@ namespace OFWGKTA
 {
     public class MenuOption
     {
-        private int numOptions;
-
         public string Label { get; private set; }
         public RelayCommand Command { get; private set; }
         public int NumOptions { get; private set; }

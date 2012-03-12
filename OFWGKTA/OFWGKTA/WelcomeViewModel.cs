@@ -26,11 +26,11 @@ namespace OFWGKTA
                     return this.appState;
 
                 // try to get Kinect reference and instantiate its model
-                AudioKinectModel audioKinectModel = null;
+                KinectModel audioKinectModel = null;
                 try
                 {
                     List<string> list = new List<string> {"record", "play", "stop"};
-                    audioKinectModel = new AudioKinectModel(list, null);
+                    audioKinectModel = new FreePlayKinectModel(null);
                 }
                 catch 
                 {
@@ -38,7 +38,7 @@ namespace OFWGKTA
                 }
 
                 // mic interface is hardcoded to 0 here:
-                this.appState = new AppState(audioKinectModel, 0);
+                this.appState = new AppState(audioKinectModel, null, 0);
                 return this.appState;
             }
         }
@@ -60,6 +60,7 @@ namespace OFWGKTA
 
         public ICommand ContinueCommand { get { return continueCommand; } }
 
+        #region de/activated
         public void Activated(object state)
         {
             this.applicationModes.Clear();
@@ -70,6 +71,9 @@ namespace OFWGKTA
             this.applicationModes.Add("Mic Record");
             this.applicationModes.Add("Fancy Graph");
         }
+
+        public void Deactivated() { }
+        #endregion
 
         public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
 

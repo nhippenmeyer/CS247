@@ -31,7 +31,7 @@
         <Rectangle Height="67" Width="320" HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="rectangle1" Margin="160,0,160,27" FlowDirection="LeftToRight" Panel.ZIndex="-1" Stroke="#00000000">
             <Rectangle.Fill>
                 <RadialGradientBrush>
-                    <!--<GradientStop Color="{Binding Path=Kinect.IsOnStage, Converter={StaticResource StageHighlight}}" Offset="0.22"/>-->
+                    <GradientStop Color="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource StageHighlight}}" Offset="0.22"/>
                     <GradientStop Color="Black" Offset="0.703" />
                 </RadialGradientBrush>
             </Rectangle.Fill>
@@ -41,7 +41,7 @@
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
         <Button Command="{Binding NewTrackCommand}" Content="New Track" Margin="0,445,365,12" ToolTip="Start Recording" HorizontalAlignment="Right" Width="71" />
 
-        <ItemsControl Background="White" Margin="0,0,0,230" Height="0">
+        <ItemsControl Margin="0,-87,0,486">
             <ItemsControl.Style>
                 <Style>
                     <Style.Triggers>
@@ -95,7 +95,7 @@
                     </Style.Triggers>
                 </Style>
             </ItemsControl.Style>
-            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">
+            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">  
             </ListBox>
         </ItemsControl>
         

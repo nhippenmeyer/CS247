@@ -15,12 +15,20 @@ namespace OFWGKTA
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Vector input = (Vector)value;
-            input.X /= 2;
-            input.X += 160;
-            input.Y /= 2;
-            input.Y += 200;
-            return input;
+            Vector result;
+            if (value == null)
+            {
+                result = new Vector();
+            }
+            else
+            {
+                result = (Vector)value;
+                result.X /= 2;
+                result.X += 160;
+                result.Y /= 2;
+                result.Y += 200;
+            }
+            return result;
         }
     
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -35,7 +43,7 @@ namespace OFWGKTA
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool onStage = (bool)value;
+            bool onStage = (value != null) ? (bool)value : false;
             if (onStage)
             {
                 return Colors.White;

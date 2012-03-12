@@ -185,7 +185,7 @@ namespace OFWGKTA
 
         public void Update(KinectModel kinect)
         {
-            if (!Disabled)
+            if (!Disabled && kinect.IsStable)
             {
                 if (isHorizontal)
                 {

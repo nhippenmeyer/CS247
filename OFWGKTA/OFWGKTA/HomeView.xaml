@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:blah="clr-namespace:Microsoft.Research.Kinect.Nui;assembly=Microsoft.Research.Kinect"
         xmlns:ofwgkta="clr-namespace:OFWGKTA"
-        Height="480" Width="640">
+        Height="480" Width="640" Background="Black">
         <UserControl.Resources>
     </UserControl.Resources>
     <Grid>
@@ -12,5 +12,6 @@
         
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
         <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="807,146,0,0" Name="label1" VerticalAlignment="Top" />
+        <TextBlock Height="102" HorizontalAlignment="Left" Margin="0,58,0,0" Name="textBlock2" Text="FirstCut" VerticalAlignment="Top" Width="640" FontSize="72" FontFamily="Arial" FontWeight="Black" TextAlignment="Center" Foreground="White" />
     </Grid>
 </UserControl>

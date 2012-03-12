@@ -43,22 +43,28 @@ namespace OFWGKTA
 
         private void OnNavigate(NavigateMessage message) 
         {
+            // Deactivated allows us to clean up Kinect stuff if necessary
+            if (this.CurrentView != null)
+            {
+                ((IView)this.CurrentView.DataContext).Deactivated();
+            }
+
+            // Change the view to the target view
             this.CurrentView = views[message.TargetView];
             this.currentViewName = message.TargetView;
+
+            // Activated allows us to set up the Kinect stuff if necessary
             ((IView)this.CurrentView.DataContext).Activated(message.State);
         }
 
         private void OnShuttingDown(ShuttingDownMessage message)
         {
-            
+           
         }
 
         public FrameworkElement CurrentView
         {
-            get
-            {
-                return currentView;
-            }
+            get { return currentView; }
             set
             {
                 if (this.currentView != value)

@@ -74,10 +74,11 @@
         <Rectangle Height="67" Width="320" HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="rectangle1" Margin="159,0,161,27" FlowDirection="LeftToRight" Panel.ZIndex="-1" Stroke="#00000000">
             <Rectangle.Fill>
                 <RadialGradientBrush>
-                    <GradientStop Color="{Binding Path=Kinect.IsOnStage, Converter={StaticResource StageHighlight}}" Offset="0.22"/>
+                    <GradientStop Color="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource StageHighlight}}" Offset="0.22"/>
                     <GradientStop Color="Black" Offset="0.703" />
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
+        <TextBlock AllowDrop="False" Background="White" FontSize="30" Foreground="Black" Height="99" HorizontalAlignment="Left" Margin="285,25,0,0" Name="textBlock5" Text="{Binding Path=Kinect.IsStable}" TextAlignment="Center" VerticalAlignment="Top" Width="113" />
     </Grid>
 </UserControl>

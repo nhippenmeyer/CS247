@@ -22,11 +22,11 @@ namespace OFWGKTA
             this.recognizers.Add(recognizer);
         }
 
-        public void Add(KinectModel kinect)
+        public void Update(KinectModel kinect)
         {
             foreach (IGestureRecognizer gr in this.recognizers)
             {
-                gr.Add(kinect);
+                gr.Update(kinect);
             }
         }
 

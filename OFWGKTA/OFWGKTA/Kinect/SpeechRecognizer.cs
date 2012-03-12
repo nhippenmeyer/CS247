@@ -9,7 +9,7 @@ using System.IO;
 
 namespace OFWGKTA
 {
-    class SpeechRecognizer 
+    public class SpeechRecognizer 
     {
         // Kinect audio related parameters
         EventHandler<SpeechRecognizedEventArgs> speechCallback = null;

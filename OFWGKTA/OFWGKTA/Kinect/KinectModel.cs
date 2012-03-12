@@ -32,6 +32,11 @@ namespace OFWGKTA
         private Vector kneeLeft;
         private Vector kneeRight;
         private Vector hipCenter;
+        private bool isStable;
+        protected BarycenterHelper barycenterHelper = new BarycenterHelper();
+
+        protected Runtime runtime = null;
+        public Runtime Runtime { get { return this.runtime; } }
 
         public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
 
@@ -55,6 +60,19 @@ namespace OFWGKTA
             Joint temp;
             temp = joint.ScaleTo(640, 480, 1.5f, 1.5f);
             return temp.Position;
+        }
+
+        public bool IsStable
+        {
+            get { return isStable; }
+            set 
+            {
+                if (!isStable.Equals(value))
+                {
+                    isStable = value;
+                    RaisePropertyChanged("IsStable");
+                }
+            }
         }
 
         public Vector Head

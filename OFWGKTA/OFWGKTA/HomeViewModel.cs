@@ -27,16 +27,18 @@ namespace OFWGKTA
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
         }
 
+        #region de/activated
         public void Activated(object state)
         {
             AppState curState = (AppState)state;
             this.Kinect = curState.Kinect;
         }
 
+        public void Deactivated() { }
+        #endregion
+
         private void ReturnToWelcome()
         {
-            // kinect.Destroy();
-            // kinect.Dispose();
             Messenger.Default.Send(new NavigateMessage(WelcomeViewModel.ViewName, null));
         }
 
