@@ -19,14 +19,14 @@
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,-87,0,486" To="0,41,0,374" Duration="0:0:1" />
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,-87,0,486" To="0,41,0,374" Duration="0:0:0.5" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,41,0,374" To="0,-87,0,486" Duration="0:0:1" />
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,41,0,374" To="0,-87,0,486" Duration="0:0:0.5" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>

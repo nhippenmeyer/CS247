@@ -49,14 +49,14 @@
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,-87,0,486" To="0,41,0,374" Duration="0:0:1" />
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,-87,0,486" To="0,41,0,374" Duration="0:0:0.5" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,41,0,374" To="0,-87,0,486" Duration="0:0:1" />
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,41,0,374" To="0,-87,0,486" Duration="0:0:0.5" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
@@ -70,6 +70,11 @@
                         <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+                <ListBox.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                </ListBox.Resources>
             </ListBox>
         </ItemsControl>
         <ItemsControl Margin="646,62,-177,70">
@@ -95,7 +100,12 @@
                     </Style.Triggers>
                 </Style>
             </ItemsControl.Style>
-            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">  
+            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">
+                <ListBox.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                </ListBox.Resources>
             </ListBox>
         </ItemsControl>
         <TextBlock Height="109" HorizontalAlignment="Left" Margin="144,273,0,0" Name="textBlock2"

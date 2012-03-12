@@ -36,17 +36,17 @@ namespace OFWGKTA
 
         public DemoViewModel()
         {
-            this.menuListHoriz.Add(new MenuOption("Play", null, 4));
-            this.menuListHoriz.Add(new MenuOption("Rewind", null, 4));
-            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4));
-            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4));
-            this.MenuRecognizerHoriz = new MenuRecognizer(this.MenuListHoriz.Count, 100);
+            this.MenuRecognizerHoriz = new MenuRecognizer(4, 100);
+            this.menuListHoriz.Add(new MenuOption("Play", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Rewind", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerHoriz));
 
-            this.menuListVert.Add(new MenuOption("Play", null, 4));
-            this.menuListVert.Add(new MenuOption("Rewind", null, 4));
-            this.menuListVert.Add(new MenuOption("Start Recording", null, 4));
-            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
-            this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
+            this.MenuRecognizerVert = new MenuRecognizer(4, 100, false);
+            this.menuListVert.Add(new MenuOption("Play", null, 4, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Rewind", null, 4, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerVert));
 
             this.StateRecognizer = new StateRecognizer();
 

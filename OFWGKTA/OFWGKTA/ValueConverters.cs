@@ -165,4 +165,32 @@ namespace OFWGKTA
             return 630 / ((int)value + 10);
         }
     }
+
+    [ValueConversion(typeof(double), typeof(int))]
+    public class ButtonHeightConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Math.Floor(50.0 - 25.0 * (double)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (50.0 - (int)value) / 25.0;
+        }
+    }
+
+    [ValueConversion(typeof(double), typeof(int))]
+    public class ButtonFontSizeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Math.Floor(20.0 - 5.0 * (double)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (20.0 - (int)value) / 5.0;
+        }
+    }
 }

@@ -10,7 +10,7 @@ namespace OFWGKTA
 {
     public class MenuRecognizer : ViewModelBase, IGestureRecognizer
     {
-        private double selectionZTolerance = 0.15;
+        private double selectionZTolerance = 0.10;
 
         private Timer selectionTimer;
         private bool menuEnabled = false;
@@ -23,6 +23,7 @@ namespace OFWGKTA
         private bool autoClose;
         public bool selectionDead = false;
         private bool isClutched = false;
+        private double percentDepressed = 0.0;
 
         public event EventHandler<MenuEventArgs> MenuItemSelected;
 
@@ -112,6 +113,8 @@ namespace OFWGKTA
         #region ProcessDeltas
         private void ProcessDeltaZ(float deltaZ)
         {
+            PercentDepressed = Math.Min(1.0, Math.Max(0.0, deltaZ / this.selectionZTolerance));
+
             if (deltaZ > this.selectionZTolerance)
             {
                 if (this.SelectedIndex < 0)
@@ -261,6 +264,19 @@ namespace OFWGKTA
                 {
                     this.isClutched = value;
                     RaisePropertyChanged("IsClutched");
+                }
+            }
+        }
+
+        public double PercentDepressed
+        {
+            get { return percentDepressed; }
+            set
+            {
+                if (this.percentDepressed != value)
+                {
+                    this.percentDepressed = value;
+                    RaisePropertyChanged("PercentDepressed");
                 }
             }
         }

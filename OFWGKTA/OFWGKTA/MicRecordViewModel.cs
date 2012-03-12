@@ -49,17 +49,19 @@ namespace OFWGKTA
          */     
         public MicRecordViewModel()
         {
-            this.menuListHoriz.Add(new MenuOption("Play", null, 4));
-            this.menuListHoriz.Add(new MenuOption("Rewind", null, 4));
-            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4));
-            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4));
-            this.MenuRecognizerHoriz = new MenuRecognizer(this.MenuListHoriz.Count, 100);
+            this.MenuRecognizerHoriz = new MenuRecognizer(4, 100);
+            this.menuListHoriz.Add(new MenuOption("Play", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Stop", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerHoriz));
 
-            this.menuListVert.Add(new MenuOption("Play", null, 4));
-            this.menuListVert.Add(new MenuOption("Rewind", null, 4));
-            this.menuListVert.Add(new MenuOption("Start Recording", null, 4));
-            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
-            this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
+            MenuRecognizerHoriz.MenuItemSelected += OnMenuItemSelected;
+
+            this.MenuRecognizerVert = new MenuRecognizer(4, 100, false);
+            this.menuListVert.Add(new MenuOption("Play", null, 4, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Rewind", null, 4, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerVert));
 
             this.StateRecognizer = new StateRecognizer();
             this.gestureController.Add(this.MenuRecognizerHoriz);
@@ -112,6 +114,27 @@ namespace OFWGKTA
         void OnTimer(Object source, ElapsedEventArgs e)
         {
             RaisePropertyChanged("Time");
+        }
+
+        void OnMenuItemSelected(object sender, MenuEventArgs e)
+        {
+            switch (e.SelectedIndex)
+            {
+                case 0:
+                    play();
+                    break;
+                case 1:
+                    stop();
+                    break;
+                case 2:
+                    startRecording();
+                    break;
+                case 3:
+                    stopRecording();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private AudioTrack currentAudioTrack

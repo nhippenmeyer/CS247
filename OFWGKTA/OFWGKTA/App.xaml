@@ -11,6 +11,8 @@
         <local:StageConverter x:Key="StageHighlight" />
         <local:VectorScaler x:Key="VectorScaler" />
         <local:OptionWidthConverter x:Key="OptionWidth" />
+        <local:ButtonHeightConverter x:Key="ButtonHeight" />
+        <local:ButtonFontSizeConverter x:Key="ButtonFontSize" />
         <local:BooleanToVisibility x:Key="BoolToVisibility"/>
 
         <DataTemplate x:Key="VectorTemplate">
@@ -81,13 +83,19 @@
         </HierarchicalDataTemplate>
 
         <DataTemplate x:Key="MicMenuItemsHoriz">
-            <Button Content="{Binding Label}" Width="{Binding NumOptions, Converter={StaticResource OptionWidth}}" Height="50" HorizontalAlignment="Center" Margin="5" FontSize="20">
+            <Button Content="{Binding Label}" Width="{Binding NumOptions, Converter={StaticResource OptionWidth}}" HorizontalAlignment="Center" Margin="5">
                 <Button.Style>
                     <Style>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
                                 <Setter Property="Button.Background"  Value="DarkSeaGreen"/>
                                 <Setter Property="Button.Foreground" Value="White" />
+                                <Setter Property="Button.Height" Value="{Binding PercentDepressed, Converter={StaticResource ButtonHeight}}" />
+                                <Setter Property="Button.FontSize" Value="{Binding PercentDepressed, Converter={StaticResource ButtonFontSize}}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="False">
+                                <Setter Property="Button.Height" Value="50" />
+                                <Setter Property="Button.FontSize" Value="20" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
