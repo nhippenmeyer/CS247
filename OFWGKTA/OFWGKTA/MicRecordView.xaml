@@ -5,6 +5,9 @@
         xmlns:my="clr-namespace:OFWGKTA"
         Height="480" Width="640">
         <UserControl.Resources>
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"></Setter>
+        </Style>
 
     </UserControl.Resources>
     <Grid Background="Black">

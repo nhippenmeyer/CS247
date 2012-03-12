@@ -13,5 +13,7 @@
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
         <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="807,146,0,0" Name="label1" VerticalAlignment="Top" />
         <TextBlock Height="102" HorizontalAlignment="Left" Margin="0,58,0,0" Name="textBlock2" Text="FirstCut" VerticalAlignment="Top" Width="640" FontSize="72" FontFamily="Arial" FontWeight="Black" TextAlignment="Center" Foreground="White" />
+        <TextBlock Height="49" HorizontalAlignment="Center" Margin="0,196,0,0" Name="textBlock3" Text="Raise both hands over your head to start!" VerticalAlignment="Top" Width="640" Foreground="White" TextAlignment="Center" FontWeight="Normal" FontSize="20" />
+        <ProgressBar Height="33" HorizontalAlignment="Left" Margin="270,251,0,0" Name="progressBar1" VerticalAlignment="Top" Width="95" />
     </Grid>
 </UserControl>
