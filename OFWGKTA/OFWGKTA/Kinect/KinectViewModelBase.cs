@@ -11,14 +11,28 @@ namespace OFWGKTA
         protected KinectModel kinect = null;
         protected SpeechRecognizer speechRecognizer = null;
         protected GestureController gestureController = new GestureController();
+        protected StateRecognizer stateRecognizer = new StateRecognizer();
+
+        public StateRecognizer StateRecognizer
+        {
+            get { return this.stateRecognizer; }
+            set
+            {
+                this.stateRecognizer = value;
+                RaisePropertyChanged("StateRecognizer");
+            }
+        }
 
         public SpeechRecognizer SpeechRecognizer
         {
             get { return this.speechRecognizer; }
             set
             {
-                this.speechRecognizer = value;
-                RaisePropertyChanged("SpeechRecognizer");
+                if (this.speechRecognizer != value)
+                {
+                    this.speechRecognizer = value;
+                    RaisePropertyChanged("SpeechRecognizer");
+                }
             }
         }
 
@@ -27,8 +41,11 @@ namespace OFWGKTA
             get { return this.kinect; }
             set
             {
-                this.kinect = value;
-                RaisePropertyChanged("Kinect");
+                if (this.kinect != value)
+                {
+                    this.kinect = value;
+                    RaisePropertyChanged("Kinect");
+                }
             }
         }
     }

@@ -5,6 +5,9 @@
         xmlns:my="clr-namespace:OFWGKTA"
         Height="480" Width="640">
         <UserControl.Resources>
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"></Setter>
+        </Style>
 
     </UserControl.Resources>
     <Grid Background="Black">
@@ -95,7 +98,7 @@
                     </Style.Triggers>
                 </Style>
             </ItemsControl.Style>
-            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">  
+            <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="Green" HorizontalContentAlignment="Stretch">  
             </ListBox>
         </ItemsControl>
         <TextBlock Height="109" HorizontalAlignment="Left" Margin="144,273,0,0" Name="textBlock2"

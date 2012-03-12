@@ -17,6 +17,7 @@ namespace OFWGKTA
         public bool Disabled { get; private set; }
 
         bool isOnStage = false;
+        bool handsOverHead = false;
         public StateRecognizer()
         {
             this.Disabled = false;
@@ -25,6 +26,7 @@ namespace OFWGKTA
         public void Update(KinectModel kinect)
         {
             IsOnStage = !(kinect.Head.X < stageLeft || kinect.Head.X > stageRight);
+            HandsOverHead = (kinect.HandLeft.Y < kinect.Head.Y && kinect.HandRight.Y < kinect.Head.Y);
         }
 
         // Nothing necessary for most of these functions, since it's just noting 
@@ -34,6 +36,19 @@ namespace OFWGKTA
         public void Enable() {}
 
         public bool IsClutched { get { return false; } }
+
+        public bool HandsOverHead
+        {
+            get { return handsOverHead; }
+            set
+            {
+                if (handsOverHead != value)
+                {
+                    handsOverHead = value;
+                    RaisePropertyChanged("HandsOverHead");
+                }
+            }
+        }
 
         public bool IsOnStage
         {

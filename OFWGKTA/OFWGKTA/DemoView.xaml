@@ -7,10 +7,10 @@
     <UserControl.Resources>
     </UserControl.Resources>
     <Grid Background="Black">
-        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="104,147,0,0" Text="{Binding Path=MenuRecognizer.HoverIndex}" Name="TextBlock" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
-        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="471,147,0,0" Text="{Binding Path=MenuRecognizer.SelectedIndex}" Name="TextBlock2" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
-        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="285,147,0,0" Text="{Binding Path=MenuRecognizer.SelectionDead}" Name="TextBlock3" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
-        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="104,25,0,0" Text="{Binding Path=MenuRecognizer.MenuEnabled}" Name="TextBlock4" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
+        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="104,147,0,0" Text="{Binding Path=MenuRecognizerHoriz.HoverIndex}" Name="TextBlock" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
+        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="471,147,0,0" Text="{Binding Path=MenuRecognizerHoriz.SelectedIndex}" Name="TextBlock2" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
+        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="285,147,0,0" Text="{Binding Path=MenuRecognizerHoriz.SelectionDead}" Name="TextBlock3" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
+        <TextBlock Height="99" HorizontalAlignment="Left" Foreground="Black" Margin="104,25,0,0" Text="{Binding Path=MenuRecognizerHoriz.MenuEnabled}" Name="TextBlock4" VerticalAlignment="Top" Width="113" Background="White" AllowDrop="False" FontSize="30" TextAlignment="Center" />
         <ItemsControl Margin="0,-87,0,486">
             <ItemsControl.Style>
                 <Style>
@@ -37,7 +37,7 @@
             <ListBox ItemsSource="{Binding MenuListHoriz}" SelectedIndex="{Binding Path=MenuRecognizerHoriz.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsHoriz}" Background="#CCFFFFFF">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
+                        <WrapPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>

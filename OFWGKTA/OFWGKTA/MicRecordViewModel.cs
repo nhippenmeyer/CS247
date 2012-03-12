@@ -37,7 +37,6 @@ namespace OFWGKTA
 
         private MenuRecognizer menuRecognizerHoriz;
         private MenuRecognizer menuRecognizerVert;
-        private StateRecognizer stateRecognizer;
 
         private ObservableCollection<MenuOption> menuListHoriz = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListHoriz { get { return this.menuListHoriz; } }
@@ -61,7 +60,6 @@ namespace OFWGKTA
             this.menuListVert.Add(new MenuOption("Stop Recording", null, 4));
             this.MenuRecognizerVert = new MenuRecognizer(this.MenuListVert.Count, 100, false);
 
-            this.StateRecognizer = new StateRecognizer();
             this.gestureController.Add(this.MenuRecognizerHoriz);
             this.gestureController.Add(this.MenuRecognizerVert);
 
@@ -179,7 +177,8 @@ namespace OFWGKTA
             {
                 if (!this.StateRecognizer.IsOnStage)
                 {
-                    this.stopRecording();
+                    stopRecording(); // stop recording
+                    stop(); // stop playing
                 }
             }
         }
