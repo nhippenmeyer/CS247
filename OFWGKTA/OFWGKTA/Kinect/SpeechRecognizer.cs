@@ -84,6 +84,7 @@ namespace OFWGKTA
             if (this.speechCallback != null)
             {
                 speechEngine.SpeechRecognized -= this.speechCallback;
+                this.speechCallback = null;
             }
             if (speechCallback != null)
             {

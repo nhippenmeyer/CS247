@@ -7,7 +7,7 @@
         <UserControl.Resources>
 
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="Black">
         <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}"/>
         <my:WaveFileTrimmerControl Margin="5,27,5,230" 
                 SampleAggregator="{Binding SampleAggregator}"                                    
@@ -15,11 +15,11 @@
                 LeftSelection="{Binding LeftPosition, Mode=TwoWay}"
                 RightSelection="{Binding RightPosition, Mode=TwoWay}" Loaded="WaveFileTrimmerControl_Loaded" />
         
-        <ProgressBar Margin="29,0,584,64" Orientation="Vertical" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="101" VerticalAlignment="Bottom" />
+        <ProgressBar Margin="12,0,601,106" Orientation="Vertical" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="101" VerticalAlignment="Bottom" />
 
-        <Slider Margin="62,315,543,64" Orientation="Vertical" Value="{Binding MicrophoneLevel, Mode=TwoWay}" Maximum="100" />
+        <Slider Margin="52,273,553,106" Orientation="Vertical" Value="{Binding MicrophoneLevel, Mode=TwoWay}" Maximum="100" />
 
-        <TextBlock Margin="223,315,217,137" Text="{Binding Time}" FontWeight="Bold" FontSize="16" Width="200" />
+        <TextBlock Margin="530,307,5,142" Text="{Binding Time}" FontWeight="Bold" FontSize="16" Foreground="White" />
         
         <Button Content="{Binding StartOrStopRecordingButtonTitle}" Command="{Binding StartOrStopRecordingCommand}" Margin="443,445,111,12" />
         <Button Command="{Binding PlayOrStopAllCommand}" Content="{Binding PlayOrStopAllButtonTitle}" Margin="129,445,0,12" HorizontalAlignment="Left" Width="69" />
@@ -37,7 +37,7 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Label Margin="276,271,280,0" Height="28" VerticalAlignment="Top">Elapsed Time:</Label>
+        <Label Margin="544,273,12,0" Height="28" VerticalAlignment="Top">Elapsed Time:</Label>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
         <Button Command="{Binding NewTrackCommand}" Content="New Track" Margin="0,445,365,12" ToolTip="Start Recording" HorizontalAlignment="Right" Width="71" />
 
@@ -98,6 +98,11 @@
             <ListBox ItemsSource="{Binding MenuListVert}" SelectedIndex="{Binding Path=MenuRecognizerVert.HoverIndex, Mode=OneWay}" ItemTemplate="{StaticResource MicMenuItemsVert}" Background="#CCFFFFFF" HorizontalContentAlignment="Stretch">  
             </ListBox>
         </ItemsControl>
-        
+        <TextBlock Height="109" HorizontalAlignment="Left" Margin="144,273,0,0" Name="textBlock2"
+                   Text="
+You're off stage!
+Stand in the spotlight below to begin."
+                   VerticalAlignment="Top" Width="356" Foreground="White" TextAlignment="Center" FontSize="20" FontWeight="Normal" 
+                   Visibility="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource BoolToVisibility}}"/>
     </Grid>
 </UserControl>

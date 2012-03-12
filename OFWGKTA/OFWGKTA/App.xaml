@@ -11,6 +11,7 @@
         <local:StageConverter x:Key="StageHighlight" />
         <local:VectorScaler x:Key="VectorScaler" />
         <local:OptionWidthConverter x:Key="OptionWidth" />
+        <local:BooleanToVisibility x:Key="BoolToVisibility"/>
 
         <DataTemplate x:Key="VectorTemplate">
             <Ellipse VerticalAlignment="Top" HorizontalAlignment="Left" Fill="Blue" Width="10" Height="10" DataContext="{Binding Converter={StaticResource VectorScaler}}">

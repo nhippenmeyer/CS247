@@ -10,6 +10,21 @@ using Microsoft.Research.Kinect.Nui;
 
 namespace OFWGKTA
 {
+    [ValueConversion(typeof(bool), typeof(System.Windows.Visibility))]
+    public class BooleanToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool result = (value != null) ? (bool)value : false;
+            return result ? System.Windows.Visibility.Hidden : System.Windows.Visibility.Visible; 
+        }
+    
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return false;
+        }
+    }
+
     [ValueConversion(typeof(Vector), typeof(Vector))]
     public class VectorScaler : IValueConverter
     {

@@ -44,8 +44,6 @@ namespace OFWGKTA
         private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
-        protected readonly SwipeGestureDetector swipeGestureRecognizer = new SwipeGestureDetector();
-
         /**
          * Constructor
          */     
@@ -80,7 +78,6 @@ namespace OFWGKTA
             this.SpeechRecognizer = ((AppState)state).SpeechRecognizer;
             if (this.Kinect != null)
             {
-                this.swipeGestureRecognizer.OnGestureDetected += SwipeDetected;
                 this.StateRecognizer.PropertyChanged += StateListener;
                 this.Kinect.SkeletonUpdated += Kinect_SkeletonUpdated;
             }
@@ -100,7 +97,15 @@ namespace OFWGKTA
 
         public void Deactivated()
         {
-
+            if (this.Kinect != null)
+            {
+                this.StateRecognizer.PropertyChanged -= StateListener;
+                this.Kinect.SkeletonUpdated -= Kinect_SkeletonUpdated;
+            }
+            if (this.SpeechRecognizer != null)
+            {
+                this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
+            }
         }
         #endregion
 
@@ -140,8 +145,10 @@ namespace OFWGKTA
             if (Kinect.Runtime != null)
             {
                 this.StateRecognizer.Update(this.Kinect);
-                this.gestureController.Update(this.Kinect);
-                this.swipeGestureRecognizer.Add(e.RightHandPosition, Kinect.Runtime.SkeletonEngine);
+                if (this.StateRecognizer.IsOnStage)
+                {
+                    this.gestureController.Update(this.Kinect);
+                }
             }
         }
 
@@ -161,7 +168,6 @@ namespace OFWGKTA
                         this.stop();
                     else if (this.currentAudioTrack.State == AudioTrackState.Loaded)
                         this.play();
-
                 }
             }
         }
