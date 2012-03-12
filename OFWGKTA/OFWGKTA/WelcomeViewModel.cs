@@ -26,11 +26,13 @@ namespace OFWGKTA
                     return this.appState;
 
                 // try to get Kinect reference and instantiate its model
-                KinectModel audioKinectModel = null;
+                KinectModel kinectModel = null;
+                SpeechRecognizer speechRecognizer = null;
                 try
                 {
                     List<string> list = new List<string> {"record", "play", "stop"};
-                    audioKinectModel = new FreePlayKinectModel(null);
+                    speechRecognizer = new SpeechRecognizer(list, null);
+                    kinectModel = new FreePlayKinectModel(null);
                 }
                 catch 
                 {
@@ -38,7 +40,7 @@ namespace OFWGKTA
                 }
 
                 // mic interface is hardcoded to 0 here:
-                this.appState = new AppState(audioKinectModel, null, 0);
+                this.appState = new AppState(kinectModel, speechRecognizer, 0);
                 return this.appState;
             }
         }
