@@ -10,7 +10,7 @@ namespace OFWGKTA
 {
     public class MenuRecognizer : ViewModelBase, IGestureRecognizer
     {
-        private double selectionZTolerance = 0.10;
+        private double selectionZTolerance = 0.07;
 
         private Timer selectionTimer;
         private bool menuEnabled = false;
@@ -120,7 +120,7 @@ namespace OFWGKTA
                 if (this.SelectedIndex < 0)
                 {
                     this.SelectedIndex = this.HoverIndex;
-                    StartTimer(1.5);
+                    StartTimer(0.7);
                 }
             }
             else

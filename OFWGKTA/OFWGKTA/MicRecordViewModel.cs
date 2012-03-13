@@ -57,7 +57,7 @@ namespace OFWGKTA
          */     
         public MicRecordViewModel()
         {
-            this.MenuRecognizerHoriz = new MenuRecognizer(3, 100);
+            this.MenuRecognizerHoriz = new MenuRecognizer(3, 50);
             this.menuListHoriz.Add(new MenuOption("Record", null, 3, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("Play", null, 3, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("New Track", null, 3, this.menuRecognizerHoriz));
