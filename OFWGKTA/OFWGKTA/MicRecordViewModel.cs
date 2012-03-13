@@ -58,21 +58,23 @@ namespace OFWGKTA
         public MicRecordViewModel()
         {
             this.MenuRecognizerHoriz = new MenuRecognizer(3, 100);
-            this.menuListHoriz.Add(new MenuOption("Play All", null, 3, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("Play Track", null, 3, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("Stop", null, 3, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Record", null, 3, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Play", null, 3, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("New Track", null, 3, this.menuRecognizerHoriz));
 
             MenuRecognizerHoriz.MenuItemSelected += OnHorizMenuItemSelected;
 
+            /*
             this.MenuRecognizerVert = new MenuRecognizer(3, 100, false);
             this.menuListVert.Add(new MenuOption("Record", null, 3, this.menuRecognizerVert));
             this.menuListVert.Add(new MenuOption("Stop Recording", null, 3, this.menuRecognizerVert));
             this.menuListVert.Add(new MenuOption("New Track", null, 3, this.menuRecognizerVert));
 
             MenuRecognizerVert.MenuItemSelected += OnVertMenuItemSelected;
+            this.gestureController.Add(this.MenuRecognizerVert);
+            */
 
             this.gestureController.Add(this.MenuRecognizerHoriz);
-            this.gestureController.Add(this.MenuRecognizerVert);
 
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
 
@@ -236,6 +238,10 @@ namespace OFWGKTA
 
         void OnTimer(Object source, ElapsedEventArgs e)
         {
+            if (this.audioTracks.Count > 0 && this.audioTracks[0].State != AudioTrackState.Playing)
+            {
+                this.menuListHoriz[1].Label = "Play";
+            }
             RaisePropertyChanged("Time");
         }
         
@@ -246,13 +252,13 @@ namespace OFWGKTA
             switch (e.SelectedIndex)
             {
                 case 0:
-                    playAll();
+                    startOrStopRecording();
                     break;
                 case 1:
-                    play();
+                    playOrStopAll();
                     break;
                 case 2:
-                    stop();
+                    newTrack();
                     break;
             }
         }
@@ -488,9 +494,13 @@ namespace OFWGKTA
         private void playOrStopAll()
         {
             if (this.isAnyTrackPlaying)
+            {
                 stopAll();
+            }
             else
+            {
                 playAll();
+            }
 
             RaisePropertyChanged("PlayOrStopAllButtonTitle");
         }
@@ -500,6 +510,7 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
+            this.menuListHoriz[1].Label = "Stop Playing";
         }
         
         private void stopAll()
@@ -507,6 +518,7 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Playing)
                     track.State = AudioTrackState.Loaded;
+            this.menuListHoriz[1].Label = "Play";
         }
         // helper method:
         private bool isAnyTrackPlaying
@@ -607,9 +619,13 @@ namespace OFWGKTA
         private void startOrStopRecording()
         {
             if (this.currentAudioTrack.State == AudioTrackState.Recording)
+            {
                 stopRecording();
+            }
             else
+            {
                 startRecording();
+            }
 
             RaisePropertyChanged("StartOrStopRecordingButtonTitle");
         }
@@ -621,6 +637,7 @@ namespace OFWGKTA
                     return;
 
                 this.currentAudioTrack.State = AudioTrackState.StopRecording;
+                this.menuListHoriz[0].Label = "Record";
             }));
         }
         private void startRecording()
@@ -640,6 +657,7 @@ namespace OFWGKTA
                 RaisePropertyChanged("CurrentTrackData"); 
 
                 this.currentAudioTrack.State = AudioTrackState.Recording;
+                this.menuListHoriz[0].Label = "Stop Recording";
             }));
             
             RaisePropertyChanged("CurrentTrackData");
