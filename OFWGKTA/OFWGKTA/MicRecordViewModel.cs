@@ -213,11 +213,10 @@ namespace OFWGKTA
             {
                 //this.SpeechRecognizer.SetSpeechCallback(speechCallback);
             }
-
             this.micIndex = ((AppState)state).MicIndex;
 
             this.timer = new System.Timers.Timer();
-            timer.Elapsed += new ElapsedEventHandler(OnTimer);
+            timer.Elapsed += OnTimer;
             timer.Interval = 10;
             timer.Enabled = true;
             timer.AutoReset = true;
@@ -234,6 +233,7 @@ namespace OFWGKTA
             {
                 //this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
             }
+            this.timer.Elapsed -= OnTimer;
         }
 
         void OnTimer(Object source, ElapsedEventArgs e)
