@@ -493,16 +493,19 @@ namespace OFWGKTA
         
         private void playOrStopAll()
         {
-            if (this.isAnyTrackPlaying)
+            this.uiDispatcher.Invoke(new Action(delegate()
             {
-                stopAll();
-            }
-            else
-            {
-                playAll();
-            }
+                if (this.isAnyTrackPlaying)
+                {
+                    stopAll();
+                }
+                else
+                {
+                    playAll();
+                }
 
-            RaisePropertyChanged("PlayOrStopAllButtonTitle");
+                RaisePropertyChanged("PlayOrStopAllButtonTitle");
+            }));
         }
         
         private void playAll()

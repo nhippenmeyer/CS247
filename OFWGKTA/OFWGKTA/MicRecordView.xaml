@@ -72,7 +72,7 @@
         <TextBlock Margin="530,307,5,142" Text="{Binding Time}" FontWeight="Bold" FontSize="16" Foreground="White" />
         
         <Button Content="{Binding StartOrStopRecordingButtonTitle}" Command="{Binding StartOrStopRecordingCommand}" Margin="443,445,111,12" />
-        <Button Command="{Binding PlayOrStopAllCommand}" Content="{Binding PlayOrStopAllButtonTitle}" Margin="129,445,0,12" HorizontalAlignment="Left" Width="69" />
+        <Button Command="{Binding PlayOrStopAllCommand}" Content="{Binding PlayOrStopAllButtonTitle}" Margin="129,445,0,12" HorizontalAlignment="Left" Width="69" Click="Button_Click" />
         <Button Command="{Binding PlayOrStopCommand}" Content="{Binding PlayOrStopButtonTitle}" Margin="0,445,203,12" HorizontalAlignment="Right" Width="81" />
         
         <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="12,457,0,0" Name="back_button" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
