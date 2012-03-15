@@ -235,6 +235,7 @@ namespace OFWGKTA
             }
             this.timer.Elapsed -= OnTimer;
         }
+        #endregion
 
         void OnTimer(Object source, ElapsedEventArgs e)
         {
@@ -244,8 +245,6 @@ namespace OFWGKTA
             }
             RaisePropertyChanged("Time");
         }
-        
-        #endregion
 
         void OnHorizMenuItemSelected(object sender, MenuEventArgs e)
         {
