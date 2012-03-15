@@ -104,6 +104,10 @@
     </Compile>
     <Compile Include="Audio\WaveFormVisual.cs" />
     <Compile Include="Audio\WavFileUtils.cs" />
+    <Compile Include="SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsViewModel.cs" />
     <Compile Include="FancyGraphView.xaml.cs">
       <DependentUpon>FancyGraphView.xaml</DependentUpon>
     </Compile>
@@ -143,6 +147,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Audio\WaveFileTrimmerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
