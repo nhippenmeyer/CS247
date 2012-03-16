@@ -26,11 +26,13 @@ namespace OFWGKTA
                     return this.appState;
 
                 // try to get Kinect reference and instantiate its model
-                AudioKinectModel audioKinectModel = null;
+                KinectModel kinectModel = null;
+                SpeechRecognizer speechRecognizer = null;
                 try
                 {
-                    List<string> list = new List<string> {"record", "play"};
-                    audioKinectModel = new AudioKinectModel(list, null);
+                    List<string> list = new List<string> {"record", "play", "stop"};
+                    speechRecognizer = new SpeechRecognizer(list, null);
+                    kinectModel = new FreePlayKinectModel(null);
                 }
                 catch 
                 {
@@ -38,7 +40,7 @@ namespace OFWGKTA
                 }
 
                 // mic interface is hardcoded to 0 here:
-                this.appState = new AppState(audioKinectModel, 0);
+                this.appState = new AppState(kinectModel, speechRecognizer, 0);
                 return this.appState;
             }
         }
@@ -60,6 +62,7 @@ namespace OFWGKTA
 
         public ICommand ContinueCommand { get { return continueCommand; } }
 
+        #region de/activated
         public void Activated(object state)
         {
             this.applicationModes.Clear();
@@ -68,7 +71,11 @@ namespace OFWGKTA
             this.applicationModes.Add("Free Use");
             this.applicationModes.Add("Audio App");
             this.applicationModes.Add("Mic Record");
+            this.applicationModes.Add("Fancy Graph");
         }
+
+        public void Deactivated() { }
+        #endregion
 
         public ObservableCollection<string> ApplicationModes{ get { return applicationModes; } }
 
@@ -89,7 +96,7 @@ namespace OFWGKTA
                         try
                         {
                             fileStream = File.OpenRead(openFileDialog.FileName);
-                            var curState = new DemoAppState(this.applicationModes[SelectedIndex], new FreePlayKinectModel(fileStream));
+                            var curState = new DemoAppState(this.applicationModes[SelectedIndex], new ReplayKinectModel(fileStream));
                             Messenger.Default.Send(new NavigateMessage(DemoViewModel.ViewName, curState));
                         }
                      catch { }
@@ -123,6 +130,11 @@ namespace OFWGKTA
                 case ("Mic Record"):
                     {
                         Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, this.AppState));
+                        break;
+                    }
+                case ("Fancy Graph"):
+                    {
+                        Messenger.Default.Send(new NavigateMessage(FancyGraphViewModel.ViewName, 0));
                         break;
                     }
             }

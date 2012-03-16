@@ -8,5 +8,6 @@ namespace OFWGKTA
     interface IView
     {
         void Activated(object state);
+        void Deactivated();
     }
 }

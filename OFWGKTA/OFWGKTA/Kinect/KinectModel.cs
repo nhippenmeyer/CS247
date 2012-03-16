@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight;
 using Coding4Fun.Kinect.Wpf;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -31,8 +32,26 @@ namespace OFWGKTA
         private Vector kneeLeft;
         private Vector kneeRight;
         private Vector hipCenter;
+        private bool isStable;
+        protected BarycenterHelper barycenterHelper = new BarycenterHelper();
 
-        public virtual void Destroy() { }
+        protected Runtime runtime = null;
+        public Runtime Runtime { get { return this.runtime; } }
+
+        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+
+        protected void RaiseSkeletonUpdate(SkeletonEventArgs e)
+        {
+            if (SkeletonUpdated != null)
+            {
+                SkeletonUpdated(this, e);
+            }
+        }
+
+        public KinectModel() : base() {}
+
+        public virtual void Destroy() {}
+
         void SkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e) { }
         void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) { }
 
@@ -41,6 +60,19 @@ namespace OFWGKTA
             Joint temp;
             temp = joint.ScaleTo(640, 480, 1.5f, 1.5f);
             return temp.Position;
+        }
+
+        public bool IsStable
+        {
+            get { return isStable; }
+            set 
+            {
+                if (!isStable.Equals(value))
+                {
+                    isStable = value;
+                    RaisePropertyChanged("IsStable");
+                }
+            }
         }
 
         public Vector Head
@@ -263,12 +295,13 @@ namespace OFWGKTA
                 }
             }
         }
-
     }
 
     public class SkeletonEventArgs : EventArgs
     {
-        // just using this to fire an event when i'm done processing the skeleton
+        public Vector LeftHandPosition { get; set; }
+        public Vector RightHandPosition { get; set; }
     }
+
 }
     

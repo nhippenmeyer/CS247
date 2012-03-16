@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Research.Kinect.Audio;
 using Microsoft.Speech.Recognition;
 using Microsoft.Speech.AudioFormat;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -18,9 +19,13 @@ namespace OFWGKTA
         // Normal kinect related parameters
         protected bool isRecorder = false;
         protected Stream fileStream;
-        protected Runtime kinectRuntime;
+
         protected SkeletonRecorder recorder = new SkeletonRecorder();
-        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+
+        public void Beep(object sender, MenuEventArgs e)
+        {
+            Console.Beep();
+        }
 
         public FreePlayKinectModel(Stream fileStream) : base()
         {
@@ -34,19 +39,18 @@ namespace OFWGKTA
 
             if (Runtime.Kinects.Count > 0)
             {
-                kinectRuntime = Runtime.Kinects[0];
-                kinectRuntime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
-                kinectRuntime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);
-
+                this.runtime = Runtime.Kinects[0];
+                this.runtime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
+                this.runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);
             }
         }
 
         public override void Destroy()
         {
-            if (kinectRuntime != null)
+            if (this.runtime != null)
             {
-                kinectRuntime.SkeletonFrameReady -= SkeletonFrameReady;
-                kinectRuntime.Uninitialize();
+                this.runtime.SkeletonFrameReady -= SkeletonFrameReady;
+                this.runtime.Uninitialize();
             }
 
             if (isRecorder)
@@ -79,6 +83,8 @@ namespace OFWGKTA
 
             if (skeleton != null)
             {
+                Vector3 skeletonPosition = new Vector3(skeleton.Position.X, skeleton.Position.Y, skeleton.Position.Z);
+                barycenterHelper.Add(skeletonPosition, skeleton.TrackingID); 
                 // Set positions on our joints of interest
                 
                 Head = GetScaledPosition(skeleton.Joints[JointID.Head]);
@@ -98,11 +104,13 @@ namespace OFWGKTA
                 KneeLeft = GetScaledPosition(skeleton.Joints[JointID.KneeLeft]);
                 KneeRight = GetScaledPosition(skeleton.Joints[JointID.KneeRight]);
                 HipCenter = GetScaledPosition(skeleton.Joints[JointID.HipCenter]);
+                IsStable = barycenterHelper.IsStable(skeleton.TrackingID);
 
-                if (SkeletonUpdated != null)
+                RaiseSkeletonUpdate(new SkeletonEventArgs()
                 {
-                    SkeletonUpdated(this, new SkeletonEventArgs());
-                }
+                    LeftHandPosition = skeleton.Joints[JointID.HandLeft].Position,
+                    RightHandPosition = skeleton.Joints[JointID.HandRight].Position
+                });
             }
         }
     }

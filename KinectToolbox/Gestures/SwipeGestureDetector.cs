@@ -4,18 +4,45 @@ namespace Kinect.Toolbox
 {
     public class SwipeGestureDetector : GestureDetector
     {
-        const float SwipeMinimalLength = 0.4f;
-        const float SwipeMaximalHeight = 0.2f;
-        const int SwipeMininalDuration = 250;
-        const int SwipeMaximalDuration = 1500;
+        private float swipeMinimalLength;
+        private float swipeMaximalHeight;
+        private int swipeMinimalDuration;
+        private int swipeMaximalDuration;
 
         public SwipeGestureDetector(int windowSize = 20) : base(windowSize)
+        { 
+            SwipeMinimalLength = 0.4f;
+            SwipeMaximalHeight = 0.2f;
+            SwipeMinimalDuration = 250;
+            SwipeMaximalDuration = 1500;           
+        }
+
+        public float SwipeMinimalLength
         {
-            
+            get { return swipeMinimalLength; }
+            set { swipeMinimalLength = value; }
+        }
+
+        public float SwipeMaximalHeight
+        {
+            get { return swipeMaximalHeight; }
+            set { swipeMaximalHeight = value; }
+        }
+
+        public int SwipeMinimalDuration
+        {
+            get { return swipeMinimalDuration; }
+            set { swipeMinimalDuration = value; }
+        }
+
+        public int SwipeMaximalDuration
+        {
+            get { return swipeMaximalDuration; }
+            set { swipeMaximalDuration = value; }
         }
 
         bool ScanPositions(Func<Vector3, Vector3, bool> heightFunction, Func<Vector3, Vector3, bool> directionFunction, Func<Vector3, Vector3, bool> lengthFunction, int minTime, int maxTime)
-        {
+        { 
             int start = 0;
 
             for (int index = 1; index < Entries.Count - 1; index++)
@@ -44,7 +71,7 @@ namespace Kinect.Toolbox
             if (ScanPositions((p1, p2) => Math.Abs(p2.Y - p1.Y) < SwipeMaximalHeight, // Height
                 (p1, p2) => p2.X - p1.X > -0.01f, // Progression to right
                 (p1, p2) => Math.Abs(p2.X - p1.X) > SwipeMinimalLength, // Length
-                SwipeMininalDuration, SwipeMaximalDuration)) // Duration
+                SwipeMinimalDuration, SwipeMaximalDuration)) // Duration
             {
                 RaiseGestureDetected("SwipeToRight");
                 return;
@@ -54,7 +81,7 @@ namespace Kinect.Toolbox
             if (ScanPositions((p1, p2) => Math.Abs(p2.Y - p1.Y) < SwipeMaximalHeight,  // Height
                 (p1, p2) => p2.X - p1.X < 0.01f, // Progression to right
                 (p1, p2) => Math.Abs(p2.X - p1.X) > SwipeMinimalLength, // Length
-                SwipeMininalDuration, SwipeMaximalDuration))// Duration
+                SwipeMinimalDuration, SwipeMaximalDuration))// Duration
             {
                 RaiseGestureDetected("SwipeToLeft");
                 return;

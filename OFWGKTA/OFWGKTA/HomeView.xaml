@@ -3,22 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:blah="clr-namespace:Microsoft.Research.Kinect.Nui;assembly=Microsoft.Research.Kinect"
         xmlns:ofwgkta="clr-namespace:OFWGKTA"
-        Height="480" Width="640">
+        Height="480" Width="640" Background="Black">
         <UserControl.Resources>
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding Kinect}" ContentTemplate="{StaticResource SkeletonTemplate}" />
-        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="24,435,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
+        <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="24,445,0,0" Name="button1" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
         
-        <Rectangle Height="21" HorizontalAlignment="Left" Margin="1,0,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="639">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop Color="{Binding Path=Kinect.IsOnStage, Converter={StaticResource StageHighlight}}" Offset="{Binding Kinect.Head.X, Converter={StaticResource Normalizer}}" x:Name="boo"/>
-                    <GradientStop Color="Black" Offset="{Binding Offset, ElementName=boo, Converter={StaticResource translateDouble}, ConverterParameter='0.1'}" />
-                    <GradientStop Color="Black" Offset="{Binding Offset, ElementName=boo, Converter={StaticResource translateDouble}, ConverterParameter='-0.1'}" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
+        <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="807,146,0,0" Name="label1" VerticalAlignment="Top" />
+        <TextBlock Height="102" HorizontalAlignment="Left" Margin="0,58,0,0" Name="textBlock2" Text="FirstCut" VerticalAlignment="Top" Width="640" FontSize="72" FontFamily="Arial" FontWeight="Black" TextAlignment="Center" Foreground="White" />
+        <TextBlock Height="49" HorizontalAlignment="Center" Margin="0,196,0,0" Name="textBlock3" Text="Raise both hands over your head to start!" VerticalAlignment="Top" Width="640" Foreground="White" TextAlignment="Center" FontWeight="Normal" FontSize="20" />
     </Grid>
 </UserControl>

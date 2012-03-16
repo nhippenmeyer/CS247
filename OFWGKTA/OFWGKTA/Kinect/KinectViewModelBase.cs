@@ -8,14 +8,44 @@ namespace OFWGKTA
 {
     class KinectViewModelBase : ViewModelBase 
     {
-        protected AudioKinectModel kinect;
+        protected KinectModel kinect = null;
+        protected SpeechRecognizer speechRecognizer = null;
+        protected GestureController gestureController = new GestureController();
+        protected StateRecognizer stateRecognizer = new StateRecognizer();
 
-        public AudioKinectModel Kinect { 
-            get { return kinect; }
+        public StateRecognizer StateRecognizer
+        {
+            get { return this.stateRecognizer; }
             set
             {
-                kinect = value;
-                RaisePropertyChanged("Kinect");
+                this.stateRecognizer = value;
+                RaisePropertyChanged("StateRecognizer");
+            }
+        }
+
+        public SpeechRecognizer SpeechRecognizer
+        {
+            get { return this.speechRecognizer; }
+            set
+            {
+                if (this.speechRecognizer != value)
+                {
+                    this.speechRecognizer = value;
+                    RaisePropertyChanged("SpeechRecognizer");
+                }
+            }
+        }
+
+        public KinectModel Kinect
+        {
+            get { return this.kinect; }
+            set
+            {
+                if (this.kinect != value)
+                {
+                    this.kinect = value;
+                    RaisePropertyChanged("Kinect");
+                }
             }
         }
     }

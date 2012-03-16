@@ -1,65 +1,122 @@
 ﻿<Application x:Class="OFWGKTA.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ofwgkta="clr-namespace:OFWGKTA"
+             xmlns:local="clr-namespace:OFWGKTA"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ofwgkta:CoordinateConverter x:Key="center" />
-        <ofwgkta:DoubleConverter x:Key="translateDouble" />
-        <ofwgkta:NormalizeConverter x:Key="Normalizer" />
-        <ofwgkta:StageConverter x:Key="StageHighlight" />
+        <local:CoordinateConverter x:Key="Center" />
+        <local:DoubleConverter x:Key="TranslateDouble" />
+        <local:NormalizeConverter x:Key="Normalizer" />
+        <local:StageConverter x:Key="StageHighlight" />
+        <local:VectorScaler x:Key="VectorScaler" />
+        <local:OptionWidthConverter x:Key="OptionWidth" />
+        <local:ButtonHeightConverter x:Key="ButtonHeight" />
+        <local:ButtonFontSizeConverter x:Key="ButtonFontSize" />
+        <local:BooleanToVisibility x:Key="BoolToVisibility"/>
 
         <DataTemplate x:Key="VectorTemplate">
-            <Ellipse Fill="Red" Margin="0,0,620,460">
+            <Ellipse VerticalAlignment="Top" HorizontalAlignment="Left" Fill="Blue" Width="10" Height="10" DataContext="{Binding Converter={StaticResource VectorScaler}}">
                 <Ellipse.RenderTransform>
-                    <TranslateTransform X="{Binding Path=X, Converter={StaticResource center}}" Y="{Binding Path=Y, Converter={StaticResource center}}" />
+                    <TranslateTransform X="{Binding Path=X, Converter={StaticResource Center}, ConverterParameter=-5}" Y="{Binding Path=Y, Converter={StaticResource Center}, ConverterParameter=-5}" />
                 </Ellipse.RenderTransform>
             </Ellipse>
         </DataTemplate>  
 
+        <DataTemplate x:Key="BoneTemplate">
+            <Line></Line>
+        </DataTemplate>
+
         <HierarchicalDataTemplate x:Key="SkeletonTemplate">
             <Grid>
-                <ContentControl Content="{Binding HandLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding HandRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding Head}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding ShoulderCenter}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding ShoulderLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding ShoulderRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding AnkleLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding AnkleRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding FootLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding FootRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding WristLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding WristRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding ElbowLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding ElbowRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding KneeLeft}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding KneeRight}" ContentTemplate="{StaticResource VectorTemplate}" />
-                <ContentControl Content="{Binding HipCenter}" ContentTemplate="{StaticResource VectorTemplate}" />
+                <Grid.Resources>
+                    <Style TargetType="{x:Type ContentControl}">
+                        <Setter Property="ContentTemplate" Value="{StaticResource VectorTemplate}" />
+                    </Style> 
+                    <Style TargetType="{x:Type Line}">
+                        <Setter Property="Stroke" Value="Blue"></Setter> 
+                        <Setter Property="StrokeThickness" Value="5"></Setter> 
+                    </Style>
+                </Grid.Resources>
+                <ContentControl Content="{Binding HandLeft}" />
+                <ContentControl Content="{Binding HandRight}"/>
+                <ContentControl Content="{Binding Head}" x:Name="Head1"/>
+                <ContentControl Content="{Binding ShoulderCenter}" x:Name="ShoulderCenter1"/>
+                <ContentControl Content="{Binding ShoulderLeft}" />
+                <ContentControl Content="{Binding ShoulderRight}" />
+                <ContentControl Content="{Binding AnkleLeft}" />
+                <ContentControl Content="{Binding AnkleRight}" />
+                <ContentControl Content="{Binding FootLeft}" />
+                <ContentControl Content="{Binding FootRight}" />
+                <ContentControl Content="{Binding WristLeft}" />
+                <ContentControl Content="{Binding WristRight}" />
+                <ContentControl Content="{Binding ElbowLeft}" />
+                <ContentControl Content="{Binding ElbowRight}" />
+                <ContentControl Content="{Binding KneeLeft}" />
+                <ContentControl Content="{Binding KneeRight}" />
+                <ContentControl Content="{Binding HipCenter}" />
                 
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=Head.X}" Y1="{Binding Path=Head.Y}" X2="{Binding Path=ShoulderCenter.X}" Y2="{Binding Path=ShoulderCenter.Y}" OpacityMask="Black"></Line>
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=HipCenter.X}" Y2="{Binding Path=HipCenter.Y}" />
+<!--
+                <Line X1="{Binding Path=Margin.Right, ElementName=Head1}" Y1="{Binding Path=ContentTemplate.Ellipse, ElementName=Head1}" X2="{Binding Path=ShoulderCenter.X}" Y2="{Binding Path=ShoulderCenter.Y}" />
+                <Line X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=HipCenter.X}" Y2="{Binding Path=HipCenter.Y}" />
         
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=ShoulderLeft.X}" Y2="{Binding Path=ShoulderLeft.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderLeft.X}" Y1="{Binding Path=ShoulderLeft.Y}" X2="{Binding Path=ElbowLeft.X}" Y2="{Binding Path=ElbowLeft.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ElbowLeft.X}" Y1="{Binding Path=ElbowLeft.Y}" X2="{Binding Path=WristLeft.X}" Y2="{Binding Path=WristLeft.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=WristLeft.X}" Y1="{Binding Path=WristLeft.Y}" X2="{Binding Path=HandLeft.X}" Y2="{Binding Path=HandLeft.Y}" />
+                <Line X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=ShoulderLeft.X}" Y2="{Binding Path=ShoulderLeft.Y}" />
+                <Line X1="{Binding Path=ShoulderLeft.X}" Y1="{Binding Path=ShoulderLeft.Y}" X2="{Binding Path=ElbowLeft.X}" Y2="{Binding Path=ElbowLeft.Y}" />
+                <Line X1="{Binding Path=ElbowLeft.X}" Y1="{Binding Path=ElbowLeft.Y}" X2="{Binding Path=WristLeft.X}" Y2="{Binding Path=WristLeft.Y}" />
+                <Line X1="{Binding Path=WristLeft.X}" Y1="{Binding Path=WristLeft.Y}" X2="{Binding Path=HandLeft.X}" Y2="{Binding Path=HandLeft.Y}" />
         
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=ShoulderRight.X}" Y2="{Binding Path=ShoulderRight.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ShoulderRight.X}" Y1="{Binding Path=ShoulderRight.Y}" X2="{Binding Path=ElbowRight.X}" Y2="{Binding Path=ElbowRight.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=ElbowRight.X}" Y1="{Binding Path=ElbowRight.Y}" X2="{Binding Path=WristRight.X}" Y2="{Binding Path=WristRight.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=WristRight.X}" Y1="{Binding Path=WristRight.Y}" X2="{Binding Path=HandRight.X}" Y2="{Binding Path=HandRight.Y}" />
+                <Line X1="{Binding Path=ShoulderCenter.X}" Y1="{Binding Path=ShoulderCenter.Y}" X2="{Binding Path=ShoulderRight.X}" Y2="{Binding Path=ShoulderRight.Y}" />
+                <Line X1="{Binding Path=ShoulderRight.X}" Y1="{Binding Path=ShoulderRight.Y}" X2="{Binding Path=ElbowRight.X}" Y2="{Binding Path=ElbowRight.Y}" />
+                <Line X1="{Binding Path=ElbowRight.X}" Y1="{Binding Path=ElbowRight.Y}" X2="{Binding Path=WristRight.X}" Y2="{Binding Path=WristRight.Y}" />
+                <Line X1="{Binding Path=WristRight.X}" Y1="{Binding Path=WristRight.Y}" X2="{Binding Path=HandRight.X}" Y2="{Binding Path=HandRight.Y}" />
         
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=HipCenter.X}" Y1="{Binding Path=HipCenter.Y}" X2="{Binding Path=KneeLeft.X}" Y2="{Binding Path=KneeLeft.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=KneeLeft.X}" Y1="{Binding Path=KneeLeft.Y}" X2="{Binding Path=AnkleLeft.X}" Y2="{Binding Path=AnkleLeft.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=AnkleLeft.X}" Y1="{Binding Path=AnkleLeft.Y}" X2="{Binding Path=FootLeft.X}" Y2="{Binding Path=FootLeft.Y}" />
+                <Line X1="{Binding Path=HipCenter.X}" Y1="{Binding Path=HipCenter.Y}" X2="{Binding Path=KneeLeft.X}" Y2="{Binding Path=KneeLeft.Y}" />
+                <Line X1="{Binding Path=KneeLeft.X}" Y1="{Binding Path=KneeLeft.Y}" X2="{Binding Path=AnkleLeft.X}" Y2="{Binding Path=AnkleLeft.Y}" />
+                <Line X1="{Binding Path=AnkleLeft.X}" Y1="{Binding Path=AnkleLeft.Y}" X2="{Binding Path=FootLeft.X}" Y2="{Binding Path=FootLeft.Y}" />
 
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=HipCenter.X}" Y1="{Binding Path=HipCenter.Y}" X2="{Binding Path=KneeRight.X}" Y2="{Binding Path=KneeRight.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=KneeRight.X}" Y1="{Binding Path=KneeRight.Y}" X2="{Binding Path=AnkleRight.X}" Y2="{Binding Path=AnkleRight.Y}" />
-                <Line Stroke="Red" StrokeThickness="10" X1="{Binding Path=AnkleRight.X}" Y1="{Binding Path=AnkleRight.Y}" X2="{Binding Path=FootRight.X}" Y2="{Binding Path=FootRight.Y}" />
+                <Line X1="{Binding Path=HipCenter.X}" Y1="{Binding Path=HipCenter.Y}" X2="{Binding Path=KneeRight.X}" Y2="{Binding Path=KneeRight.Y}" />
+                <Line X1="{Binding Path=KneeRight.X}" Y1="{Binding Path=KneeRight.Y}" X2="{Binding Path=AnkleRight.X}" Y2="{Binding Path=AnkleRight.Y}" />
+                <Line X1="{Binding Path=AnkleRight.X}" Y1="{Binding Path=AnkleRight.Y}" X2="{Binding Path=FootRight.X}" Y2="{Binding Path=FootRight.Y}" />
+-->
 
             </Grid>
         </HierarchicalDataTemplate>
 
+        <DataTemplate x:Key="MicMenuItemsHoriz">
+            <Button Content="{Binding Label}" Width="{Binding NumOptions, Converter={StaticResource OptionWidth}}" HorizontalAlignment="Center" Margin="5">
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                <Setter Property="Button.Background"  Value="DarkSeaGreen"/>
+                                <Setter Property="Button.Foreground" Value="White" />
+                                <Setter Property="Button.Height" Value="{Binding PercentDepressed, Converter={StaticResource ButtonHeight}}" />
+                                <Setter Property="Button.FontSize" Value="{Binding PercentDepressed, Converter={StaticResource ButtonFontSize}}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="False">
+                                <Setter Property="Button.Height" Value="50" />
+                                <Setter Property="Button.FontSize" Value="20" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </DataTemplate>
+
+        <DataTemplate x:Key="MicMenuItemsVert">
+            <Button Content="{Binding Label}" Width="150" Height="50" HorizontalAlignment="Center" Margin="5" FontSize="20">
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                <Setter Property="Button.Background"  Value="DarkSeaGreen"/>
+                                <Setter Property="Button.Foreground" Value="White" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </DataTemplate>
+        
     </Application.Resources>
 </Application>

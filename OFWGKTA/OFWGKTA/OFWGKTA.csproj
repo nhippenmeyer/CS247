@@ -75,6 +75,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Visiblox.Charts">
+      <HintPath>..\..\visiblox\Visiblox.Charts.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -88,6 +91,7 @@
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\AudioRecorder.cs" />
     <Compile Include="Audio\AudioSaver.cs" />
+    <Compile Include="AudioTrack.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="Audio\IAudioRecorder.cs" />
     <Compile Include="Audio\IWaveFormRenderer.cs" />
@@ -100,6 +104,16 @@
     </Compile>
     <Compile Include="Audio\WaveFormVisual.cs" />
     <Compile Include="Audio\WavFileUtils.cs" />
+    <Compile Include="FancyGraphView.xaml.cs">
+      <DependentUpon>FancyGraphView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FancyGraphViewModel.cs" />
+    <Compile Include="Kinect\GestureControls\StateRecognizer.cs" />
+    <Compile Include="Kinect\SpeechRecognizer.cs" />
+    <Compile Include="Kinect\GestureControls\GestureController.cs" />
+    <Compile Include="Kinect\GestureControls\IGestureRecognizer.cs" />
+    <Compile Include="Kinect\GestureControls\MenuRecognizer.cs" />
+    <Compile Include="MenuOption.cs" />
     <Compile Include="MicRecordView.xaml.cs">
       <DependentUpon>MicRecordView.xaml</DependentUpon>
     </Compile>
@@ -109,7 +123,6 @@
     </Compile>
     <Compile Include="DemoViewModel.cs" />
     <Compile Include="Kinect\KinectViewModelBase.cs" />
-    <Compile Include="Kinect\AudioKinectModel.cs" />
     <Compile Include="Audio\RecordingState.cs" />
     <Compile Include="Audio\SampleAggregator.cs" />
     <Compile Include="ValueConverters.cs" />
@@ -132,6 +145,10 @@
     <Page Include="Audio\WaveFileTrimmerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FancyGraphView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MicRecordView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +198,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

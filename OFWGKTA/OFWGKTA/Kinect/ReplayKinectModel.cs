@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Microsoft.Research.Kinect.Nui;
 using Kinect.Toolbox.Record;
+using Kinect.Toolbox;
 
 namespace OFWGKTA
 {
@@ -48,6 +49,13 @@ namespace OFWGKTA
                 }
             }
 
+            Joint leftHandUnscaled = new Joint();
+            Joint rightHandUnscaled = new Joint();
+
+            Vector3 skeletonPosition = new Vector3(skeleton.Position.X, skeleton.Position.Y, skeleton.Position.Z);
+            barycenterHelper.Add(skeletonPosition, skeleton.TrackingID);
+            IsStable = barycenterHelper.IsStable(skeleton.TrackingID);
+
             for (int i = 0; i < skeleton.Joints.Count; i++)
             {
                 switch (skeleton.Joints.ElementAt(i).ID)
@@ -57,9 +65,11 @@ namespace OFWGKTA
                         break;
                     case (JointID.HandLeft):
                         HandLeft = GetScaledPosition(skeleton.Joints.ElementAt(i));
+                        leftHandUnscaled = skeleton.Joints.ElementAt(i);
                         break;
                     case (JointID.HandRight):
                         HandRight = GetScaledPosition(skeleton.Joints.ElementAt(i));
+                        rightHandUnscaled = skeleton.Joints.ElementAt(i);
                         break;
                     case (JointID.ShoulderCenter):
                         ShoulderCenter = GetScaledPosition(skeleton.Joints.ElementAt(i));
@@ -105,6 +115,11 @@ namespace OFWGKTA
                         break;
                 }
             }
+            RaiseSkeletonUpdate(new SkeletonEventArgs()
+            {
+                LeftHandPosition = leftHandUnscaled.Position,
+                RightHandPosition = rightHandUnscaled.Position
+            });
         }
     }
 }
