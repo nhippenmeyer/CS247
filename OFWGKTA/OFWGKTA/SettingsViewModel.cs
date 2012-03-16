@@ -26,17 +26,17 @@ namespace OFWGKTA
         private int micIndex = 0;
 
         // Sliders retrieved from view as well as parameters related to them
-        public Slider sliderMicLevel;
+        public Slider sliderMicLevel = new Slider();
         private double micLevelFraction;
         private int micLevelMin = 0;
         private int micLevelMax = 100;
 
-        public Slider sliderBpm;
+        public Slider sliderBpm = new Slider();
         private double bpmFraction;
         private int bpmMin = 60;
         private int bpmMax = 160;
 
-        public Button backButton;
+        public Button backButton = new Button();
 
         public event EventHandler<EventArgs> timerUp;
 
@@ -58,6 +58,8 @@ namespace OFWGKTA
             {
                 this.Kinect.SkeletonUpdated += Kinect_SkeletonUpdated;
             }
+            this.MicLevelFraction = ((float)((AppState)state).MicLevel - this.micLevelMin) / (float)(this.micLevelMax - this.micLevelMin);
+            this.BpmFraction = ((float)((AppState)state).Bpm - this.bpmMin) / (float)(this.bpmMax - this.bpmMin);
         }
 
         public void Deactivated()
@@ -119,7 +121,7 @@ namespace OFWGKTA
         {
             this.uiDispatcher.Invoke(new Action(delegate()
             {
-                Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, new AppState(this.Kinect, this.SpeechRecognizer, this.micIndex)));
+                Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, new AppState(this.Kinect, this.SpeechRecognizer, this.micIndex, this.MicLevel, this.Bpm)));
             }));
         }
 

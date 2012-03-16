@@ -57,10 +57,11 @@ namespace OFWGKTA
          */     
         public MicRecordViewModel()
         {
-            this.MenuRecognizerHoriz = new MenuRecognizer(3, 50);
-            this.menuListHoriz.Add(new MenuOption("Record", null, 3, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("Play", null, 3, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("New Track", null, 3, this.menuRecognizerHoriz));
+            this.MenuRecognizerHoriz = new MenuRecognizer(4, 50);
+            this.menuListHoriz.Add(new MenuOption("Record", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Play", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Settings", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("New Track", null, 4, this.menuRecognizerHoriz));
 
             MenuRecognizerHoriz.MenuItemSelected += OnHorizMenuItemSelected;
 
@@ -105,8 +106,12 @@ namespace OFWGKTA
             get { return bpm; }
             set
             {
-                bpm = value;
-                this.metronomeTimer.Interval = TimeSpan.FromMilliseconds(60 * 1000 / bpm);
+                if (bpm != value)
+                {
+                    bpm = value;
+                    this.metronomeTimer.Interval = TimeSpan.FromMilliseconds(60 * 1000 / bpm);
+                    RaisePropertyChanged("BPM");
+                }
             }
         }
         
@@ -214,6 +219,14 @@ namespace OFWGKTA
                 //this.SpeechRecognizer.SetSpeechCallback(speechCallback);
             }
             this.micIndex = ((AppState)state).MicIndex;
+            if (((AppState)state).MicLevel != 0)
+            {
+                this.MicrophoneLevel = ((AppState)state).MicLevel;
+            }
+            if (((AppState)state).Bpm != 0)
+            {
+                this.BPM = ((AppState)state).Bpm;
+            }
 
             this.timer = new System.Timers.Timer();
             timer.Elapsed += OnTimer;
@@ -257,22 +270,12 @@ namespace OFWGKTA
                     playOrStopAll();
                     break;
                 case 2:
-                    newTrack();
+                    this.uiDispatcher.Invoke(new Action(delegate()
+                    {
+                        Messenger.Default.Send(new NavigateMessage(SettingsViewModel.ViewName, new AppState(this.Kinect, this.speechRecognizer, this.micIndex, (int)this.MicrophoneLevel, (int)this.BPM)));
+                    }));
                     break;
-            }
-        }
-
-        void OnVertMenuItemSelected(object sender, MenuEventArgs e)
-        {
-            switch (e.SelectedIndex)
-            {
-                case 0:
-                    startRecording();
-                    break;
-                case 1:
-                    stopRecording();
-                    break;
-                case 2:
+                case 3:
                     newTrack();
                     break;
             }
@@ -387,7 +390,14 @@ namespace OFWGKTA
         public double MicrophoneLevel
         {
             get { return this.currentAudioTrack.MicrophoneLevel; }
-            set { this.currentAudioTrack.MicrophoneLevel = value; }
+            set 
+            {
+                if (value != this.currentAudioTrack.MicrophoneLevel)
+                {
+                    this.currentAudioTrack.MicrophoneLevel = value;
+                    RaisePropertyChanged("MicrophoneLevel");
+                }
+            }
         }
 
         public string Time
