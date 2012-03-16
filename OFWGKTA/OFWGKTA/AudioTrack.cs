@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using NAudio.Wave;
 using System.IO;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace OFWGKTA
 {
@@ -159,7 +161,7 @@ namespace OFWGKTA
                 // throw exception
                 else
                 {
-                    throw new InvalidOperationException("Can't transition to  " + value.ToString() + " state from " + state.ToString() + " state");
+                    //throw new InvalidOperationException("Can't transition to  " + value.ToString() + " state from " + state.ToString() + " state");
                 }
 
                 // set state value

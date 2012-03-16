@@ -14,6 +14,8 @@ using System.IO;
 using Microsoft.Speech.Recognition;
 using System.ComponentModel;
 using System.Timers;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace OFWGKTA 
 {
@@ -25,19 +27,25 @@ namespace OFWGKTA
 
         public event EventHandler<EventArgs> timerUp;
 
+        private Dispatcher uiDispatcher;
         // Commands
         private ICommand goBackCommand;
         public ICommand GoBackCommand { get { return goBackCommand; } }
 
         public HomeViewModel()
         {
+            this.uiDispatcher = Application.Current.Dispatcher;
             this.goBackCommand = new RelayCommand(() => ReturnToWelcome());
             this.timerUp += TimerListener;
         }
 
         public void TimerListener(object sender, EventArgs e)
         {
-            Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, new AppState(this.Kinect, this.SpeechRecognizer, this.micIndex)));
+
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, new AppState(this.Kinect, this.SpeechRecognizer, this.micIndex)));
+            }));
         }
 
         #region de/activated
@@ -111,6 +119,7 @@ namespace OFWGKTA
             if (this.startAppTimer != null)
             {
                 this.startAppTimer.Dispose();
+                this.startAppTimer = null;
             }
         }
         #endregion

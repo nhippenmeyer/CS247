@@ -28,6 +28,7 @@ namespace OFWGKTA
             SetupView(WelcomeViewModel.ViewName, new WelcomeView(), new WelcomeViewModel());
             SetupView(HomeViewModel.ViewName, new HomeView(), new HomeViewModel());
             SetupView(DemoViewModel.ViewName, new DemoView(), new DemoViewModel());
+            SetupView(SettingsViewModel.ViewName, new SettingsView(), new SettingsViewModel());
             SetupView(MicRecordViewModel.ViewName, new MicRecordView(), new MicRecordViewModel());
             SetupView(FancyGraphViewModel.ViewName, new FancyGraphView(), new FancyGraphViewModel());
 

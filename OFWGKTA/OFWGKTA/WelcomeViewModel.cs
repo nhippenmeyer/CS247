@@ -66,6 +66,7 @@ namespace OFWGKTA
         public void Activated(object state)
         {
             this.applicationModes.Clear();
+            this.applicationModes.Add("Settings");
             this.applicationModes.Add("Record");
             this.applicationModes.Add("Replay");
             this.applicationModes.Add("Free Use");
@@ -88,6 +89,20 @@ namespace OFWGKTA
 
             switch (this.applicationModes[SelectedIndex])
             {
+                case ("Settings"):
+                    {
+                        Stream fileStream;
+                        OpenFileDialog openFileDialog = new OpenFileDialog { };
+                        openFileDialog.ShowDialog();
+                        try
+                        {
+                            fileStream = File.OpenRead(openFileDialog.FileName);
+                            var curState = new AppState(new ReplayKinectModel(fileStream), null, 0);
+                            Messenger.Default.Send(new NavigateMessage(SettingsViewModel.ViewName, curState));
+                        }
+                     catch { }
+                        break;
+                    }
                 case ("Replay"):
                     {
                         Stream fileStream;

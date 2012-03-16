@@ -14,6 +14,21 @@
         <local:ButtonHeightConverter x:Key="ButtonHeight" />
         <local:ButtonFontSizeConverter x:Key="ButtonFontSize" />
         <local:BooleanToVisibility x:Key="BoolToVisibility"/>
+        <local:ButtonHighlighter x:Key="ButtonHighlighter"/>
+
+        <DataTemplate x:Key="VectorTemplateUnadjusted">
+            <Ellipse VerticalAlignment="Top" HorizontalAlignment="Left" Width="30" Height="30"> 
+                <Ellipse.Fill>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Gray" Offset="0.0" />
+                        <GradientStop Color="White" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <TranslateTransform X="{Binding Path=X, Converter={StaticResource Center}, ConverterParameter=-15}" Y="{Binding Path=Y, Converter={StaticResource Center}, ConverterParameter=-15}" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </DataTemplate>  
 
         <DataTemplate x:Key="VectorTemplate">
             <Ellipse VerticalAlignment="Top" HorizontalAlignment="Left" Fill="Blue" Width="10" Height="10" DataContext="{Binding Converter={StaticResource VectorScaler}}">

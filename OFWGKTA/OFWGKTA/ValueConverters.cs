@@ -7,9 +7,37 @@ using System.Globalization;
 using System.Windows.Media;
 using Coding4Fun.Kinect.Wpf;
 using Microsoft.Research.Kinect.Nui;
+using System.Windows.Controls;
+using System.Timers;
 
 namespace OFWGKTA
 {
+    [ValueConversion(typeof(bool), typeof(Brush))]
+    public class ButtonHighlighter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            LinearGradientBrush myVerticalGradient = new LinearGradientBrush();
+            myVerticalGradient.StartPoint = new System.Windows.Point(0.5, 0);
+            myVerticalGradient.EndPoint = new System.Windows.Point(0.5, 1);
+            if (value != null && (bool)value)
+            {
+                myVerticalGradient.GradientStops.Add(new GradientStop(Colors.Gray, 0));
+                myVerticalGradient.GradientStops.Add(new GradientStop(Colors.White, 1));
+            }
+            else
+            {
+                myVerticalGradient.GradientStops.Add(new GradientStop(Colors.White, 0));
+                myVerticalGradient.GradientStops.Add(new GradientStop(Colors.Gray, 1));
+            }
+            return myVerticalGradient;
+        }
+    
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
     [ValueConversion(typeof(bool), typeof(System.Windows.Visibility))]
     public class BooleanToVisibility : IValueConverter
     {

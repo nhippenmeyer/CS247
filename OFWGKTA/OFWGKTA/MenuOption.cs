@@ -10,7 +10,7 @@ namespace OFWGKTA
 {
     public class MenuOption : ViewModelBase
     {
-        public string Label { get; private set; }
+        private string label;
         public RelayCommand Command { get; private set; }
         public int NumOptions { get; private set; }
         public MenuRecognizer MenuRecognizer { get; private set; }
@@ -28,6 +28,22 @@ namespace OFWGKTA
         public double PercentDepressed
         {
             get { return MenuRecognizer.PercentDepressed; }
+        }
+
+        public string Label {
+            get
+            {
+                return this.label;
+            }
+
+            set
+            {
+                if (this.label != value)
+                {
+                    this.label = value;
+                    RaisePropertyChanged("Label");
+                }
+            }
         }
 
         void OnPercentDepressedChanged(object sender, PropertyChangedEventArgs e)

@@ -14,6 +14,9 @@ using Microsoft.Speech.Recognition;
 using System.ComponentModel;
 using Kinect.Toolbox;
 using System.Timers;
+using System.Windows.Threading;
+using System.Windows;
+using Visiblox.Charts;
 
 
 
@@ -43,29 +46,154 @@ namespace OFWGKTA
         private ObservableCollection<MenuOption> menuListVert = new ObservableCollection<MenuOption>();
         public ObservableCollection<MenuOption> MenuListVert { get { return this.menuListVert; } }
 
+        private Dispatcher uiDispatcher;
+        private DispatcherTimer metronomeTimer;
+        private Boolean metronomeDotVisible = true;
+        private double bpm = 120.0;
+        private double dotDuration = 200.0;
+
         /**
          * Constructor
          */     
         public MicRecordViewModel()
         {
-            this.MenuRecognizerHoriz = new MenuRecognizer(4, 100);
-            this.menuListHoriz.Add(new MenuOption("Play", null, 4, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("Stop", null, 4, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerHoriz));
+            this.MenuRecognizerHoriz = new MenuRecognizer(3, 50);
+            this.menuListHoriz.Add(new MenuOption("Record", null, 3, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Play", null, 3, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("New Track", null, 3, this.menuRecognizerHoriz));
 
-            MenuRecognizerHoriz.MenuItemSelected += OnMenuItemSelected;
+            MenuRecognizerHoriz.MenuItemSelected += OnHorizMenuItemSelected;
 
-            this.MenuRecognizerVert = new MenuRecognizer(4, 100, false);
-            this.menuListVert.Add(new MenuOption("Play", null, 4, this.menuRecognizerVert));
-            this.menuListVert.Add(new MenuOption("Rewind", null, 4, this.menuRecognizerVert));
-            this.menuListVert.Add(new MenuOption("Start Recording", null, 4, this.menuRecognizerVert));
-            this.menuListVert.Add(new MenuOption("Stop Recording", null, 4, this.menuRecognizerVert));
+            /*
+            this.MenuRecognizerVert = new MenuRecognizer(3, 100, false);
+            this.menuListVert.Add(new MenuOption("Record", null, 3, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("Stop Recording", null, 3, this.menuRecognizerVert));
+            this.menuListVert.Add(new MenuOption("New Track", null, 3, this.menuRecognizerVert));
+
+            MenuRecognizerVert.MenuItemSelected += OnVertMenuItemSelected;
+            this.gestureController.Add(this.MenuRecognizerVert);
+            */
 
             this.gestureController.Add(this.MenuRecognizerHoriz);
-            this.gestureController.Add(this.MenuRecognizerVert);
 
             Messenger.Default.Register<ShuttingDownMessage>(this, (message) => OnShuttingDown(message));
+
+            this.uiDispatcher = Application.Current.Dispatcher;
+            metronomeTimer = new System.Windows.Threading.DispatcherTimer();
+            metronomeTimer.Tick += new EventHandler(metronomeTimer_Tick);
+            metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration); 
+            metronomeTimer.Start();
+        }
+
+        private void metronomeTimer_Tick(object sender, EventArgs e)
+        {
+            if (metronomeDotVisible)
+            {
+                //about to turn invisible, so interval should be [desired interval] - dotDuration
+                metronomeTimer.Interval = TimeSpan.FromMilliseconds((60 * 1000 / bpm) - dotDuration);
+            }
+            else
+            {
+                metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration);
+            }
+            metronomeDotVisible = !metronomeDotVisible;
+            RaisePropertyChanged("MetronomeDotVisibility");
+        }
+
+        public double BPM
+        {
+            get { return bpm; }
+            set
+            {
+                bpm = value;
+                this.metronomeTimer.Interval = TimeSpan.FromMilliseconds(60 * 1000 / bpm);
+            }
+        }
+        
+        public Visibility MetronomeDotVisibility
+        {
+            get
+            {
+                return metronomeDotVisible? Visibility.Visible : Visibility.Hidden;
+            }
+        }
+
+        private BindableSamplePointCollection backgroundTrackSamples = new BindableSamplePointCollection();
+        public BindableSamplePointCollection BackgroundTrackData
+        {
+            get {
+                return backgroundTrackSamples;
+            }
+        }
+
+        public DoubleRange BackgroundTrackXRange
+        {
+            get {
+                DoubleRange xRange = new DoubleRange();
+                if (backgroundTrackSamples.Count < 300)
+                {
+                    xRange.Minimum = 0;
+                    xRange.Maximum = 300;
+                }
+                else
+                {
+                    xRange.Minimum = backgroundTrackSamples.Count - 210;
+                    xRange.Maximum = backgroundTrackSamples.Count + 90;
+                }
+                xRange.Minimum = 0;
+                xRange.Maximum = 300;
+                return xRange;
+            }
+        }
+
+        private BindableSamplePointCollection currentTrackSamples = new BindableSamplePointCollection();
+        public BindableSamplePointCollection CurrentTrackData
+        {
+            get { return currentTrackSamples; }
+        }
+
+        public DoubleRange CurrentTrackXRange
+        {
+            get
+            {
+                DoubleRange xRange = new DoubleRange();
+                int numSamples = currentTrackSamples.Count;
+
+                if (this.currentAudioTrack.State == AudioTrackState.Recording || this.currentAudioTrack.State == AudioTrackState.StopRecording)
+                {
+                    if (numSamples < 250)
+                    {
+                        xRange.Minimum = 0;
+                        xRange.Maximum = 300;
+                    }
+                    else
+                    {
+                        xRange.Minimum = numSamples - 250;
+                        xRange.Maximum = numSamples + 50;
+                    }
+                }
+                else if (this.currentAudioTrack.State == AudioTrackState.Monitoring)
+                {
+                    xRange.Minimum = currentTrackSamples.Count - 150;
+                    xRange.Maximum = currentTrackSamples.Count + 150;
+                }
+
+                return xRange;
+            }
+        }
+
+        void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
+        {
+            SamplePoint newSample = new SamplePoint();
+            newSample.sampleNum = currentTrackSamples.Count;
+            newSample.sampleVal = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
+            currentTrackSamples.Add(newSample);
+
+            RaisePropertyChanged("CurrentTrackData");
+            RaisePropertyChanged("CurrentTrackXRange");
+
+            lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
+            RaisePropertyChanged("CurrentInputLevel");
         }
 
         /**
@@ -83,13 +211,12 @@ namespace OFWGKTA
             }
             if (this.SpeechRecognizer != null)
             {
-                this.SpeechRecognizer.SetSpeechCallback(speechCallback);
+                //this.SpeechRecognizer.SetSpeechCallback(speechCallback);
             }
-
             this.micIndex = ((AppState)state).MicIndex;
 
             this.timer = new System.Timers.Timer();
-            timer.Elapsed += new ElapsedEventHandler(OnTimer);
+            timer.Elapsed += OnTimer;
             timer.Interval = 10;
             timer.Enabled = true;
             timer.AutoReset = true;
@@ -104,33 +231,49 @@ namespace OFWGKTA
             }
             if (this.SpeechRecognizer != null)
             {
-                this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
+                //this.SpeechRecognizer.SetSpeechCallback(null); // deactivates callback
             }
+            this.timer.Elapsed -= OnTimer;
         }
         #endregion
 
         void OnTimer(Object source, ElapsedEventArgs e)
         {
+            if (this.audioTracks.Count > 0 && this.audioTracks[0].State != AudioTrackState.Playing)
+            {
+                this.menuListHoriz[1].Label = "Play";
+            }
             RaisePropertyChanged("Time");
         }
 
-        void OnMenuItemSelected(object sender, MenuEventArgs e)
+        void OnHorizMenuItemSelected(object sender, MenuEventArgs e)
         {
             switch (e.SelectedIndex)
             {
                 case 0:
-                    play();
+                    startOrStopRecording();
                     break;
                 case 1:
-                    stop();
+                    playOrStopAll();
                     break;
                 case 2:
+                    newTrack();
+                    break;
+            }
+        }
+
+        void OnVertMenuItemSelected(object sender, MenuEventArgs e)
+        {
+            switch (e.SelectedIndex)
+            {
+                case 0:
                     startRecording();
                     break;
-                case 3:
+                case 1:
                     stopRecording();
                     break;
-                default:
+                case 2:
+                    newTrack();
                     break;
             }
         }
@@ -200,8 +343,8 @@ namespace OFWGKTA
             {
                 if (!this.StateRecognizer.IsOnStage)
                 {
-                    stopRecording(); // stop recording
-                    stop(); // stop playing
+                    stopRecording();
+                    stop();
                 }
             }
         }
@@ -270,16 +413,6 @@ namespace OFWGKTA
         // multiply by 100 because the Progress bar's default maximum value is 100
         public float CurrentInputLevel { get { return lastPeak * 100; } }
 
-        /**
-         * Handlers
-         */
-
-        void recorder_MaximumCalculated(object sender, MaxSampleEventArgs e)
-        {
-            lastPeak = Math.Max(e.MaxSample, Math.Abs(e.MinSample));
-            RaisePropertyChanged("CurrentInputLevel");
-        }
-
         #region Commands
 
         // new track
@@ -296,18 +429,39 @@ namespace OFWGKTA
         }
         private void newTrack()
         {
-            if (this.audioTracks.Count() > 0)
+            this.uiDispatcher.Invoke(new Action(delegate()
             {
-                if (this.currentAudioTrack.State != AudioTrackState.Loaded)
-                    return;
+                if (this.audioTracks.Count() > 0)
+                {
+                    if (this.currentAudioTrack.State != AudioTrackState.Loaded)
+                        return;
 
-                this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
-            }
+                    BindableSamplePointCollection newBackgroundSamples = new BindableSamplePointCollection();
 
-            AudioTrack audioTrack = new AudioTrack(micIndex);
-            audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
-            this.audioTracks.Add(audioTrack);
+                    for (int i = 0; i < Math.Max(currentTrackSamples.Count, backgroundTrackSamples.Count); ++i)
+                    {
+                        SamplePoint sample = new SamplePoint();
 
+                        double backVal = (backgroundTrackSamples.Count > i) ? backgroundTrackSamples[i].sampleVal : 0.0;
+                        double curVal = (currentTrackSamples.Count > i) ? currentTrackSamples[i].sampleVal : 0.0;
+                        sample.sampleVal = Math.Min(backVal + curVal, 1.0);
+                        sample.sampleNum = i;
+
+                        newBackgroundSamples.Add(sample);
+                    }
+
+                    backgroundTrackSamples = newBackgroundSamples;
+
+                    RaisePropertyChanged("BackgroundTrackData");
+                    RaisePropertyChanged("BackgroundTrackXRange");
+
+                    this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
+                }
+
+                AudioTrack audioTrack = new AudioTrack(micIndex);
+                audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
+                this.audioTracks.Add(audioTrack);
+            }));
         }
 
         /*
@@ -338,12 +492,19 @@ namespace OFWGKTA
         
         private void playOrStopAll()
         {
-            if (this.isAnyTrackPlaying)
-                stopAll();
-            else
-                playAll();
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.isAnyTrackPlaying)
+                {
+                    stopAll();
+                }
+                else
+                {
+                    playAll();
+                }
 
-            RaisePropertyChanged("PlayOrStopAllButtonTitle");
+                RaisePropertyChanged("PlayOrStopAllButtonTitle");
+            }));
         }
         
         private void playAll()
@@ -351,6 +512,7 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
+            this.menuListHoriz[1].Label = "Stop Playing";
         }
         
         private void stopAll()
@@ -358,6 +520,7 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Playing)
                     track.State = AudioTrackState.Loaded;
+            this.menuListHoriz[1].Label = "Play";
         }
         // helper method:
         private bool isAnyTrackPlaying
@@ -408,20 +571,26 @@ namespace OFWGKTA
         }
         private void play()
         {
-            if (this.currentAudioTrack.State == AudioTrackState.Recording)
-                this.currentAudioTrack.State = AudioTrackState.StopRecording;
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.currentAudioTrack.State == AudioTrackState.Recording)
+                    this.currentAudioTrack.State = AudioTrackState.StopRecording;
 
-            if (this.currentAudioTrack.State != AudioTrackState.Loaded)
-                return;
+                if (this.currentAudioTrack.State != AudioTrackState.Loaded)
+                    return;
 
-            this.currentAudioTrack.State = AudioTrackState.Playing;
+                this.currentAudioTrack.State = AudioTrackState.Playing;
+            }));
         }
         private void stop()
         {
-            if (this.currentAudioTrack.State != AudioTrackState.Playing)
-                return;
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.currentAudioTrack.State != AudioTrackState.Playing)
+                    return;
 
-            this.currentAudioTrack.State = AudioTrackState.Loaded;
+                this.currentAudioTrack.State = AudioTrackState.Loaded;
+            }));
         }
 
 
@@ -452,28 +621,49 @@ namespace OFWGKTA
         private void startOrStopRecording()
         {
             if (this.currentAudioTrack.State == AudioTrackState.Recording)
+            {
                 stopRecording();
+            }
             else
+            {
                 startRecording();
+            }
 
             RaisePropertyChanged("StartOrStopRecordingButtonTitle");
         }
         private void stopRecording()
         {
-            if (this.currentAudioTrack.State != AudioTrackState.Recording)
-                return;
+            this.uiDispatcher.Invoke(new Action(delegate()
+            {
+                if (this.currentAudioTrack.State != AudioTrackState.Recording)
+                    return;
 
-            this.currentAudioTrack.State = AudioTrackState.StopRecording;
+                this.currentAudioTrack.State = AudioTrackState.StopRecording;
+                this.menuListHoriz[0].Label = "Record";
+            }));
         }
         private void startRecording()
         {
-            if (this.currentAudioTrack.State == AudioTrackState.Loaded)
-                this.currentAudioTrack.State = AudioTrackState.Monitoring;
+            // "start recording" -> overwrite current track
+            // note that at this point if the track was supposed to be saved
+            // it already has been (during stoprecording).
+            //this.currentTrackSamples.Clear();
+            this.uiDispatcher.Invoke(new Action(delegate() { 
+                if (this.currentAudioTrack.State == AudioTrackState.Loaded)
+                    this.currentAudioTrack.State = AudioTrackState.Monitoring;
+    
+                if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
+                    return;
 
-            if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
-                return;
+                this.currentTrackSamples.Clear(); 
+                RaisePropertyChanged("CurrentTrackData"); 
 
-            this.currentAudioTrack.State = AudioTrackState.Recording;
+                this.currentAudioTrack.State = AudioTrackState.Recording;
+                this.menuListHoriz[0].Label = "Stop Recording";
+            }));
+            
+            RaisePropertyChanged("CurrentTrackData");
+
         }
 
 
@@ -507,20 +697,6 @@ namespace OFWGKTA
                     return "Stop";
                 else
                     return "Play";
-            }
-        }
-
-
-        public StateRecognizer StateRecognizer
-        {
-            get { return stateRecognizer; }
-            set
-            {
-                if (this.stateRecognizer != value)
-                {
-                    this.stateRecognizer = value;
-                    RaisePropertyChanged("StateRecognizer");
-                }
             }
         }
 
