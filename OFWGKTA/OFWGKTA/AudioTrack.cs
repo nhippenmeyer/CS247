@@ -22,7 +22,6 @@ namespace OFWGKTA
     /**
      * A model representing a single audio track
      * Supports recording, writing to a file, and playing back
-     * TODO: support loading existing files
      */
     public class AudioTrack
     {
@@ -129,6 +128,18 @@ namespace OFWGKTA
                     waveIn.RecordingStopped -= new EventHandler(waveIn_RecordingStopped);
                     waveIn.Dispose();
                     waveIn = null;
+
+                    // save wave file
+                    AudioSaver saver = new AudioSaver(this.waveFileName);
+
+                    // TODO: allow trimming recording?
+                    //saver.TrimFromStart = PositionToTimeSpan(LeftPosition);
+                    //saver.TrimFromEnd = PositionToTimeSpan(TotalWaveFormSamples - RightPosition);
+
+                    // TODO: generate a more meaningful unique filename 
+                    string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".wav");
+                    saver.SaveFileFormat = SaveFileFormat.Wav;
+                    saver.SaveAudio(fileName);
                 }
 
                 // loaded -> playing
@@ -232,17 +243,7 @@ namespace OFWGKTA
 
         void waveIn_RecordingStopped(object sender, EventArgs e)
         {
-            // save wave file
-            AudioSaver saver = new AudioSaver(this.waveFileName);
 
-            // TODO: allow trimming recording?
-            //saver.TrimFromStart = PositionToTimeSpan(LeftPosition);
-            //saver.TrimFromEnd = PositionToTimeSpan(TotalWaveFormSamples - RightPosition);
-
-            // TODO: generate a more meaningful unique filename 
-            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".wav");
-            saver.SaveFileFormat = SaveFileFormat.Wav;
-            saver.SaveAudio(fileName);
 
             this.State = AudioTrackState.Loaded;
         }
