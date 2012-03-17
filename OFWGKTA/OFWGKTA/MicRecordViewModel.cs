@@ -52,6 +52,8 @@ namespace OFWGKTA
         private double bpm = 120.0;
         private double dotDuration = 200.0;
 
+        private string projectDirectory;
+        
         /**
          * Constructor
          */     
@@ -83,6 +85,17 @@ namespace OFWGKTA
             metronomeTimer.Tick += new EventHandler(metronomeTimer_Tick);
             metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration); 
             metronomeTimer.Start();
+
+            int i = 0;
+            string folderName = "First Cut Project";
+            while (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), folderName)))
+            {
+                i++;
+                folderName = "First Cut Project (" + i.ToString() + ")";
+            }
+
+            this.projectDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), folderName);
+            Directory.CreateDirectory(this.projectDirectory);
         }
 
         private void metronomeTimer_Tick(object sender, EventArgs e)
@@ -437,6 +450,8 @@ namespace OFWGKTA
                     if (this.currentAudioTrack.State != AudioTrackState.Loaded)
                         return;
 
+                    this.currentAudioTrack.Save();
+
                     BindableSamplePointCollection newBackgroundSamples = new BindableSamplePointCollection();
 
                     for (int i = 0; i < Math.Max(currentTrackSamples.Count, backgroundTrackSamples.Count); ++i)
@@ -459,7 +474,7 @@ namespace OFWGKTA
                     this.currentAudioTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
                 }
 
-                AudioTrack audioTrack = new AudioTrack(micIndex);
+                AudioTrack audioTrack = new AudioTrack(micIndex, this.projectDirectory);
                 audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
                 this.audioTracks.Add(audioTrack);
             }));

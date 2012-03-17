@@ -112,7 +112,8 @@ namespace OFWGKTA
                 currentTrack.SampleAggregator.MaximumCalculated -= new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
             }
 
-            AudioTrack audioTrack = new AudioTrack(micIndex);
+//            AudioTrack audioTrack = new AudioTrack(micIndex, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "First Cut Project"));
+            AudioTrack audioTrack = new AudioTrack(micIndex, "");
             audioTrack.SampleAggregator.MaximumCalculated += new EventHandler<MaxSampleEventArgs>(recorder_MaximumCalculated);
             this.audioTracks.Add(audioTrack);
             currentTrack = audioTrack;

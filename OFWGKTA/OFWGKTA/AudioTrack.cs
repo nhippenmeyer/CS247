@@ -41,15 +41,17 @@ namespace OFWGKTA
         int recordingDeviceIndex;
         private string waveFileName;
         TimeSpan playTime;
+        string projectDirectory;
 
         // TODO: event for updating time?
 
         /**
          * Constructors
          */ 
-        public AudioTrack(int recordingDeviceIndex)
+        public AudioTrack(int recordingDeviceIndex, string projectDirectory)
         {
             this.recordingDeviceIndex = recordingDeviceIndex;
+            this.projectDirectory = projectDirectory;
 
             // TODO: get rid of?
             sampleAggregator = new SampleAggregator();
@@ -128,18 +130,6 @@ namespace OFWGKTA
                     waveIn.RecordingStopped -= new EventHandler(waveIn_RecordingStopped);
                     waveIn.Dispose();
                     waveIn = null;
-
-                    // save wave file
-                    AudioSaver saver = new AudioSaver(this.waveFileName);
-
-                    // TODO: allow trimming recording?
-                    //saver.TrimFromStart = PositionToTimeSpan(LeftPosition);
-                    //saver.TrimFromEnd = PositionToTimeSpan(TotalWaveFormSamples - RightPosition);
-
-                    // TODO: generate a more meaningful unique filename 
-                    string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".wav");
-                    saver.SaveFileFormat = SaveFileFormat.Wav;
-                    saver.SaveAudio(fileName);
                 }
 
                 // loaded -> playing
@@ -178,6 +168,23 @@ namespace OFWGKTA
                 // set state value
                 state = value;
             }
+        }
+
+        public void Save()
+        {
+            if (this.state != AudioTrackState.Loaded)
+                return;
+
+            AudioSaver saver = new AudioSaver(this.waveFileName);
+
+            //string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            uint takeNumber = 1;
+            
+            while (File.Exists(Path.Combine(this.projectDirectory, takeNumber.ToString() + ".wav")))
+                takeNumber++;
+
+            saver.SaveFileFormat = SaveFileFormat.Wav;
+            saver.SaveAudio(Path.Combine(this.projectDirectory, takeNumber.ToString() + ".wav"));
         }
 
 
