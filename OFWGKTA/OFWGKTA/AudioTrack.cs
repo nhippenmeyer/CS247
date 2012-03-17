@@ -22,7 +22,6 @@ namespace OFWGKTA
     /**
      * A model representing a single audio track
      * Supports recording, writing to a file, and playing back
-     * TODO: support loading existing files
      */
     public class AudioTrack
     {
@@ -42,15 +41,17 @@ namespace OFWGKTA
         int recordingDeviceIndex;
         private string waveFileName;
         TimeSpan playTime;
+        string projectDirectory;
 
         // TODO: event for updating time?
 
         /**
          * Constructors
          */ 
-        public AudioTrack(int recordingDeviceIndex)
+        public AudioTrack(int recordingDeviceIndex, string projectDirectory)
         {
             this.recordingDeviceIndex = recordingDeviceIndex;
+            this.projectDirectory = projectDirectory;
 
             // TODO: get rid of?
             sampleAggregator = new SampleAggregator();
@@ -169,6 +170,23 @@ namespace OFWGKTA
             }
         }
 
+        public void Save()
+        {
+            if (this.state != AudioTrackState.Loaded)
+                return;
+
+            AudioSaver saver = new AudioSaver(this.waveFileName);
+
+            //string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            uint takeNumber = 1;
+            
+            while (File.Exists(Path.Combine(this.projectDirectory, takeNumber.ToString() + ".wav")))
+                takeNumber++;
+
+            saver.SaveFileFormat = SaveFileFormat.Wav;
+            saver.SaveAudio(Path.Combine(this.projectDirectory, takeNumber.ToString() + ".wav"));
+        }
+
 
         void waveOut_PlaybackStopped(object sender, EventArgs e)
         {
@@ -232,17 +250,7 @@ namespace OFWGKTA
 
         void waveIn_RecordingStopped(object sender, EventArgs e)
         {
-            // save wave file
-            AudioSaver saver = new AudioSaver(this.waveFileName);
 
-            // TODO: allow trimming recording?
-            //saver.TrimFromStart = PositionToTimeSpan(LeftPosition);
-            //saver.TrimFromEnd = PositionToTimeSpan(TotalWaveFormSamples - RightPosition);
-
-            // TODO: generate a more meaningful unique filename 
-            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Guid.NewGuid().ToString() + ".wav");
-            saver.SaveFileFormat = SaveFileFormat.Wav;
-            saver.SaveAudio(fileName);
 
             this.State = AudioTrackState.Loaded;
         }
