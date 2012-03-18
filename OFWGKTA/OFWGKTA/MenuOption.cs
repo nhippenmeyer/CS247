@@ -5,18 +5,19 @@ using System.Text;
 using GalaSoft.MvvmLight.Command;
 using System.ComponentModel;
 using GalaSoft.MvvmLight;
+using System.Windows.Controls;
 
 namespace OFWGKTA
 {
     public class MenuOption : ViewModelBase
     {
         private string label;
-        private Image image;
+        private string image;
         public RelayCommand Command { get; private set; }
         public int NumOptions { get; private set; }
         public MenuRecognizer MenuRecognizer { get; private set; }
 
-        public MenuOption(Image image, RelayCommand command, int numOptions, MenuRecognizer menuRecognizer)
+        public MenuOption(string image, RelayCommand command, int numOptions, MenuRecognizer menuRecognizer)
 		{
             this.Image = image;
             this.Command = command;
@@ -26,6 +27,7 @@ namespace OFWGKTA
             MenuRecognizer.PropertyChanged += OnPercentDepressedChanged;
 		}
 
+        /*
         public MenuOption(string label, RelayCommand command, int numOptions, MenuRecognizer menuRecognizer)
         {
             this.Label = label;
@@ -35,6 +37,7 @@ namespace OFWGKTA
 
             MenuRecognizer.PropertyChanged += OnPercentDepressedChanged;
         }
+         * */
 
         public double PercentDepressed
         {
