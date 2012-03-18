@@ -62,14 +62,8 @@
                 </charts:StaircaseSeries>
             </charts:Chart.Series>
         </charts:Chart>
-        
-        <Canvas Width="100" Height="100" Margin="50,50,0,0"></Canvas>
-
-        <ProgressBar Margin="12,0,601,106" Orientation="Vertical" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="101" VerticalAlignment="Bottom" />
-
-        <Slider Margin="52,273,553,106" Orientation="Vertical" Value="{Binding MicrophoneLevel, Mode=TwoWay}" Maximum="100" />
-
-        <TextBlock Margin="530,307,5,142" Text="{Binding Time}" FontWeight="Bold" FontSize="16" Foreground="White" />
+        <ProgressBar Margin="12,0,601,85" Orientation="Vertical" Value="{Binding CurrentInputLevel, Mode=OneWay}" Height="101" VerticalAlignment="Bottom" />
+        <TextBlock Margin="523,402,12,47" Text="{Binding Time}" FontWeight="Bold" FontSize="16" Foreground="White" />
         
         <Button Content="{Binding StartOrStopRecordingButtonTitle}" Command="{Binding StartOrStopRecordingCommand}" Margin="443,445,111,12" />
         <Button Command="{Binding PlayOrStopAllCommand}" Content="{Binding PlayOrStopAllButtonTitle}" Margin="129,445,0,12" HorizontalAlignment="Left" Width="69" Click="Button_Click" />
@@ -77,7 +71,7 @@
         
         <Button Content="Back" Height="23" HorizontalAlignment="Left" Margin="12,457,0,0" Name="back_button" Command="{Binding GoBackCommand}" VerticalAlignment="Top" Width="75" />
         
-        <Label Margin="535,273,21,0" Height="28" VerticalAlignment="Top" Foreground="White">Elapsed Time:</Label>
+        <Label Margin="519,375,37,0" Height="28" VerticalAlignment="Top" Foreground="White">Elapsed Time:</Label>
         <Rectangle Height="67" Width="320" HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="rectangle1" Margin="160,0,160,27" FlowDirection="LeftToRight" Panel.ZIndex="-1" Stroke="#00000000">
             <Rectangle.Fill>
                 <RadialGradientBrush>
@@ -166,7 +160,10 @@ Stand in the spotlight below to begin."
                    VerticalAlignment="Top" Width="356" Foreground="White" TextAlignment="Center" FontSize="20" FontWeight="Normal" 
                    Visibility="{Binding Path=StateRecognizer.IsOnStage, Converter={StaticResource BoolToVisibility}}" DataContext="{Binding}" TextWrapping="Wrap" />
         <Label Content="Elapsed Time:" FontSize="72" Height="28" Margin="433,128,123,0" VerticalAlignment="Top" />
-        <Ellipse Fill="Red" Height="10" Margin="17,386,613,84" Width="10" Visibility="{Binding MetronomeDotVisibility}" />
-        <Label Content="tempo" Foreground="White" Height="28" Margin="26,377,568,0" VerticalAlignment="Top" />
+        <Ellipse Fill="Red" Margin="15,407,605,54" Visibility="{Binding MetronomeDotVisibility}" />
+        <Label Content="Tempo (BPM)" Foreground="White" Height="28" Margin="47,403,504,0" VerticalAlignment="Top" />
+        <Label Content="Mic Level (%)" Foreground="White" Height="28" Margin="47,374,501,0" VerticalAlignment="Top" />
+        <Label Content="{Binding MicrophoneLevel}" Foreground="White" Height="28" Margin="134,375,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36" />
+        <Label Content="{Binding BPM}" Foreground="White" Height="28" Margin="134,403,470,0" VerticalAlignment="Top" />
     </Grid>
 </UserControl>
