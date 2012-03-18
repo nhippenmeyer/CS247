@@ -128,8 +128,10 @@ namespace OFWGKTA
 
                     waveIn.DataAvailable -= waveIn_DataAvailable;
                     waveIn.RecordingStopped -= new EventHandler(waveIn_RecordingStopped);
+                    /*
                     waveIn.Dispose();
                     waveIn = null;
+                     */
                 }
 
                 // loaded -> playing
@@ -279,6 +281,7 @@ namespace OFWGKTA
         private void TryGetVolumeControl()
         {
             int waveInDeviceNumber = this.recordingDeviceIndex;
+
 
             var mixerLine = waveIn.GetMixerLine();
             //new MixerLine((IntPtr)waveInDeviceNumber, 0, MixerFlags.WaveIn);

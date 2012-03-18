@@ -59,7 +59,7 @@ namespace OFWGKTA
          */     
         public MicRecordViewModel()
         {
-            this.MenuRecognizerHoriz = new MenuRecognizer(4, 50);
+            this.MenuRecognizerHoriz = new MenuRecognizer(4, 100);
             this.menuListHoriz.Add(new MenuOption("Record", null, 4, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("Play", null, 4, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("Settings", null, 4, this.menuRecognizerHoriz));
@@ -234,7 +234,7 @@ namespace OFWGKTA
             this.micIndex = ((AppState)state).MicIndex;
             if (((AppState)state).MicLevel != 0)
             {
-                this.MicrophoneLevel = ((AppState)state).MicLevel;
+                this.MicrophoneLevel = ((AppState)state).MicLevel;  
             }
             if (((AppState)state).Bpm != 0)
             {
@@ -283,6 +283,8 @@ namespace OFWGKTA
                     playOrStopAll();
                     break;
                 case 2:
+                    stopRecording();
+                    stop();
                     this.uiDispatcher.Invoke(new Action(delegate()
                     {
                         Messenger.Default.Send(new NavigateMessage(SettingsViewModel.ViewName, new AppState(this.Kinect, this.speechRecognizer, this.micIndex, (int)this.MicrophoneLevel, (int)this.BPM)));
