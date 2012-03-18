@@ -134,6 +134,13 @@ namespace OFWGKTA
             RaisePropertyChanged("MetronomeDotVisibility");
         }
 
+		public void Reset()
+		{
+			this.audioTracks = null;
+
+			// this may not work. we may want to clear and then create a new audio track.
+		}
+
         public double BPM
         {
             get { return bpm; }
