@@ -287,7 +287,8 @@ namespace OFWGKTA
         {
             if (this.audioTracks.Count > 0 && this.audioTracks[0].State != AudioTrackState.Playing)
             {
-                this.menuListHoriz[1].Label = "Play";
+                //this.menuListHoriz[1].Label = "Play";
+				this.menuListHoriz[1].Image = "Graphics/play.png";
             }
             RaisePropertyChanged("Time");
         }
@@ -557,7 +558,8 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
-            this.menuListHoriz[1].Label = "Stop Playing";
+            //this.menuListHoriz[1].Label = "Stop Playing";
+            this.menuListHoriz[1].Image = "Graphics/stop.png";
         }
         
         private void stopAll()
@@ -565,7 +567,8 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Playing)
                     track.State = AudioTrackState.Loaded;
-            this.menuListHoriz[1].Label = "Play";
+            //this.menuListHoriz[1].Label = "Play";
+            this.menuListHoriz[1].Image = "Graphics/play.png";
         }
         // helper method:
         private bool isAnyTrackPlaying
@@ -684,7 +687,8 @@ namespace OFWGKTA
                     return;
 
                 this.currentAudioTrack.State = AudioTrackState.StopRecording;
-                this.menuListHoriz[0].Label = "Record";
+                //this.menuListHoriz[0].Label = "Record";
+				this.menuListHoriz[0].Image = "Graphics/record.png";
             }));
         }
         private void startRecording()
@@ -704,7 +708,8 @@ namespace OFWGKTA
                 RaisePropertyChanged("CurrentTrackData"); 
 
                 this.currentAudioTrack.State = AudioTrackState.Recording;
-                this.menuListHoriz[0].Label = "Stop Recording";
+                //this.menuListHoriz[0].Label = "Stop Recording";
+				this.menuListHoriz[0].Image = "Graphics/stop_record.png";
             }));
             
             RaisePropertyChanged("CurrentTrackData");
