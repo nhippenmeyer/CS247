@@ -17,6 +17,9 @@ using System.Timers;
 using System.Windows.Threading;
 using System.Windows;
 using Visiblox.Charts;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 
 
@@ -67,10 +70,20 @@ namespace OFWGKTA
             this.menuListHoriz.Add(new MenuOption("New Track", null, 4, this.menuRecognizerHoriz));
 */
 
-            this.menuListHoriz.Add(new MenuOption(new Image("Graphics/record.png"), null, 4, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption(new Image("Graphics/settings.png"), null, 4, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption(new Image("Graphics/play.png"), null, 4, this.menuRecognizerHoriz));
-            this.menuListHoriz.Add(new MenuOption(new Image("Graphics/new.png"), null, 4, this.menuRecognizerHoriz));
+            Stream recordImgStream = new FileStream("Graphics/record.png", FileMode.Open, FileAccess.Read, FileShare.Read);
+            PngBitmapDecoder decoder = new PngBitmapDecoder(recordImgStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            BitmapSource bitmapSource = decoder.Frames[0];
+
+            Image recordImage = new Image();
+            recordImage.Source = bitmapSource;
+            recordImage.Stretch = Stretch.None;
+
+            this.menuListHoriz.Add(new MenuOption("Graphics/record.png", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Graphics/play.png", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Graphics/settings.png", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Graphics/new.png", null, 4, this.menuRecognizerHoriz));
+
+            recordImgStream.Close();
 
             MenuRecognizerHoriz.MenuItemSelected += OnHorizMenuItemSelected;
 
