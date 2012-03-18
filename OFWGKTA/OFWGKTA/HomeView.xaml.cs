@@ -22,5 +22,17 @@ namespace OFWGKTA
         {
             InitializeComponent();
         }
+
+        void buttonLoaded_Quit(object sender, RoutedEventArgs e)
+        {
+            HomeViewModel vm = (HomeViewModel)DataContext;
+            vm.quitButton = (Button)sender;
+        }
+
+        void buttonLoaded_Start(object sender, RoutedEventArgs e)
+        {
+            HomeViewModel vm = (HomeViewModel)DataContext;
+            vm.startButton = (Button)sender;
+        }
     }
 }

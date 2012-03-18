@@ -98,7 +98,10 @@
         </HierarchicalDataTemplate>
 
         <DataTemplate x:Key="MicMenuItemsHoriz">
-            <Button Content="{Binding Label}" Width="{Binding NumOptions, Converter={StaticResource OptionWidth}}" HorizontalAlignment="Center" Margin="5" IsEnabled="{Binding IsEnabled}">
+            <Button Width="{Binding NumOptions, Converter={StaticResource OptionWidth}}" HorizontalAlignment="Center" Margin="5">
+
+			  <Image Source="{Binding Image}"/>
+				
                 <Button.Style>
                     <Style>
                         <Style.Triggers>

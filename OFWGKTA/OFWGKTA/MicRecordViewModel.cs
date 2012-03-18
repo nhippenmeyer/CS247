@@ -17,6 +17,9 @@ using System.Timers;
 using System.Windows.Threading;
 using System.Windows;
 using Visiblox.Charts;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 
 
@@ -60,10 +63,28 @@ namespace OFWGKTA
         public MicRecordViewModel()
         {
             this.MenuRecognizerHoriz = new MenuRecognizer(4, 100);
+/*
+>>>>>>> origin/images
             this.menuListHoriz.Add(new MenuOption("Record", null, 4, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("Play", null, 4, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("Settings", null, 4, this.menuRecognizerHoriz));
             this.menuListHoriz.Add(new MenuOption("New Track", null, 4, this.menuRecognizerHoriz));
+*/
+
+            Stream recordImgStream = new FileStream("Graphics/record.png", FileMode.Open, FileAccess.Read, FileShare.Read);
+            PngBitmapDecoder decoder = new PngBitmapDecoder(recordImgStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            BitmapSource bitmapSource = decoder.Frames[0];
+
+            Image recordImage = new Image();
+            recordImage.Source = bitmapSource;
+            recordImage.Stretch = Stretch.None;
+
+            this.menuListHoriz.Add(new MenuOption("Graphics/record.png", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Graphics/play.png", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Graphics/settings.png", null, 4, this.menuRecognizerHoriz));
+            this.menuListHoriz.Add(new MenuOption("Graphics/new.png", null, 4, this.menuRecognizerHoriz));
+
+            recordImgStream.Close();
 
             MenuRecognizerHoriz.MenuItemSelected += OnHorizMenuItemSelected;
 
@@ -113,6 +134,13 @@ namespace OFWGKTA
             metronomeDotVisible = !metronomeDotVisible;
             RaisePropertyChanged("MetronomeDotVisibility");
         }
+
+		public void Reset()
+		{
+			this.audioTracks = null;
+
+			// this may not work. we may want to clear and then create a new audio track.
+		}
 
         public double BPM
         {
@@ -267,7 +295,8 @@ namespace OFWGKTA
         {
             if (this.audioTracks.Count > 0 && this.audioTracks[0].State != AudioTrackState.Playing)
             {
-                this.menuListHoriz[1].Label = "Play";
+                //this.menuListHoriz[1].Label = "Play";
+				this.menuListHoriz[1].Image = "Graphics/play.png";
             }
             RaisePropertyChanged("Time");
         }
@@ -539,7 +568,8 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
-            this.menuListHoriz[1].Label = "Stop Playing";
+            //this.menuListHoriz[1].Label = "Stop Playing";
+            this.menuListHoriz[1].Image = "Graphics/stop.png";
         }
         
         private void stopAll()
@@ -547,7 +577,8 @@ namespace OFWGKTA
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Playing)
                     track.State = AudioTrackState.Loaded;
-            this.menuListHoriz[1].Label = "Play";
+            //this.menuListHoriz[1].Label = "Play";
+            this.menuListHoriz[1].Image = "Graphics/play.png";
         }
         // helper method:
         private bool isAnyTrackPlaying
@@ -666,7 +697,8 @@ namespace OFWGKTA
                     return;
 
                 this.currentAudioTrack.State = AudioTrackState.StopRecording;
-                this.menuListHoriz[0].Label = "Record";
+                //this.menuListHoriz[0].Label = "Record";
+				this.menuListHoriz[0].Image = "Graphics/record.png";
             }));
         }
         private void startRecording()
@@ -686,7 +718,8 @@ namespace OFWGKTA
                 RaisePropertyChanged("CurrentTrackData"); 
 
                 this.currentAudioTrack.State = AudioTrackState.Recording;
-                this.menuListHoriz[0].Label = "Stop Recording";
+                //this.menuListHoriz[0].Label = "Stop Recording";
+				this.menuListHoriz[0].Image = "Graphics/stop_record.png";
             }));
             
             RaisePropertyChanged("CurrentTrackData");

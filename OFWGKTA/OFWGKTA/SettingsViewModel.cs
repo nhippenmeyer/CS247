@@ -36,7 +36,7 @@ namespace OFWGKTA
         private int bpmMin = 60;
         private int bpmMax = 160;
 
-        public Button backButton = new Button();
+        public Button backButton;
 
         public event EventHandler<EventArgs> timerUp;
 

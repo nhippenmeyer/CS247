@@ -13,6 +13,8 @@
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="243,430,0,0" Name="textBlock1" Text="{Binding Path=Kinect.IsOnStage}" VerticalAlignment="Top" />
         <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="807,146,0,0" Name="label1" VerticalAlignment="Top" />
         <TextBlock Height="102" HorizontalAlignment="Left" Margin="0,58,0,0" Name="textBlock2" Text="FirstCut" VerticalAlignment="Top" Width="640" FontSize="72" FontFamily="Arial" FontWeight="Black" TextAlignment="Center" Foreground="White" />
-        <TextBlock Height="49" HorizontalAlignment="Center" Margin="0,196,0,0" Name="textBlock3" Text="Raise both hands over your head to start!" VerticalAlignment="Top" Width="640" Foreground="White" TextAlignment="Center" FontWeight="Normal" FontSize="20" />
+        <Button Background="{Binding QuitButtonPushed, Converter={StaticResource ButtonHighlighter}}" Content="Quit" FontSize="15" FontWeight="Bold" Height="49" HorizontalAlignment="Right" Margin="0,329,95,0" Name="button2" VerticalAlignment="Top" Width="138" Loaded="buttonLoaded_Quit"/>
+        <Button Background="{Binding StartButtonPushed, Converter={StaticResource ButtonHighlighter}}" Content="Start" FontSize="15" FontWeight="Bold" Height="49" HorizontalAlignment="Left" Margin="407,238,0,0" Name="button3" VerticalAlignment="Top" Width="138" Loaded="buttonLoaded_Start"/>
+        <ContentControl Content="{Binding Kinect.HandRight}" ContentTemplate="{StaticResource VectorTemplateUnadjusted}" />
     </Grid>
 </UserControl>
