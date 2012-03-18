@@ -41,6 +41,15 @@ namespace OFWGKTA
             {
                 this.runtime = Runtime.Kinects[0];
                 this.runtime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor | RuntimeOptions.UseDepthAndPlayerIndex);
+                this.runtime.SkeletonEngine.TransformSmooth = true;
+                TransformSmoothParameters parameters = new TransformSmoothParameters();
+                // parameters used to smooth the skeleton data
+                parameters.Smoothing = 0.3f;
+                parameters.Correction = 0.3f;
+                parameters.Prediction = 0.4f;
+                parameters.JitterRadius = 0.7f;
+                parameters.MaxDeviationRadius = 0.2f;
+                this.runtime.SkeletonEngine.SmoothParameters = parameters;
                 this.runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(SkeletonFrameReady);
             }
         }
