@@ -14,6 +14,7 @@ namespace OFWGKTA
         public RelayCommand Command { get; private set; }
         public int NumOptions { get; private set; }
         public MenuRecognizer MenuRecognizer { get; private set; }
+        private bool isEnabled = true;
 
         public MenuOption(string label, RelayCommand command, int numOptions, MenuRecognizer menuRecognizer)
         {
@@ -28,6 +29,18 @@ namespace OFWGKTA
         public double PercentDepressed
         {
             get { return MenuRecognizer.PercentDepressed; }
+        }
+
+        public bool IsEnabled
+        {
+            get { return this.isEnabled; }
+            set {
+                if (this.isEnabled != value)
+                {
+                    this.isEnabled = value;
+                    RaisePropertyChanged("IsEnabled");
+                }
+            }
         }
 
         public string Label {
