@@ -120,6 +120,14 @@ namespace OFWGKTA
             Directory.CreateDirectory(this.projectDirectory);
         }
 
+        private void restartTimer()
+        {
+            metronomeTimer.Stop();
+            metronomeTimer.Interval = TimeSpan.FromMilliseconds(dotDuration);
+            metronomeDotVisible = true;
+            metronomeTimer.Start();
+        }
+
         private void metronomeTimer_Tick(object sender, EventArgs e)
         {
             if (metronomeDotVisible)
@@ -565,6 +573,8 @@ namespace OFWGKTA
         
         private void playAll()
         {
+            restartTimer();
+
             foreach (AudioTrack track in this.audioTracks)
                 if (track.State == AudioTrackState.Loaded)
                     track.State = AudioTrackState.Playing;
@@ -637,6 +647,7 @@ namespace OFWGKTA
                 if (this.currentAudioTrack.State != AudioTrackState.Loaded)
                     return;
 
+                restartTimer();
                 this.currentAudioTrack.State = AudioTrackState.Playing;
             }));
         }
@@ -713,6 +724,8 @@ namespace OFWGKTA
     
                 if (this.currentAudioTrack.State != AudioTrackState.Monitoring)
                     return;
+
+                restartTimer();
 
                 this.currentTrackSamples.Clear(); 
                 RaisePropertyChanged("CurrentTrackData"); 
