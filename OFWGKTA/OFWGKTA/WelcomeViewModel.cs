@@ -40,7 +40,7 @@ namespace OFWGKTA
                 }
 
                 // mic interface is hardcoded to 0 here:
-                this.appState = new AppState(kinectModel, speechRecognizer, 0);
+                this.appState = new AppState(kinectModel, speechRecognizer, 1);
                 return this.appState;
             }
         }
@@ -66,13 +66,7 @@ namespace OFWGKTA
         public void Activated(object state)
         {
             this.applicationModes.Clear();
-            this.applicationModes.Add("Settings");
-            this.applicationModes.Add("Record");
-            this.applicationModes.Add("Replay");
-            this.applicationModes.Add("Free Use");
-            this.applicationModes.Add("Audio App");
-            this.applicationModes.Add("Mic Record");
-            this.applicationModes.Add("Fancy Graph");
+            this.applicationModes.Add("Start Application");
         }
 
         public void Deactivated() { }
@@ -142,7 +136,7 @@ namespace OFWGKTA
                         Messenger.Default.Send(new NavigateMessage(HomeViewModel.ViewName, this.AppState));
                         break;
                     }
-                case ("Mic Record"):
+                case ("Start Application"):
                     {
                         Messenger.Default.Send(new NavigateMessage(MicRecordViewModel.ViewName, this.AppState));
                         break;
